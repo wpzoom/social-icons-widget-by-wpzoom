@@ -446,10 +446,7 @@ class WPZOOM_Click_To_Chat {
 							</div>
 
 							<div class="wpzoom-ctc-field">
-								<label class="wpzoom-ctc-field-label">
-									<?php esc_html_e( 'Widget size', 'social-icons-widget-by-wpzoom' ); ?>
-									<span class="wpzoom-ctc-info-icon" title="<?php esc_attr_e( 'Controls the diameter of the chat buttons', 'social-icons-widget-by-wpzoom' ); ?>">&#9432;</span>
-								</label>
+								<label><?php esc_html_e( 'Widget size', 'social-icons-widget-by-wpzoom' ); ?></label>
 								<div class="wpzoom-ctc-size-picker">
 									<?php foreach ( array( 'S', 'M', 'L', 'XL', 'XXL' ) as $size ) : ?>
 									<label class="wpzoom-ctc-size-option <?php echo $s['button_size'] === $size ? 'is-selected' : ''; ?>">
