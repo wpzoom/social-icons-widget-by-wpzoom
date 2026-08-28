@@ -93,9 +93,18 @@ export default function Edit({ attributes, setAttributes, className, isSelected 
 		}
 	}, []); // Run only once on mount
 
+	// blockProps.style is where block supports put line height, a custom font
+	// size and spacing. Spread it in rather than replacing it, otherwise those
+	// controls do nothing in the editor.
 	const containerStyle = {
+		...blockProps.style,
 		textAlign: align,
 	};
+
+	// A font size picked in the Typography panel lands on the wrapper, so labels
+	// have to inherit it instead of hard-coding labelSize.
+	const hasTypographyFontSize =
+		!! attributes.fontSize || !! attributes.style?.typography?.fontSize;
 
 	// Filter enabled platforms
 	const enabledPlatforms = platforms.filter(platform => platform.enabled);
@@ -153,11 +162,13 @@ export default function Edit({ attributes, setAttributes, className, isSelected 
 								borderStyle = `${borderWidth}px solid ${borderColor}`;
 							}
 							
+							// No fontSize here on purpose: the SVG carries its own width/height,
+							// and an inline font size would stop the wrapper's from cascading
+							// down to the label.
 							const buttonStyle = {
 								padding: `${paddingVertical}px ${paddingHorizontal}px`,
 								margin: `${marginVertical}px ${marginHorizontal}px`,
 								borderRadius: `${styleSpecificBorderRadius}px`,
-								fontSize: `${iconSize}px`,
 								color: iconColorValue,
 								backgroundColor: bgColor,
 								border: borderStyle,
@@ -197,7 +208,7 @@ export default function Edit({ attributes, setAttributes, className, isSelected 
 											<span 
 												className="social-sharing-icon-label"
 												style={{ 
-													fontSize: `${labelSize}px`,
+													...( hasTypographyFontSize ? {} : { fontSize: `${labelSize}px` } ),
 													color: labelColorValue
 												}}
 											>

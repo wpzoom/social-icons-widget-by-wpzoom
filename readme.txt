@@ -5,7 +5,7 @@ Tags: social icons, share buttons, click to chat, whatsapp, social sharing
 Requires at least: 6.5
 Requires PHP: 7.4
 Tested up to: 7.1
-Stable tag: 4.6.2
+Stable tag: 4.6.3
 License: GNU General Public License v2.0 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -223,6 +223,9 @@ Floating Buttons is a PRO feature that displays your social sharing icons as a f
 10. Social Sharing Buttons - No Label Style
 
 == Changelog ==
+
+= 4.6.3 =
+* Fixed Font Size, Line Height and spacing options not working in the Social Sharing Buttons block
 
 = 4.6.2 =
 * Click to Chat: WhatsApp button now uses the universal `wa.me` link, which opens the WhatsApp app directly on phones and computers instead of the WhatsApp Web login page

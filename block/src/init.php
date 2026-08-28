@@ -137,6 +137,23 @@ function wpzoom_social_icons_block_enqueue_assets() {
 				'editor_script' => 'wpzoom-social-icons-block-js',
 				// Enqueue wpzoom-social-icons.css in the editor only.
 				'editor_style'  => 'wpzoom-social-icons-block-editor',
+				// Mirror the client-side supports declared in block.js. Without them
+				// get_block_wrapper_attributes() below has nothing to apply, so the
+				// Typography and Dimensions panels never reach the frontend.
+				// `align` is left out on purpose: this block reuses the `align`
+				// attribute for text alignment, and the core align support would turn
+				// left/center/right into float-based alignleft/alignright classes.
+				'supports'      => array(
+					'html'       => false,
+					'spacing'    => array(
+						'margin'  => true,
+						'padding' => true,
+					),
+					'typography' => array(
+						'fontSize'   => true,
+						'lineHeight' => true,
+					),
+				),
 				'render_callback' => 'wpzoom_social_sharing_block_render_callback',
 			)
 		);
@@ -204,8 +221,12 @@ function wpzoom_social_sharing_block_render_callback( $attributes ) {
 	$oneToneColor = isset( $attributes['oneToneColor'] ) ? $attributes['oneToneColor'] : '#000000';
 
 	// Class for block
-	$block_class = 'wp-block-wpzoom-blocks-social-sharing';
 	$class_name = isset( $attributes['className'] ) ? $attributes['className'] : '';
+
+	// A font size picked in the Typography panel is applied to the block wrapper,
+	// so the per-label font size further down has to step aside and let it cascade.
+	$has_typography_font_size = ! empty( $attributes['fontSize'] )
+		|| ! empty( $attributes['style']['typography']['fontSize'] );
 	
 	// Check styles
 	$is_one_tone_style = strpos($class_name, 'is-style-one-tone') !== false;
@@ -222,12 +243,14 @@ function wpzoom_social_sharing_block_render_callback( $attributes ) {
 	// Don't override user-set colors regardless of style
 	// The user's color settings from the block attributes should always take precedence
 	
-	// Start building output
-	$output = '<div class="' . esc_attr( $block_class . ' ' . $class_name ) . ' align-' . esc_attr( $align ) . '"';
+	// Start building output. This is a dynamic block, so the classes and inline
+	// styles that block supports generate (font size, line height, spacing, custom
+	// class name) only reach the frontend if the render callback prints them.
+	$wrapper_attributes = array( 'class' => 'align-' . $align );
 	if ($align !== 'none') {
-		$output .= ' style="text-align:' . esc_attr( $align ) . ';"';
+		$wrapper_attributes['style'] = 'text-align:' . $align . ';';
 	}
-	$output .= '>';
+	$output = '<div ' . get_block_wrapper_attributes( $wrapper_attributes ) . '>';
 	$output .= '<ul class="social-sharing-icons">';
 
 	// Only show enabled platforms
@@ -347,14 +370,15 @@ function wpzoom_social_sharing_block_render_callback( $attributes ) {
 		}
 		
 		// Build output for this platform
+		// No font-size here on purpose: the SVG carries its own width/height, and an
+		// inline font size would stop the wrapper's from cascading to the label.
 		$button_style = sprintf(
-			'padding:%dpx %dpx;margin:%dpx %dpx;border-radius:%dpx;font-size:%dpx;color:%s;background-color:%s;%s',
+			'padding:%dpx %dpx;margin:%dpx %dpx;border-radius:%dpx;color:%s;background-color:%s;%s',
 			$padding_vertical,
 			$padding_horizontal,
 			$marginVertical,
 			$marginHorizontal,
 			$style_specific_border_radius,
-			$iconSize,
 			$icon_color_value,
 			$platform_color,
 			$border_style
@@ -377,7 +401,9 @@ function wpzoom_social_sharing_block_render_callback( $attributes ) {
 		$output .= wpzoom_social_sharing_get_svg_icon( $platform['id'], $iconSize, $icon_color_value );
 		
 		if ( $showLabels ) {
-			$label_style = sprintf( 'font-size:%dpx;color:%s;', $labelSize, $label_color_value );
+			$label_style = $has_typography_font_size
+				? sprintf( 'color:%s;', $label_color_value )
+				: sprintf( 'font-size:%dpx;color:%s;', $labelSize, $label_color_value );
 			$output .= '<span class="social-sharing-icon-label" style="' . esc_attr( $label_style ) . '">' . esc_html( $platform_label ) . '</span>';
 		}
 		

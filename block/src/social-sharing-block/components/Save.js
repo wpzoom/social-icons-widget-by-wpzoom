@@ -111,6 +111,11 @@ const getPlatformData = (id, xUsername = '') => {
  *
  * @return {WPElement} Element to render.
  */
+// NOTE: this block is dynamic — init.php renders it through
+// wpzoom_social_sharing_block_render_callback(), so the markup below is only what
+// gets serialized into post_content and never what the frontend shows. It is kept
+// byte-for-byte as-is on purpose: any change here invalidates every already-saved
+// block. Frontend fixes belong in the render callback, editor fixes in Edit.js.
 export default function Save({ attributes }) {
 	const {
 		align,

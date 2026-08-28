@@ -66,6 +66,11 @@ export default function Inspector({ attributes, setAttributes }) {
 	const bodyClasses = document.body.className;
 	const isEditingSharingConfig = bodyClasses.includes('post-type-wpzoom-sharing');
 	
+	// A font size set in the Typography panel is applied to the block wrapper and
+	// cascades down to the labels, which makes the Label Size slider a no-op.
+	const hasTypographyFontSize =
+		!! attributes.fontSize || !! attributes.style?.typography?.fontSize;
+
 	// State for dragging
 	const [isDragging, setIsDragging] = useState(false);
 	const [draggedItemIndex, setDraggedItemIndex] = useState(null);
@@ -851,6 +856,12 @@ export default function Inspector({ attributes, setAttributes }) {
 							allowReset
 							resetFallbackValue={20}
 							withInputField
+							disabled={hasTypographyFontSize}
+							help={
+								hasTypographyFontSize
+									? __('Font Size in the Typography panel is controlling the labels. Reset it to use this slider again.', 'social-icons-widget-by-wpzoom')
+									: ''
+							}
 						/>
 					)}
 
