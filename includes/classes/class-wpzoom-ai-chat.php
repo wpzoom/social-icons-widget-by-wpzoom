@@ -311,7 +311,13 @@ class WPZOOM_AI_Chat {
 
 			<?php if ( self::standalone_plugin_active() && ! $connected ) : ?>
 				<p class="wpzoom-ai-chat-note">
-					<?php esc_html_e( 'The standalone Yamidoo plugin is active on this site, so the chat is managed from its settings page.', 'social-icons-widget-by-wpzoom' ); ?>
+					<?php
+					printf(
+						/* translators: %s: link to the Yamidoo plugin's settings page */
+						esc_html__( 'The standalone Yamidoo plugin is active on this site, so the chat is managed from %s.', 'social-icons-widget-by-wpzoom' ),
+						'<a href="' . esc_url( admin_url( 'options-general.php?page=yamidoo' ) ) . '">' . esc_html__( 'its settings page', 'social-icons-widget-by-wpzoom' ) . ' →</a>'
+					);
+					?>
 				</p>
 			<?php elseif ( ! $connected ) : ?>
 				<div class="wpzoom-ai-chat-cta">

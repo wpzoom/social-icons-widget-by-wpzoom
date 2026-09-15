@@ -228,14 +228,15 @@ class WPZOOM_Click_To_Chat {
 
 		$s = self::get_settings();
 
-		// Two tabs: AI Chat (Yamidoo) and the classic Click to Chat launcher.
-		// Default to the one the site actually uses; a fresh site lands on AI Chat.
+		// Two tabs: AI Chat (Yamidoo) and the classic Click to Chat launcher. The
+		// menu item is "AI Chat", so that tab is always the landing one; Click to
+		// Chat links carry &tab=ctc (its form posts back to the same URL).
 		$tabs = array(
 			'ai'  => __( 'AI Chat', 'social-icons-widget-by-wpzoom' ),
 			'ctc' => __( 'Click to Chat', 'social-icons-widget-by-wpzoom' ),
 		);
 		$tabs = apply_filters( 'wpzoom_chat_admin_tabs', $tabs );
-		$default_tab = ( ! empty( $s['enabled'] ) && ! apply_filters( 'wpzoom_ai_chat_is_connected', false ) ) ? 'ctc' : 'ai';
+		$default_tab = 'ai';
 		$tab = isset( $_GET['tab'] ) ? sanitize_key( wp_unslash( $_GET['tab'] ) ) : $default_tab; // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- navigation only.
 		if ( ! isset( $tabs[ $tab ] ) ) {
 			$tab = $default_tab;
@@ -276,7 +277,7 @@ class WPZOOM_Click_To_Chat {
 
 			<?php echo $notice; // phpcs:ignore -- escaped above ?>
 
-			<form method="post" action="">
+			<form method="post" action="<?php echo esc_url( add_query_arg( 'tab', 'ctc', $base_url ) ); ?>">
 				<?php wp_nonce_field( 'wpzoom_ctc_save' ); ?>
 
 				<!-- Enable toggle -->
