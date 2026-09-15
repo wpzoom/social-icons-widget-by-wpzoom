@@ -1,0 +1,497 @@
+/* AI Chat tab of the Chat screen (builds on .wpzoom-ctc-card). */
+.wpzoom-chat-tabs {
+	margin: 12px 0 20px;
+}
+.wpzoom-chat-tabs .nav-tab {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+}
+.wpzoom-chat-tab-badge {
+	font-size: 10px;
+	font-weight: 700;
+	line-height: 1;
+	text-transform: uppercase;
+	letter-spacing: 0.04em;
+	padding: 4px 6px;
+	border-radius: 999px;
+	background: #ff5a1f;
+	color: #fff;
+}
+.wpzoom-ai-chat-card {
+	margin: 0 0 20px;
+	padding: 24px 28px;
+	max-width: 960px;
+}
+.wpzoom-ai-chat-flash {
+	max-width: 960px;
+	margin: 0 0 16px;
+}
+.wpzoom-ai-chat-head {
+	display: flex;
+	gap: 16px;
+	align-items: flex-start;
+}
+.wpzoom-ai-chat-logo {
+	flex: 0 0 auto;
+	display: grid;
+	place-items: center;
+	width: 44px;
+	height: 44px;
+	border-radius: 11px;
+	background: #fe551b;
+	color: #fff;
+}
+.wpzoom-ai-chat-logo svg {
+	width: 26px;
+	height: 26px;
+}
+.wpzoom-ai-chat-title h2 {
+	margin: 0 0 4px;
+	font-size: 18px;
+	display: flex;
+	align-items: center;
+	gap: 8px;
+}
+.wpzoom-ai-chat-title p {
+	margin: 0;
+	color: #50575e;
+	max-width: 70ch;
+	line-height: 1.55;
+}
+.wpzoom-ai-chat-badge {
+	font-size: 11px;
+	font-weight: 600;
+	text-transform: uppercase;
+	letter-spacing: 0.04em;
+	padding: 2px 8px;
+	border-radius: 999px;
+	background: #e6f7ee;
+	color: #0f6e43;
+}
+.wpzoom-ai-chat-cta {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 16px;
+	align-items: center;
+	justify-content: space-between;
+	margin: 20px 0 0;
+	padding: 16px 18px;
+	border: 1px solid #dcdcde;
+	border-radius: 6px;
+	background: #f6f7f7;
+}
+.wpzoom-ai-chat-cta-text {
+	flex: 1 1 320px;
+	color: #50575e;
+}
+.wpzoom-ai-chat-cta-text strong {
+	display: block;
+	color: #1d2327;
+	margin-bottom: 2px;
+}
+.wpzoom-ai-chat-cta-actions {
+	display: flex;
+	gap: 8px;
+	align-items: center;
+}
+.wpzoom-ai-chat-inline-form {
+	display: inline;
+}
+.wpzoom-ai-chat-offer {
+	margin: 14px 0 0;
+	padding: 12px 14px;
+	border-radius: 6px;
+	background: #e6f7ee;
+	color: #0f6e43;
+	font-weight: 500;
+	display: flex;
+	gap: 8px;
+	align-items: flex-start;
+	line-height: 1.5;
+}
+.wpzoom-ai-chat-offer .dashicons {
+	margin-top: 1px;
+}
+.wpzoom-ai-chat-offer a {
+	color: #0f6e43;
+	font-weight: 600;
+}
+.wpzoom-ai-chat-title a {
+	color: #1d2327;
+	font-weight: 600;
+	text-decoration: underline;
+	text-underline-offset: 2px;
+}
+.wpzoom-ai-chat-note {
+	margin: 12px 0 0;
+	color: #646970;
+}
+.wpzoom-ai-chat-settings {
+	margin-top: 20px;
+	border-top: 1px solid #dcdcde;
+}
+.wpzoom-ai-chat-row {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 24px;
+	padding: 14px 0;
+	border-bottom: 1px solid #dcdcde;
+	cursor: pointer;
+	user-select: none;
+}
+.wpzoom-ai-chat-row-text {
+	display: flex;
+	flex-direction: column;
+	gap: 2px;
+	max-width: 70ch;
+}
+.wpzoom-ai-chat-row-title {
+	font-size: 14px;
+	font-weight: 600;
+	color: #1d2327;
+}
+.wpzoom-ai-chat-row-desc {
+	font-size: 13px;
+	color: #646970;
+}
+.wpzoom-ai-chat-actions {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 10px;
+	align-items: center;
+	margin-top: 18px;
+}
+.wpzoom-ai-chat-meta {
+	color: #646970;
+	font-size: 12px;
+	margin-left: 6px;
+}
+.wpzoom-ai-chat-foot {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 12px 24px;
+	align-items: center;
+	justify-content: space-between;
+	margin-top: 18px;
+	padding-top: 14px;
+	border-top: 1px solid #dcdcde;
+}
+.wpzoom-ai-chat-foot .wpzoom-ai-chat-note {
+	margin: 0;
+	flex: 1 1 420px;
+}
+.wpzoom-ai-chat-disconnect {
+	margin: 0;
+}
+.wpzoom-ai-chat-disconnect-link {
+	color: #b32d2e;
+	font-size: 13px;
+	text-decoration: none;
+}
+.wpzoom-ai-chat-disconnect-link:hover {
+	text-decoration: underline;
+}
+.wpzoom-ai-chat-notice p {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 10px;
+	align-items: center;
+}
+.wpzoom-ai-chat-notice-dismiss {
+	color: #646970;
+	text-decoration: none;
+}
+
+/* Scan report */
+.wpzoom-ai-chat-scan {
+	margin-top: 16px;
+	padding: 16px;
+	border: 1px solid #e5e7eb;
+	border-radius: 8px;
+	background: #fff;
+}
+.wpzoom-ai-chat-status {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	color: #50575e;
+}
+.wpzoom-ai-chat-status .spinner {
+	float: none;
+	margin: 0;
+}
+.wpzoom-ai-chat-scan-head {
+	display: flex;
+	gap: 16px;
+	align-items: center;
+	margin-bottom: 14px;
+}
+.wpzoom-ai-chat-ring {
+	--pct: 0;
+	flex: 0 0 auto;
+	width: 64px;
+	height: 64px;
+	border-radius: 50%;
+	display: grid;
+	place-items: center;
+	background: conic-gradient( var( --ring ) calc( var( --pct ) * 1% ), #e5e7eb 0 );
+	position: relative;
+}
+.wpzoom-ai-chat-ring::before {
+	content: '';
+	position: absolute;
+	inset: 7px;
+	border-radius: 50%;
+	background: #fff;
+}
+.wpzoom-ai-chat-ring strong {
+	position: relative;
+	font-size: 14px;
+}
+.wpzoom-ai-chat-ring--good { --ring: #22bb66; }
+.wpzoom-ai-chat-ring--ok   { --ring: #f59e0b; }
+.wpzoom-ai-chat-ring--low  { --ring: #ef4444; }
+.wpzoom-ai-chat-scan-headtext p {
+	margin: 4px 0;
+	color: #50575e;
+}
+.wpzoom-ai-chat-scan-stats {
+	font-size: 12px;
+	color: #646970;
+}
+.wpzoom-ai-chat-qa {
+	margin: 0;
+	padding-left: 20px;
+}
+.wpzoom-ai-chat-qa li {
+	margin-bottom: 12px;
+}
+.wpzoom-ai-chat-q {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+	align-items: center;
+}
+.wpzoom-ai-chat-a {
+	margin: 4px 0;
+	color: #3c434a;
+}
+.wpzoom-ai-chat-src {
+	font-size: 12px;
+	color: #646970;
+}
+.wpzoom-ai-chat-chip {
+	font-size: 11px;
+	font-weight: 600;
+	padding: 1px 7px;
+	border-radius: 999px;
+	background: #f0f0f1;
+	color: #3c434a;
+}
+.wpzoom-ai-chat-chip--presale   { background: #e6f7ee; color: #0f6e43; }
+.wpzoom-ai-chat-chip--howto     { background: #fef3c7; color: #92400e; }
+.wpzoom-ai-chat-chip--technical { background: #dbeafe; color: #1e40af; }
+.wpzoom-ai-chat-more {
+	margin: 8px 0 14px;
+	padding: 10px 12px;
+	border-radius: 6px;
+	background: #f6f7f7;
+	color: #50575e;
+}
+.wpzoom-ai-chat-scan h4 {
+	margin: 12px 0 6px;
+}
+.wpzoom-ai-chat-gaps {
+	margin: 0;
+	padding-left: 20px;
+}
+.wpzoom-ai-chat-gaps li {
+	margin-bottom: 8px;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 6px 8px;
+	align-items: center;
+}
+.wpzoom-ai-chat-why {
+	flex-basis: 100%;
+	color: #92400e;
+	font-size: 12px;
+}
+
+/* Why Yamidoo */
+.wpzoom-ai-chat-why {
+	margin-top: 28px;
+	padding-top: 22px;
+	border-top: 1px solid #dcdcde;
+}
+.wpzoom-ai-chat-why h3 {
+	margin: 0 0 14px;
+	font-size: 15px;
+}
+.wpzoom-ai-chat-shots {
+	display: grid;
+	grid-template-columns: repeat( auto-fit, minmax( 240px, 1fr ) );
+	gap: 18px;
+	margin-bottom: 22px;
+}
+.wpzoom-ai-chat-shots figure {
+	margin: 0;
+}
+.wpzoom-ai-chat-shots img {
+	display: block;
+	width: 100%;
+	height: auto;
+	border: 1px solid #dcdcde;
+	border-radius: 8px;
+	box-shadow: 0 1px 2px rgba( 16, 22, 29, 0.06 );
+}
+.wpzoom-ai-chat-shots figcaption {
+	margin-top: 8px;
+	font-size: 13px;
+	color: #50575e;
+	line-height: 1.5;
+}
+.wpzoom-ai-chat-shots figcaption strong {
+	color: #1d2327;
+	margin-right: 4px;
+}
+.wpzoom-ai-chat-reasons {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	display: grid;
+	grid-template-columns: repeat( auto-fit, minmax( 280px, 1fr ) );
+	gap: 14px 24px;
+}
+.wpzoom-ai-chat-reasons li {
+	display: flex;
+	gap: 10px;
+	align-items: flex-start;
+	margin: 0;
+	font-size: 13px;
+	color: #50575e;
+	line-height: 1.5;
+}
+.wpzoom-ai-chat-reasons .dashicons {
+	flex: 0 0 auto;
+	margin-top: 1px;
+	color: #fe551b;
+}
+.wpzoom-ai-chat-reasons strong {
+	display: block;
+	color: #1d2327;
+}
+.wpzoom-ai-chat-why-more {
+	margin: 16px 0 0;
+	font-size: 13px;
+}
+
+/* Live in three steps */
+.wpzoom-ai-chat-steps {
+	margin-top: 28px;
+	padding-top: 22px;
+	border-top: 1px solid #dcdcde;
+}
+.wpzoom-ai-chat-steps h3 {
+	margin: 0 0 14px;
+	font-size: 15px;
+}
+.wpzoom-ai-chat-steps ol {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	display: grid;
+	grid-template-columns: repeat( auto-fit, minmax( 240px, 1fr ) );
+	gap: 14px;
+}
+.wpzoom-ai-chat-steps li {
+	display: flex;
+	gap: 12px;
+	align-items: flex-start;
+	margin: 0;
+	padding: 14px 16px;
+	border: 1px solid #dcdcde;
+	border-radius: 8px;
+	background: #f6f7f7;
+	font-size: 13px;
+	color: #50575e;
+	line-height: 1.5;
+}
+.wpzoom-ai-chat-step-n {
+	flex: 0 0 auto;
+	width: 26px;
+	height: 26px;
+	border-radius: 50%;
+	display: grid;
+	place-items: center;
+	background: #1d2327;
+	color: #fff;
+	font-size: 13px;
+	font-weight: 600;
+}
+.wpzoom-ai-chat-steps strong {
+	display: block;
+	color: #1d2327;
+	font-size: 14px;
+}
+
+/* Who it's for */
+.wpzoom-ai-chat-niches {
+	margin-top: 28px;
+	padding-top: 22px;
+	border-top: 1px solid #dcdcde;
+}
+.wpzoom-ai-chat-niches h3 {
+	margin: 0 0 4px;
+	font-size: 15px;
+}
+.wpzoom-ai-chat-niches-intro {
+	margin: 0 0 14px;
+	color: #646970;
+}
+.wpzoom-ai-chat-niche-grid {
+	display: grid;
+	grid-template-columns: repeat( auto-fit, minmax( 280px, 1fr ) );
+	gap: 14px;
+}
+.wpzoom-ai-chat-niche {
+	padding: 14px 16px;
+	border: 1px solid #dcdcde;
+	border-radius: 8px;
+	background: #fff;
+}
+.wpzoom-ai-chat-niche-head {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	margin-bottom: 8px;
+	font-size: 14px;
+	color: #1d2327;
+}
+.wpzoom-ai-chat-niche-head .dashicons {
+	color: #fe551b;
+}
+.wpzoom-ai-chat-niche ul {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+.wpzoom-ai-chat-niche li {
+	display: flex;
+	gap: 6px;
+	align-items: flex-start;
+	margin: 0 0 6px;
+	font-size: 13px;
+	line-height: 1.45;
+	color: #50575e;
+}
+.wpzoom-ai-chat-niche li .dashicons {
+	flex: 0 0 auto;
+	font-size: 16px;
+	width: 16px;
+	height: 16px;
+	margin-top: 1px;
+	color: #22bb66;
+}

@@ -1,21 +1,33 @@
-=== WPZOOM Connect: Social Icons Widget, Share Buttons & Click to Chat ===
+=== WPZOOM Connect: AI Chat, Click to Chat, Social Icons & Share Buttons ===
 Contributors: WPZOOM, ciorici
 Donate link: https://www.wpzoom.com/
-Tags: social icons, share buttons, click to chat, whatsapp, social sharing
+Tags: ai chatbot, live chat, click to chat, whatsapp, social icons
 Requires at least: 6.5
 Requires PHP: 7.4
 Tested up to: 7.1
-Stable tag: 4.6.3
+Stable tag: 4.7.0
 License: GNU General Public License v2.0 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Social icons, share buttons & a floating Click to Chat button for WhatsApp, Telegram, Messenger & Viber. Gutenberg block, widget & Elementor.
+AI chat that answers visitors from your own pages, Click to Chat for WhatsApp & Telegram, social icons & share buttons — one floating button.
 
 == Description ==
 
-= Social Media Icons & Share Buttons for WordPress =
+= The contact launcher for WordPress =
 
-**The best social icons plugin for WordPress.** Add beautiful social media icons and share buttons anywhere on your site. 400+ icons, Gutenberg block, widget, Elementor support - all in one plugin.
+**One floating button, every channel.** WPZOOM Connect gives your site a chat button that can answer visitors itself — an **AI chat** that replies from your own pages in seconds and hands off to a human when needed — alongside **Click to Chat** for WhatsApp, Telegram, Messenger and Viber, **social icons** linking to your profiles, and **share buttons** for your content. 400+ icons, Gutenberg blocks, a widget and Elementor support, all in one plugin.
+
+= NEW: AI Chat — your chat button answers questions itself =
+
+Turn the floating Click to Chat button into a support agent. AI Chat reads your pages and docs and answers visitors' questions instantly — pricing, how-to, shipping, compatibility — 24/7, in your visitors' language, and hands the conversation to you (or to WhatsApp) when a human is needed.
+
+* **See it before you switch it on.** The built-in *Support Readiness Scan* reads a few of your pages right from wp-admin and shows the questions your visitors are likely to ask, answered from your content — and the ones your site doesn't answer yet. Nothing is installed or sent until you click.
+* **One-click connect.** No API keys, no code: click *Turn on AI Chat*, create a free account (or sign in) and the chat is live on your site. Indexing starts automatically.
+* **Human handoff.** Visitors can ask for a person; you reply from the Yamidoo dashboard, by email, or point them to WhatsApp.
+* **Knows your logged-in users.** Optionally passes the logged-in user's name and email so your team knows who is chatting.
+* **Free plan included**, and a WordPress founding offer: 50% off any paid plan for your first year when you connect from this plugin.
+
+AI Chat is powered by **[Yamidoo](https://yamidoo.ai/)**, a WPZOOM product. Everything you already use — social icons, share buttons, Click to Chat — keeps working exactly as before; AI Chat is optional and off until you connect.
 
 > Did you find this plugin helpful? Please consider [leaving a 5-star review](http://wordpress.org/support/view/plugin-reviews/social-icons-widget-by-wpzoom).
 
@@ -29,6 +41,10 @@ It also includes a **Click to Chat** floating contact button so visitors can mes
 > With the help of WPZOOM's excellent Social Icons Widget plugin, you can link to all your social network profiles and add sharing buttons in no time, letting your visitors easily get in touch with you on all social media channels and share your content.
 > ⭐️⭐️⭐️⭐️⭐️
 > WPKlik
+
+= What's new in 4.7.0 =
+* **NEW: AI Chat** — the floating button can now answer visitors from your own pages (powered by Yamidoo)
+* **NEW: Support Readiness Scan** — see what your visitors would ask, from wp-admin, before turning anything on
 
 = What's new in 4.6.0 =
 * **NEW: Click to Chat Floating Buttons**
@@ -118,6 +134,16 @@ Some Social Icons are provided by the Socicon icon font.
 
 [Academicons](https://jpswalsh.github.io/academicons/) are provided by James Walsh.
 
+= External services (AI Chat) =
+
+The optional **AI Chat** feature connects your site to **Yamidoo** (https://yamidoo.ai/), a hosted service operated by WPZOOM BV. Nothing is sent to Yamidoo until you click *Scan my site* or *Turn on AI Chat* in the plugin settings.
+
+* *Scan my site* sends your site's public URL to `https://app.yamidoo.ai/api/scan`, which reads up to 14 of your public pages and returns a report shown in wp-admin.
+* *Turn on AI Chat* opens `https://app.yamidoo.ai` to create or sign in to your Yamidoo account and connect this site; your site URL is shared so Yamidoo can index your public pages.
+* Once connected, the front end loads the chat widget (`widget.js`) from `https://app.yamidoo.ai`. When a visitor uses the chat, their messages, an anonymous session id, the page URL and basic browser data are sent to Yamidoo. If "identify logged-in users" is on, the logged-in user's name, email, username and user id are sent too.
+
+[Terms of Service](https://yamidoo.ai/terms/) · [Privacy Policy](https://yamidoo.ai/privacy/)
+
 = GDPR COMPLIANCE =
 
 Social Icons & Sharing Buttons does not collect any information from your visitors, therefore it's **100% GDPR compliant**.
@@ -159,6 +185,14 @@ Yes! The Social Sharing Buttons Block offers multiple style presets (Circle, Squ
 = What sharing platforms are supported? =
 
 The plugin supports 12+ sharing platforms: Facebook, X (Twitter), Threads, LinkedIn, Pinterest, Reddit, Telegram, WhatsApp, Bluesky, Email, Copy Link, and Print.
+
+= What is AI Chat and does it cost anything? =
+
+AI Chat turns the floating chat button into an assistant that answers visitors from your own pages, and hands off to you when needed. It's powered by Yamidoo (a WPZOOM product) and needs a Yamidoo account; the free plan needs no card, and connecting from this plugin gives you 50% off any paid plan for the first year. It's off until you connect — nothing changes on your site otherwise.
+
+= Does AI Chat replace my WhatsApp button? =
+
+By default, yes: while AI Chat is on, the WhatsApp/Telegram/Messenger/Viber launcher is hidden so there's one floating button, not two. You can keep both from the AI Chat settings.
 
 = How do I add a Click to Chat button for WhatsApp? =
 
@@ -223,6 +257,13 @@ Floating Buttons is a PRO feature that displays your social sharing icons as a f
 10. Social Sharing Buttons - No Label Style
 
 == Changelog ==
+
+= 4.7.0 =
+* NEW: AI Chat — the floating chat button can now answer visitors itself, from your own pages, and hand off to a human when needed (powered by Yamidoo, a WPZOOM product). Optional and off until you connect.
+* NEW: Support Readiness Scan in the Click to Chat settings — see the questions your visitors are likely to ask, answered from your content, before turning anything on
+* NEW: One-click connect to Yamidoo (no API keys), with a WordPress founding offer applied automatically
+* Click to Chat: the launcher steps aside while AI Chat is on (configurable)
+* Everything you had — social icons, share buttons, Click to Chat — works exactly as before
 
 = 4.6.3 =
 * Fixed Font Size, Line Height and spacing options not working in the Social Sharing Buttons block

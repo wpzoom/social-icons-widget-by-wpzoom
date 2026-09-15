@@ -1,9 +1,9 @@
 <?php
 /**
- * Plugin Name:         Social Icons, Share Buttons & Click to Chat by WPZOOM
+ * Plugin Name:         WPZOOM Connect: AI Chat, Click to Chat, Social Icons & Share Buttons
  * Plugin URI:          https://www.wpzoom.com/plugins/social-share/
- * Description:         Add social icons, share buttons, and a floating Click to Chat button to your website. Link to your social profiles, let visitors share your content, and connect instantly via WhatsApp, Telegram, Messenger, and Viber. Supports 400+ icons, customizable colors, and drag-and-drop sorting.
- * Version:             4.6.3
+ * Description:         One floating button for every way visitors reach you: an AI chat that answers from your own pages (powered by Yamidoo), Click to Chat for WhatsApp, Telegram, Messenger and Viber, plus social icons and share buttons. 400+ icons, Gutenberg block, widget and Elementor.
+ * Version:             4.7.0
  * Author:              WPZOOM
  * Author URI:          https://www.wpzoom.com/
  * Text Domain:         social-icons-widget-by-wpzoom
@@ -46,6 +46,7 @@ require_once plugin_dir_path( __FILE__ ) . 'includes/classes/class-wpzoom-social
 require_once plugin_dir_path( __FILE__ ) . 'includes/classes/class-wpzoom-share-analytics-upsell.php';
 require_once plugin_dir_path( __FILE__ ) . 'includes/classes/class-wpzoom-floating-buttons-upsell.php';
 require_once plugin_dir_path( __FILE__ ) . 'includes/classes/class-wpzoom-click-to-chat.php';
+require_once plugin_dir_path( __FILE__ ) . 'includes/classes/class-wpzoom-ai-chat.php';
 
 // WPZOOM Notice Center (submodule at includes/notice-center).
 $wpz_notice_center_path = WPZOOM_SOCIAL_ICONS_PLUGIN_PATH . 'includes/notice-center/';
@@ -58,8 +59,6 @@ if ( is_admin() && ! class_exists( 'WPZOOM_Notice_Center' ) && file_exists( $wpz
 	) );
 }
 
-require_once plugin_dir_path( __FILE__ ) . 'includes/classes/class-wpzoom-sharing-buttons-notice.php';
-require_once plugin_dir_path( __FILE__ ) . 'includes/classes/class-wpzoom-click-to-chat-notice.php';
 require_once plugin_dir_path( __FILE__ ) . 'includes/classes/class-wpzoom-social-icons-upsell.php';
 
 /**
