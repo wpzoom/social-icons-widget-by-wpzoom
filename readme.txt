@@ -263,7 +263,6 @@ Floating Buttons is a PRO feature that displays your social sharing icons as a f
 * NEW: Support Readiness Scan in the Click to Chat settings — see the questions your visitors are likely to ask, answered from your content, before turning anything on
 * NEW: One-click connect to Yamidoo (no API keys), with a WordPress founding offer applied automatically
 * Click to Chat: the launcher steps aside while AI Chat is on (configurable)
-* Everything you had — social icons, share buttons, Click to Chat — works exactly as before
 
 = 4.6.3 =
 * Fixed Font Size, Line Height and spacing options not working in the Social Sharing Buttons block
