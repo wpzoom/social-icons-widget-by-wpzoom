@@ -3,7 +3,7 @@
  * Plugin Name:         WPZOOM Connect: AI Chat, Click to Chat, Social Icons & Share Buttons
  * Plugin URI:          https://www.wpzoom.com/plugins/social-share/
  * Description:         One floating button for every way visitors reach you: an AI chat that answers from your own pages (powered by Yamidoo), Click to Chat for WhatsApp, Telegram, Messenger and Viber, plus social icons and share buttons. 400+ icons, Gutenberg block, widget and Elementor.
- * Version:             4.7.0
+ * Version:             4.7.1
  * Author:              WPZOOM
  * Author URI:          https://www.wpzoom.com/
  * Text Domain:         social-icons-widget-by-wpzoom
@@ -45,6 +45,7 @@ require_once plugin_dir_path( __FILE__ ) . 'includes/classes/class-zoom-social-i
 require_once plugin_dir_path( __FILE__ ) . 'includes/classes/class-wpzoom-social-icons-shortcode.php';
 require_once plugin_dir_path( __FILE__ ) . 'includes/classes/class-wpzoom-click-to-chat.php';
 require_once plugin_dir_path( __FILE__ ) . 'includes/classes/class-wpzoom-ai-chat.php';
+require_once plugin_dir_path( __FILE__ ) . 'includes/classes/class-wpzoom-ai-chat-customer.php';
 
 // WPZOOM Notice Center (submodule at includes/notice-center).
 $wpz_notice_center_path = WPZOOM_SOCIAL_ICONS_PLUGIN_PATH . 'includes/notice-center/';

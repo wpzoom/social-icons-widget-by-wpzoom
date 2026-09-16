@@ -5,7 +5,7 @@ Tags: ai chatbot, live chat, click to chat, whatsapp, social icons
 Requires at least: 6.5
 Requires PHP: 7.4
 Tested up to: 7.1
-Stable tag: 4.7.0
+Stable tag: 4.7.1
 License: GNU General Public License v2.0 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -24,8 +24,9 @@ Turn the floating Click to Chat button into a support agent. AI Chat reads your 
 * **See it before you switch it on.** The built-in *Support Readiness Scan* reads a few of your pages right from wp-admin and shows the questions your visitors are likely to ask, answered from your content — and the ones your site doesn't answer yet. Nothing is installed or sent until you click.
 * **One-click connect.** No API keys, no code: click *Turn on AI Chat*, create a free account (or sign in) and the chat is live on your site. Indexing starts automatically.
 * **Human handoff.** Visitors can ask for a person; you reply from the Yamidoo dashboard, by email, or point them to WhatsApp.
+* **Knows your customers.** Running Easy Digital Downloads or WooCommerce? Your team sees a customer's orders, licenses and subscriptions next to their conversation. Optionally, the AI can answer logged-in customers' account questions ("when does my license expire?") — a separate switch in the dashboard, off by default. Only your own workspace can request it, one customer at a time, when needed — nothing is uploaded or stored.
 * **Knows your logged-in users.** Optionally passes the logged-in user's name and email so your team knows who is chatting.
-* **Free plan included**, and a WordPress founding offer: 50% off any paid plan for your first year when you connect from this plugin.
+* **Free plan included** — no card needed to start.
 
 AI Chat is powered by **[Yamidoo](https://yamidoo.ai/)**, a WPZOOM product. Everything you already use — social icons, share buttons, Click to Chat — keeps working exactly as before; AI Chat is optional and off until you connect.
 
@@ -139,8 +140,9 @@ Some Social Icons are provided by the Socicon icon font.
 The optional **AI Chat** feature connects your site to **Yamidoo** (https://yamidoo.ai/), a hosted service operated by WPZOOM BV. Nothing is sent to Yamidoo until you click *Scan my site* or *Turn on AI Chat* in the plugin settings.
 
 * *Scan my site* sends your site's public URL to `https://app.yamidoo.ai/api/scan`, which reads up to 14 of your public pages and returns a report shown in wp-admin.
-* *Turn on AI Chat* opens `https://app.yamidoo.ai` to create or sign in to your Yamidoo account and connect this site; your site URL is shared so Yamidoo can index your public pages.
+* *Turn on AI Chat* opens `https://app.yamidoo.ai` to create or sign in to your Yamidoo account and connect this site; your site URL is shared so Yamidoo can index your public pages, and your WordPress email and name are passed along to prefill the sign-up form.
 * Once connected, the front end loads the chat widget (`widget.js`) from `https://app.yamidoo.ai`. When a visitor uses the chat, their messages, an anonymous session id, the page URL and basic browser data are sent to Yamidoo. If "identify logged-in users" is on, the logged-in user's name, email, username and user id are sent too.
+* If customer lookup is on (offered only when Easy Digital Downloads or WooCommerce is active): when your team opens a conversation, or the AI answers a logged-in customer, your Yamidoo workspace requests that one email's record from this site (`/wp-json/yamidoo/v1/customer`) — customer, orders, licenses and subscriptions. Each request is signed with a per-site secret; the record is shown to your team and used for that answer, then discarded.
 
 [Terms of Service](https://yamidoo.ai/terms/) · [Privacy Policy](https://yamidoo.ai/privacy/)
 
@@ -188,7 +190,11 @@ The plugin supports 12+ sharing platforms: Facebook, X (Twitter), Threads, Linke
 
 = What is AI Chat and does it cost anything? =
 
-AI Chat turns the floating chat button into an assistant that answers visitors from your own pages, and hands off to you when needed. It's powered by Yamidoo (a WPZOOM product) and needs a Yamidoo account; the free plan needs no card, and connecting from this plugin gives you 50% off any paid plan for the first year. It's off until you connect — nothing changes on your site otherwise.
+AI Chat turns the floating chat button into an assistant that answers visitors from your own pages, and hands off to you when needed. It's powered by Yamidoo (a WPZOOM product) and needs a Yamidoo account; the free plan needs no card. It's off until you connect — nothing changes on your site otherwise.
+
+= Can the AI see my customers' orders and licenses? =
+
+If you run Easy Digital Downloads or WooCommerce, yes — turn on *Show customer data in my Yamidoo inbox* in the AI Chat tab. Only your own workspace can request it, not Yamidoo the company or anyone else. Your team sees the customer's record next to the conversation. The AI does not see it unless you turn on *Let the AI answer account questions* in the dashboard, and then only for visitors who are logged in to your site (the plugin signs their identity, so nobody can ask about someone else's orders). Your workspace fetches the record from your site when needed and does not store it. Developers can add data from other plugins with the `wpzoom_ai_chat_customer_sections` filter.
 
 = Does AI Chat replace my WhatsApp button? =
 
@@ -258,11 +264,15 @@ Floating Buttons is a PRO feature that displays your social sharing icons as a f
 
 == Changelog ==
 
+= 4.7.1 =
+* NEW: Customer data for Easy Digital Downloads and WooCommerce — orders, licenses and subscriptions next to the conversation, and account answers for logged-in customers
+* AI Chat credentials are encrypted in the database; suggested privacy policy text under Settings → Privacy
+
 = 4.7.0 =
 * NEW: AI Chat — the floating chat button can now answer visitors itself, from your own pages, and hand off to a human when needed (powered by Yamidoo, a WPZOOM product). Optional and off until you connect.
 * NEW: Support Readiness Scan in the Click to Chat settings — see the questions your visitors are likely to ask, answered from your content, before turning anything on
-* NEW: One-click connect to Yamidoo (no API keys), with a WordPress founding offer applied automatically
 * Click to Chat: the launcher steps aside while AI Chat is on (configurable)
+* NEW: One-click connect to Yamidoo (no API keys)
 
 = 4.6.3 =
 * Fixed Font Size, Line Height and spacing options not working in the Social Sharing Buttons block

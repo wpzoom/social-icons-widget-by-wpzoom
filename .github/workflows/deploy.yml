@@ -8,7 +8,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
+      with:
+        # includes/notice-center is a git submodule; without this the release
+        # ships an empty folder and wp-admin falls back to the plain notice.
+        submodules: recursive
     - name: WordPress Plugin Deploy
       id: deploy
       uses: 10up/action-wordpress-plugin-deploy@stable

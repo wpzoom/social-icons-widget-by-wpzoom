@@ -43,6 +43,10 @@ class WPZOOM_AI_Chat {
 		'identify_logged_in' => true,
 		'hide_click_to_chat' => true,
 		'connected_at'       => 0,
+		/** Secret Yamidoo uses to sign customer-data lookups (and we use to sign identify()). */
+		'lookup_secret'      => '',
+		/** Serve orders/licenses/subscriptions for the visitor's email to Yamidoo. */
+		'share_customer_data' => true,
 	);
 
 	public static function get_instance() {
@@ -66,6 +70,7 @@ class WPZOOM_AI_Chat {
 		add_action( 'admin_head', array( $this, 'menu_badge_css' ) );
 		add_action( 'admin_menu', array( $this, 'reorder_submenu' ), 99 );
 		add_action( 'admin_init', array( $this, 'canonical_redirect' ) );
+		add_action( 'admin_init', array( $this, 'privacy_policy_content' ) );
 		add_filter( 'wpzoom_notice_center_notices', array( $this, 'register_notice_center' ) );
 
 		// The Click to Chat launcher steps aside while AI Chat is on.
@@ -92,12 +97,80 @@ class WPZOOM_AI_Chat {
 	// Settings
 	// -------------------------------------------------------------------------
 
+	/** Settings encrypted at rest (see encrypt_secret()). */
+	const SECRET_KEYS = array( 'token', 'lookup_secret' );
+
 	public static function get_settings() {
 		$saved = get_option( self::OPTION_KEY, array() );
 		if ( ! is_array( $saved ) ) {
 			$saved = array();
 		}
-		return wp_parse_args( $saved, self::$defaults );
+		$saved = wp_parse_args( $saved, self::$defaults );
+		foreach ( self::SECRET_KEYS as $key ) {
+			$saved[ $key ] = self::decrypt_secret( $saved[ $key ] );
+		}
+		return $saved;
+	}
+
+	/** The only writer: secrets are encrypted before they reach the options table. */
+	public static function save_settings( $settings ) {
+		foreach ( self::SECRET_KEYS as $key ) {
+			if ( isset( $settings[ $key ] ) ) {
+				$settings[ $key ] = self::encrypt_secret( $settings[ $key ] );
+			}
+		}
+		return update_option( self::OPTION_KEY, $settings );
+	}
+
+	// -------------------------------------------------------------------------
+	// Secrets at rest — libsodium secretbox keyed from this site's auth salt, so
+	// a database dump alone does not reveal the connect token or lookup secret.
+	// Plain values from older versions read fine and are re-encrypted on save.
+	// -------------------------------------------------------------------------
+
+	const SECRET_PREFIX = 'v1:';
+
+	private static function sodium_available() {
+		return function_exists( 'sodium_crypto_secretbox' ) && function_exists( 'sodium_crypto_secretbox_open' )
+			&& defined( 'SODIUM_CRYPTO_SECRETBOX_NONCEBYTES' ) && defined( 'SODIUM_CRYPTO_SECRETBOX_MACBYTES' );
+	}
+
+	private static function secret_key() {
+		return hash( 'sha256', wp_salt( 'auth' ) . '|wpzoom-ai-chat', true );
+	}
+
+	public static function encrypt_secret( $plaintext ) {
+		$plaintext = (string) $plaintext;
+		if ( '' === $plaintext || 0 === strpos( $plaintext, self::SECRET_PREFIX ) || ! self::sodium_available() ) {
+			return $plaintext;
+		}
+		try {
+			$nonce = random_bytes( SODIUM_CRYPTO_SECRETBOX_NONCEBYTES );
+			$box   = sodium_crypto_secretbox( $plaintext, $nonce, self::secret_key() );
+		} catch ( Throwable $e ) {
+			return $plaintext;
+		}
+		return self::SECRET_PREFIX . base64_encode( $nonce . $box ); // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode
+	}
+
+	public static function decrypt_secret( $stored ) {
+		$stored = (string) $stored;
+		if ( 0 !== strpos( $stored, self::SECRET_PREFIX ) ) {
+			return $stored;
+		}
+		if ( ! self::sodium_available() ) {
+			return '';
+		}
+		$raw = base64_decode( substr( $stored, strlen( self::SECRET_PREFIX ) ), true ); // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_decode
+		if ( false === $raw || strlen( $raw ) < SODIUM_CRYPTO_SECRETBOX_NONCEBYTES + SODIUM_CRYPTO_SECRETBOX_MACBYTES ) {
+			return '';
+		}
+		try {
+			$plain = sodium_crypto_secretbox_open( substr( $raw, SODIUM_CRYPTO_SECRETBOX_NONCEBYTES ), substr( $raw, 0, SODIUM_CRYPTO_SECRETBOX_NONCEBYTES ), self::secret_key() );
+		} catch ( Throwable $e ) {
+			return '';
+		}
+		return false === $plain ? '' : $plain;
 	}
 
 	/** App origin. Filterable so a staging app can be used: add_filter( 'wpzoom_ai_chat_app_url', … ). */
@@ -149,12 +222,21 @@ class WPZOOM_AI_Chat {
 		$state = wp_generate_password( 24, false, false );
 		set_transient( self::STATE_TRANSIENT, $state, 15 * MINUTE_IN_SECONDS );
 
+		// Email and name prefill the sign-up form in the app.
+		$user = wp_get_current_user();
+		$name = trim( $user->first_name . ' ' . $user->last_name );
+		if ( '' === $name ) {
+			$name = html_entity_decode( $user->display_name, ENT_QUOTES, 'UTF-8' );
+		}
 		$return = self::settings_url();
 		$url    = add_query_arg(
 			array(
 				'site'   => rawurlencode( home_url( '/' ) ),
 				'return' => rawurlencode( $return ),
 				'state'  => $state,
+				'plugin' => 'wpzoom-connect',
+				'email'  => rawurlencode( $user->user_email ),
+				'name'   => rawurlencode( $name ),
 			),
 			self::app_url() . '/connect/wordpress'
 		);
@@ -165,6 +247,11 @@ class WPZOOM_AI_Chat {
 	/** Back from the app with ?yamidoo_site_id=…&yamidoo_token=…&yamidoo_state=… */
 	public function handle_connect_return() {
 		if ( empty( $_GET['yamidoo_site_id'] ) || empty( $_GET['yamidoo_token'] ) || empty( $_GET['yamidoo_state'] ) ) {
+			return;
+		}
+		// Only a return to our own screen — the standalone Yamidoo plugin uses the
+		// same parameters on Settings → Yamidoo.
+		if ( empty( $_GET['page'] ) || self::PAGE_SLUG !== $_GET['page'] ) {
 			return;
 		}
 		if ( ! current_user_can( 'manage_options' ) ) {
@@ -188,12 +275,30 @@ class WPZOOM_AI_Chat {
 		$s['token']        = $token;
 		$s['enabled']      = true;
 		$s['connected_at'] = time();
-		update_option( self::OPTION_KEY, $s );
+		if ( ! empty( $_GET['yamidoo_lookup_secret'] ) ) {
+			$secret = sanitize_text_field( wp_unslash( $_GET['yamidoo_lookup_secret'] ) );
+			if ( 0 === strpos( $secret, 'ycl_' ) ) {
+				$s['lookup_secret'] = $secret;
+			}
+		}
+		self::save_settings( $s );
 		// The one-time notice has done its job.
 		update_option( self::NOTICE_DISMISSED, 1 );
 
 		wp_safe_redirect( add_query_arg( 'ai_chat', 'connected', $clean ) );
 		exit;
+	}
+
+	/** Suggested text for the site's privacy policy (Settings → Privacy → Guide). */
+	public function privacy_policy_content() {
+		if ( ! function_exists( 'wp_add_privacy_policy_content' ) ) {
+			return;
+		}
+		$content  = '<p class="privacy-policy-tutorial">' . esc_html__( 'Suggested text if you use AI Chat; adjust to match your setup.', 'social-icons-widget-by-wpzoom' ) . '</p>';
+		$content .= '<p>' . esc_html__( 'This site uses Yamidoo (yamidoo.ai) to provide a support chat. When you use the chat, your messages, an anonymous session identifier, the page you are on, basic browser information and any files you choose to upload are sent to Yamidoo so that our team and its AI assistant can answer you. If you are logged in, your name and email address may be shared so that we know who we are talking to.', 'social-icons-widget-by-wpzoom' ) . '</p>';
+		$content .= '<p>' . esc_html__( 'If you have an account or have made purchases on this site, our support team may look up your orders, licenses and subscriptions while helping you, and the AI assistant may use them to answer questions about your own account when you are logged in. This information is retrieved from this site when needed and is not stored by Yamidoo.', 'social-icons-widget-by-wpzoom' ) . '</p>';
+		$content .= '<p>' . esc_html__( 'Please do not share passwords, payment details or other sensitive information in the chat. Yamidoo processes this data on our behalf under its privacy policy at https://yamidoo.ai/privacy/.', 'social-icons-widget-by-wpzoom' ) . '</p>';
+		wp_add_privacy_policy_content( __( 'AI Chat (Yamidoo)', 'social-icons-widget-by-wpzoom' ), $content );
 	}
 
 	public function handle_disconnect() {
@@ -215,7 +320,8 @@ class WPZOOM_AI_Chat {
 		$s['enabled']            = ! empty( $_POST['ai_enabled'] );
 		$s['identify_logged_in'] = ! empty( $_POST['ai_identify'] );
 		$s['hide_click_to_chat'] = ! empty( $_POST['ai_hide_ctc'] );
-		update_option( self::OPTION_KEY, $s );
+		$s['share_customer_data'] = ! empty( $_POST['ai_share_customer'] );
+		self::save_settings( $s );
 		wp_safe_redirect( add_query_arg( 'ai_chat', 'saved', self::settings_url() ) );
 		exit;
 	}
@@ -225,6 +331,16 @@ class WPZOOM_AI_Chat {
 	// -------------------------------------------------------------------------
 
 	public function enqueue_admin_assets( $hook ) {
+		// The fallback update notice (no Notice Center) renders on these screens.
+		if ( in_array( $hook, array( 'index.php', 'plugins.php' ), true ) && $this->should_render_update_notice() ) {
+			wp_enqueue_style(
+				'wpzoom-ai-chat-admin',
+				WPZOOM_SOCIAL_ICONS_PLUGIN_URL . 'assets/css/wpzoom-ai-chat-admin.css',
+				array(),
+				WPZOOM_SOCIAL_ICONS_PLUGIN_VERSION
+			);
+			return;
+		}
 		if ( 'wpzoom-shortcode_page_' . self::PAGE_SLUG !== $hook ) {
 			return;
 		}
@@ -369,6 +485,16 @@ class WPZOOM_AI_Chat {
 							'desc'  => __( 'One floating button instead of two. Turn off to show the WhatsApp/Telegram/Messenger buttons alongside the chat.', 'social-icons-widget-by-wpzoom' ),
 						),
 					);
+					$stores = class_exists( 'WPZOOM_AI_Chat_Customer' ) ? WPZOOM_AI_Chat_Customer::detected_stores() : array();
+					if ( $stores ) {
+						$rows[] = array(
+							'name'  => 'ai_share_customer',
+							'on'    => ! empty( $s['share_customer_data'] ),
+							/* translators: %s: store names, e.g. "Easy Digital Downloads" */
+							'title' => sprintf( __( 'Show %s customer data in my Yamidoo inbox', 'social-icons-widget-by-wpzoom' ), implode( ' & ', $stores ) ),
+							'desc'  => __( 'Your team sees a customer’s orders, licenses and subscriptions next to their conversation. Only your workspace can request it, one customer at a time, when needed — nothing is uploaded or stored. The AI is kept out unless you switch that on in the Yamidoo dashboard.', 'social-icons-widget-by-wpzoom' ),
+						);
+					}
 					foreach ( $rows as $row ) :
 						?>
 						<label class="wpzoom-ai-chat-row">
@@ -624,14 +750,23 @@ class WPZOOM_AI_Chat {
 	 * and only where the WPZOOM Notice Center isn't available (it carries the same
 	 * card, so showing both would be the double-nag we're avoiding).
 	 */
-	public function render_update_notice() {
+	/** Whether the plain (no Notice Center) update notice should show for this user. */
+	private function should_render_update_notice() {
 		if ( ! current_user_can( 'manage_options' ) || self::is_connected() || self::standalone_plugin_active() ) {
-			return;
+			return false;
 		}
 		if ( class_exists( 'WPZOOM_Notice_Center' ) ) {
-			return;
+			return false;
 		}
-		if ( get_option( self::NOTICE_DISMISSED ) ) {
+		return ! get_option( self::NOTICE_DISMISSED );
+	}
+
+	/**
+	 * Fallback for sites without the WPZOOM Notice Center: the same card —
+	 * logo tile, heading, one line, one button — drawn with plain markup.
+	 */
+	public function render_update_notice() {
+		if ( ! $this->should_render_update_notice() ) {
 			return;
 		}
 		$screen = function_exists( 'get_current_screen' ) ? get_current_screen() : null;
@@ -640,19 +775,24 @@ class WPZOOM_AI_Chat {
 		}
 		$dismiss = wp_nonce_url( add_query_arg( 'wpzoom_ai_chat_dismiss', '1' ), 'wpzoom_ai_chat_dismiss' );
 		?>
-		<div class="notice notice-info wpzoom-ai-chat-notice">
-			<p>
-				<strong><?php esc_html_e( 'WPZOOM Connect: your Click to Chat button can now answer questions itself.', 'social-icons-widget-by-wpzoom' ); ?></strong>
-				<?php
-				printf(
-					/* translators: %s: link to yamidoo.ai */
-					esc_html__( 'AI Chat replies to visitors from your own pages in seconds and hands off to you when needed — powered by %s. Everything you had still works.', 'social-icons-widget-by-wpzoom' ),
-					'<a href="' . esc_url( self::site_link( 'update-notice' ) ) . '" target="_blank" rel="noopener">Yamidoo.ai</a>'
-				);
-				?>
-				<a class="button button-primary button-small" href="<?php echo esc_url( self::settings_url() ); ?>"><?php esc_html_e( 'See what visitors would ask', 'social-icons-widget-by-wpzoom' ); ?></a>
-				<a class="wpzoom-ai-chat-notice-dismiss" href="<?php echo esc_url( $dismiss ); ?>"><?php esc_html_e( 'Dismiss', 'social-icons-widget-by-wpzoom' ); ?></a>
-			</p>
+		<div class="notice wpzoom-ai-chat-notice">
+			<span class="wpzoom-ai-chat-notice-icon" aria-hidden="true"><?php echo self::logo_svg( 22 ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static SVG. ?></span>
+			<div class="wpzoom-ai-chat-notice-body">
+				<p class="wpzoom-ai-chat-notice-heading"><?php esc_html_e( 'Your chat button can now answer questions itself', 'social-icons-widget-by-wpzoom' ); ?></p>
+				<p class="wpzoom-ai-chat-notice-text">
+					<?php
+					printf(
+						/* translators: %s: link to yamidoo.ai */
+						esc_html__( 'AI Chat answers visitors from your own pages in seconds and hands off to you when needed — powered by %s, a WPZOOM product. Scan your site first to see what it would say, then turn it on with one click. Everything you had still works.', 'social-icons-widget-by-wpzoom' ),
+						'<a href="' . esc_url( self::site_link( 'update-notice' ) ) . '" target="_blank" rel="noopener">Yamidoo.ai</a>'
+					);
+					?>
+				</p>
+				<p class="wpzoom-ai-chat-notice-actions">
+					<a class="button button-primary" href="<?php echo esc_url( self::settings_url() ); ?>"><?php esc_html_e( 'See what visitors would ask', 'social-icons-widget-by-wpzoom' ); ?></a>
+				</p>
+			</div>
+			<a class="wpzoom-ai-chat-notice-dismiss" href="<?php echo esc_url( $dismiss ); ?>" aria-label="<?php esc_attr_e( 'Dismiss this notice', 'social-icons-widget-by-wpzoom' ); ?>">&times;</a>
 		</div>
 		<?php
 	}
@@ -731,6 +871,12 @@ class WPZOOM_AI_Chat {
 				'userId'   => $uid,
 				'username' => $user->user_login,
 			);
+			// Proof this identity came from WordPress, not the visitor's console —
+			// only then may the AI answer account questions for this email.
+			$settings = self::get_settings();
+			if ( ! empty( $settings['lookup_secret'] ) && ! empty( $settings['share_customer_data'] ) ) {
+				$data['signature'] = hash_hmac( 'sha256', strtolower( trim( $user->user_email ) ), $settings['lookup_secret'] );
+			}
 			$js .= 'try{var u=' . wp_json_encode( $uid, $flags ) . ";if(localStorage.getItem('yamidoo_wp_uid')!==u){window.yamidoo('logout');localStorage.setItem('yamidoo_wp_uid',u);}}catch(e){}";
 			$js .= 'window.yamidoo(' . wp_json_encode( 'identify', $flags ) . ',' . wp_json_encode( $data, $flags ) . ');';
 			return $js;
