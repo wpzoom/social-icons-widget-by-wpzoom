@@ -108,7 +108,7 @@ Upgrade to [Social Icons Widget PRO](https://www.wpzoom.com/plugins/social-share
 * **Like Button** - Add a like button to let visitors engage with your posts
 * **AI Share Buttons** - Share to ChatGPT, Claude, and Perplexity AI platforms
 * **Share Counts** - Display total and individual share counts on buttons
-* **External Share Counts** - Fetch real share counts from Facebook, Pinterest via SharedCount API
+* **Facebook Share Counts** - Fetch real Facebook share counts with your own SharedCount API key
 * **Custom SVG Icon Uploads** - Upload your own custom SVG icons
 * **Nav Menu Integration** - Add social icons directly to WordPress navigation menus
 * **Dashboard Widget** - Quick stats overview right on your WordPress dashboard
@@ -240,7 +240,7 @@ Yes! Social Icons & Sharing Buttons does not collect any information from your v
 * **Share Analytics** - Track shares across all platforms with a beautiful analytics dashboard
 * **Like Button** - Let visitors like your posts with engagement tracking
 * **AI Share Buttons** - Share content to ChatGPT, Claude, and Perplexity
-* **Share Counts** - Display share counts on buttons (both internal tracking and external via SharedCount API)
+* **Share Counts** - Display share counts on buttons, tracked by the plugin or fetched from Facebook with your own SharedCount API key
 * **Custom SVG Uploads** - Upload your own custom icons
 * **Nav Menu Integration** - Add social icons to your navigation menus
 * **Priority Support** - Get faster help with priority email support

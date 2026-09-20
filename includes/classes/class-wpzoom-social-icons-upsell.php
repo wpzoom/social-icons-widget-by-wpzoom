@@ -193,7 +193,7 @@ class WPZOOM_Social_Icons_Upsell {
 								<span class="dashicons dashicons-admin-links"></span>
 								<?php esc_html_e( 'Share Counts', 'social-icons-widget-by-wpzoom' ); ?>
 							</h4>
-							<p class="about"><?php esc_html_e( 'Display total and individual share counts on sharing buttons. Fetch real share counts from Facebook and Pinterest via the SharedCount API.', 'social-icons-widget-by-wpzoom' ); ?></p>
+							<p class="about"><?php esc_html_e( 'Display total and individual share counts on sharing buttons, tracked by the plugin. Optionally fetch real Facebook share counts with your own SharedCount API key.', 'social-icons-widget-by-wpzoom' ); ?></p>
 							<p class="section_footer">
 								<strong><?php esc_html_e( 'Without PRO:', 'social-icons-widget-by-wpzoom' ); ?></strong>
 								<?php esc_html_e( 'No share count display', 'social-icons-widget-by-wpzoom' ); ?>

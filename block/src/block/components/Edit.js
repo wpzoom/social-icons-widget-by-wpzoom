@@ -271,6 +271,11 @@ export default function Edit( props ) {
 		}
 	}, [] ); // eslint-disable-line react-hooks/exhaustive-deps
 
+	// Always points at the latest attributes so async callbacks (e.g. timers)
+	// never operate on a stale closure snapshot.
+	const latestAttributesRef = useRef( attributes );
+	latestAttributesRef.current = attributes;
+
 	// componentDidUpdate: respond to block style panel changes
 	const prevClassNameRef = useRef( blockProps.className );
 	useEffect( () => {
@@ -495,14 +500,18 @@ export default function Edit( props ) {
 
 		setAttributes( { selectedIcons: selectedIconsClone } );
 
+		// Hide the status message after a short delay. Read the *current*
+		// attributes via the ref: the `attributes` variable in this closure is a
+		// snapshot from before setAttributes() ran, and writing it back would
+		// revert the icon that was just detected.
 		setTimeout( () => {
-			const resetIconsClone = JSON.parse(
-				JSON.stringify( attributes.selectedIcons )
-			);
-			if ( resetIconsClone[ key ] ) {
-				resetIconsClone[ key ].justUpdated = false;
-				setAttributes( { selectedIcons: resetIconsClone } );
+			const currentIcons = latestAttributesRef.current.selectedIcons;
+			if ( ! currentIcons || ! currentIcons[ key ] || ! currentIcons[ key ].justUpdated ) {
+				return;
 			}
+			const resetIconsClone = JSON.parse( JSON.stringify( currentIcons ) );
+			resetIconsClone[ key ].justUpdated = false;
+			setAttributes( { selectedIcons: resetIconsClone } );
 		}, 2000 );
 	};
 
