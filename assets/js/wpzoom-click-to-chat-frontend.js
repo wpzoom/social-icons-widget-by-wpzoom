@@ -75,12 +75,43 @@
 		(window.yamidoo.q = window.yamidoo.q || []).push(arguments);
 	});
 
-	// Hide the bubble, and hide it again whenever the visitor closes the panel —
-	// otherwise closing the chat would leave two buttons in the corner.
-	yamidoo('hide');
-	yamidoo('on', 'close', function () {
+	// Which command hides the bubble depends on the widget build the page loads.
+	// Builds that mark <html> with `yamidoo-api-2` have hideLauncher, which
+	// removes only the bubble and keeps floating messages working. Older builds
+	// only have hide, which unmounts the whole widget, so on those the bubble
+	// must be hidden again after every close or it would come back.
+	function hideBubble() {
+		if (document.documentElement.classList.contains('yamidoo-api-2')) {
+			window.yamidoo('hideLauncher');
+			return;
+		}
 		window.yamidoo('hide');
-	});
+		window.yamidoo('on', 'close', function () {
+			window.yamidoo('hide');
+		});
+	}
+
+	// The widget boots asynchronously and adds `yamidoo-ready` when it has, so
+	// the version check has to wait for that class rather than run once now.
+	// Both commands are then dispatched before the widget's config arrives, so
+	// the bubble never gets a chance to paint.
+	if (document.documentElement.classList.contains('yamidoo-ready')) {
+		hideBubble();
+	} else if (typeof MutationObserver === 'function') {
+		var watcher = new MutationObserver(function () {
+			if (document.documentElement.classList.contains('yamidoo-ready')) {
+				watcher.disconnect();
+				hideBubble();
+			}
+		});
+		watcher.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+	} else {
+		// No MutationObserver: the command every build understands, queued now.
+		yamidoo('hide');
+		yamidoo('on', 'close', function () {
+			window.yamidoo('hide');
+		});
+	}
 
 	var chatButton = widget.querySelector('[data-wpzoom-ctc-action="yamidoo"]');
 
