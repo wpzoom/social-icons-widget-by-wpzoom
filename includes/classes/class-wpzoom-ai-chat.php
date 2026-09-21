@@ -193,6 +193,42 @@ class WPZOOM_AI_Chat {
 		return class_exists( 'Yamidoo_Frontend' );
 	}
 
+	/**
+	 * Whether the standalone Yamidoo plugin is connected and set to render.
+	 *
+	 * Mirrors Yamidoo_Frontend::should_load() without reaching into a private
+	 * method: enabled, with a Site ID that looks like a UUID.
+	 */
+	public static function standalone_plugin_will_render() {
+		if ( ! self::standalone_plugin_active() || ! class_exists( 'Yamidoo_Settings' ) ) {
+			return false;
+		}
+		$o = Yamidoo_Settings::get();
+		return ! empty( $o['enabled'] ) && ! empty( $o['site_id'] ) && Yamidoo_Settings::is_uuid( $o['site_id'] );
+	}
+
+	/**
+	 * Whether the Yamidoo chat widget is on the front end at all — embedded by
+	 * this plugin or by the standalone Yamidoo plugin.
+	 *
+	 * Click to Chat asks this before offering "AI Chat" as one of its channels:
+	 * a button that opens a widget nobody loaded would be a dead end.
+	 */
+	public static function widget_on_front_end() {
+		if ( self::standalone_plugin_active() ) {
+			return self::standalone_plugin_will_render();
+		}
+		$s = self::get_settings();
+		return ! empty( $s['enabled'] ) && self::is_uuid( $s['site_id'] );
+	}
+
+	/** Admin screen that owns the chat connection (ours, or the standalone plugin's). */
+	public static function owner_settings_url() {
+		return self::standalone_plugin_active()
+			? admin_url( 'options-general.php?page=yamidoo' )
+			: self::settings_url();
+	}
+
 	/** yamidoo.ai with a UTM so plugin traffic shows up in analytics. */
 	public static function site_link( $medium = 'ai-chat-card' ) {
 		return 'https://yamidoo.ai/?utm_source=wp-plugin&utm_medium=' . rawurlencode( $medium ) . '&utm_campaign=wpzoom-connect';
@@ -482,7 +518,9 @@ class WPZOOM_AI_Chat {
 							'name'  => 'ai_hide_ctc',
 							'on'    => ! empty( $s['hide_click_to_chat'] ),
 							'title' => __( 'Hide the Click to Chat launcher while AI Chat is on', 'social-icons-widget-by-wpzoom' ),
-							'desc'  => __( 'One floating button instead of two. Turn off to show the WhatsApp/Telegram/Messenger buttons alongside the chat.', 'social-icons-widget-by-wpzoom' ),
+							'desc'  => ( class_exists( 'WPZOOM_Click_To_Chat' ) && WPZOOM_Click_To_Chat::yamidoo_channel_active() )
+								? __( 'Ignored right now: AI Chat is one of the Click to Chat channels, so the launcher is how visitors reach the chat. Turn that channel off on the Click to Chat tab to use this setting again.', 'social-icons-widget-by-wpzoom' )
+								: __( 'One floating button instead of two. Turn it off to show the WhatsApp/Telegram/Messenger buttons alongside the chat — or add AI Chat as a channel on the Click to Chat tab to put everything in one launcher.', 'social-icons-widget-by-wpzoom' ),
 						),
 					);
 					$stores = class_exists( 'WPZOOM_AI_Chat_Customer' ) ? WPZOOM_AI_Chat_Customer::detected_stores() : array();
@@ -825,6 +863,11 @@ class WPZOOM_AI_Chat {
 	/** While AI Chat is on (and the owner kept the default), the WhatsApp launcher hides. */
 	public function filter_ctc_render( $render ) {
 		if ( ! $render ) {
+			return $render;
+		}
+		// When AI Chat is one of the Click to Chat channels, the launcher *is* the
+		// way into the chat — hiding it would take the chat away with it.
+		if ( class_exists( 'WPZOOM_Click_To_Chat' ) && WPZOOM_Click_To_Chat::yamidoo_channel_active() ) {
 			return $render;
 		}
 		$s = self::get_settings();

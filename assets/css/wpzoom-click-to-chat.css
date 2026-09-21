@@ -17,6 +17,24 @@
 .wpzoom-ctc-btn--telegram  { background-color: #229ED9; }
 .wpzoom-ctc-btn--messenger { background-color: #0084ff; }
 .wpzoom-ctc-btn--viber     { background-color: #7360f2; }
+.wpzoom-ctc-btn--yamidoo   { background-color: #fe551b; }
+
+/* The AI Chat channel opens the panel in place, so it is a <button>. Strip the
+   UA button styling that themes and browsers add, so it matches the anchors. */
+button.wpzoom-ctc-btn {
+	padding: 0;
+	border: 0;
+	margin: 0;
+	font: inherit;
+	cursor: pointer;
+	-webkit-appearance: none;
+	appearance: none;
+	box-shadow: none;
+}
+button.wpzoom-ctc-btn:focus-visible {
+	outline: 2px solid currentColor;
+	outline-offset: 2px;
+}
 
 
 /* --------------------------------------------------------------------------
@@ -61,6 +79,21 @@
 	display: flex;
 	align-items: center;
 	justify-content: center;
+}
+/* The inline SVG icons paint with currentColor, so they follow whatever `color`
+   the launcher ends up with. Themes set that on the bare element — Inspiro uses
+   `button { color: #444 }` and `button:hover { color: <accent> }` — and a
+   single-class selector loses to `button:hover`, which turned the icon dark and
+   then the theme's accent on hover. Pinning the colour on the icon itself ends
+   the specificity race: nothing the theme does to the button can reach it. */
+.wpzoom-ctc-launcher,
+.wpzoom-ctc-launcher:hover,
+.wpzoom-ctc-launcher:focus,
+.wpzoom-ctc-launcher:active {
+	color: #fff;
+}
+.wpzoom-ctc-launcher-icon svg {
+	color: #fff;
 }
 .wpzoom-ctc-launcher-icon .social-icon,
 .wpzoom-ctc-launcher-icon .dashicons {
@@ -189,22 +222,21 @@
 	width: 48px;
 	height: 48px;
 	text-decoration: none;
-	transition: width 0.22s cubic-bezier(0.4, 0, 0.2, 1), filter 0.22s ease, border-radius 0.22s ease;
+	transition: filter 0.22s ease, border-radius 0.22s ease;
 }
-/* All right-sidebar buttons grow left and round the inner (left) edge */
+/* Hover feedback: the label chip does the explaining, so the button only lifts
+   in brightness and rounds its inner edge — it must not change width, or the
+   label anchored to that edge would slide while the visitor reads it. */
 .wpzoom-ctc--sidebar.wpzoom-ctc--right .wpzoom-ctc-btn:hover,
 .wpzoom-ctc--sidebar.wpzoom-ctc--right .wpzoom-ctc-btn:first-child:hover,
 .wpzoom-ctc--sidebar.wpzoom-ctc--right .wpzoom-ctc-btn:last-child:hover {
-	width: 68px;
 	filter: brightness(1.12);
 	border-radius: 6px 0 0 6px;
 }
 
-/* All left-sidebar buttons grow right and round the inner (right) edge */
 .wpzoom-ctc--sidebar.wpzoom-ctc--left .wpzoom-ctc-btn:hover,
 .wpzoom-ctc--sidebar.wpzoom-ctc--left .wpzoom-ctc-btn:first-child:hover,
 .wpzoom-ctc--sidebar.wpzoom-ctc--left .wpzoom-ctc-btn:last-child:hover {
-	width: 68px;
 	filter: brightness(1.12);
 	border-radius: 0 6px 6px 0;
 }
@@ -241,6 +273,7 @@
 .wpzoom-ctc-btn svg,
 .wpzoom-ctc-btn .social-icon,
 .wpzoom-ctc-btn .dashicons,
+.wpzoom-ctc-launcher-icon svg,
 .wpzoom-ctc-launcher-icon .social-icon,
 .wpzoom-ctc-launcher-icon .dashicons {
 	transition: width 0.15s, height 0.15s, font-size 0.15s;
@@ -255,6 +288,7 @@
 .wpzoom-ctc--size-S .wpzoom-ctc-btn .social-icon,
 .wpzoom-ctc--size-S .wpzoom-ctc-btn .dashicons                                    { width: 16px; height: 16px; font-size: 16px; }
 .wpzoom-ctc--size-S .wpzoom-ctc-launcher-icon .social-icon,
+.wpzoom-ctc--size-S .wpzoom-ctc-launcher-icon svg,
 .wpzoom-ctc--size-S .wpzoom-ctc-launcher-icon .dashicons                          { width: 18px; height: 18px; font-size: 18px; }
 
 /* M — default sizes already defined above, icon overrides for completeness */
@@ -262,6 +296,7 @@
 .wpzoom-ctc--size-M .wpzoom-ctc-btn .social-icon,
 .wpzoom-ctc--size-M .wpzoom-ctc-btn .dashicons                                    { width: 20px; height: 20px; font-size: 20px; }
 .wpzoom-ctc--size-M .wpzoom-ctc-launcher-icon .social-icon,
+.wpzoom-ctc--size-M .wpzoom-ctc-launcher-icon svg,
 .wpzoom-ctc--size-M .wpzoom-ctc-launcher-icon .dashicons                          { width: 22px; height: 22px; font-size: 22px; }
 
 /* L  — sidebar 56px, corner platform 52px, launcher 64px, icon 24px */
@@ -273,6 +308,7 @@
 .wpzoom-ctc--size-L .wpzoom-ctc-btn .social-icon,
 .wpzoom-ctc--size-L .wpzoom-ctc-btn .dashicons                                    { width: 24px; height: 24px; font-size: 24px; }
 .wpzoom-ctc--size-L .wpzoom-ctc-launcher-icon .social-icon,
+.wpzoom-ctc--size-L .wpzoom-ctc-launcher-icon svg,
 .wpzoom-ctc--size-L .wpzoom-ctc-launcher-icon .dashicons                          { width: 28px; height: 28px; font-size: 28px; }
 
 /* XL — sidebar 64px, corner platform 58px, launcher 72px, icon 28px */
@@ -284,6 +320,7 @@
 .wpzoom-ctc--size-XL .wpzoom-ctc-btn .social-icon,
 .wpzoom-ctc--size-XL .wpzoom-ctc-btn .dashicons                                   { width: 28px; height: 28px; font-size: 28px; }
 .wpzoom-ctc--size-XL .wpzoom-ctc-launcher-icon .social-icon,
+.wpzoom-ctc--size-XL .wpzoom-ctc-launcher-icon svg,
 .wpzoom-ctc--size-XL .wpzoom-ctc-launcher-icon .dashicons                         { width: 32px; height: 32px; font-size: 32px; }
 
 /* XXL — sidebar 72px, corner platform 64px, launcher 80px, icon 32px */
@@ -295,6 +332,7 @@
 .wpzoom-ctc--size-XXL .wpzoom-ctc-btn .social-icon,
 .wpzoom-ctc--size-XXL .wpzoom-ctc-btn .dashicons                                  { width: 32px; height: 32px; font-size: 32px; }
 .wpzoom-ctc--size-XXL .wpzoom-ctc-launcher-icon .social-icon,
+.wpzoom-ctc--size-XXL .wpzoom-ctc-launcher-icon svg,
 .wpzoom-ctc--size-XXL .wpzoom-ctc-launcher-icon .dashicons                        { width: 36px; height: 36px; font-size: 36px; }
 
 /* --------------------------------------------------------------------------
@@ -305,6 +343,74 @@
 	#wpzoom-ctc-widget.wpzoom-ctc--hide-mobile {
 		display: none !important;
 	}
+}
+
+/* --------------------------------------------------------------------------
+   Hover labels
+   The chip sits on the side away from the screen edge: to the LEFT of the
+   button when the launcher is on the right, and to the RIGHT when it is on the
+   left, so it always opens into the page instead of off-screen.
+   -------------------------------------------------------------------------- */
+
+.wpzoom-ctc-btn {
+	position: relative;
+}
+
+.wpzoom-ctc-btn-label {
+	position: absolute;
+	top: 50%;
+	z-index: 1;
+	white-space: nowrap;
+	max-width: 45vw;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	background: #23282d;
+	color: #fff;
+	font-family: inherit;
+	font-size: 13px;
+	font-weight: 500;
+	line-height: 1.4;
+	letter-spacing: normal;
+	text-transform: none;
+	padding: 6px 10px;
+	border-radius: 4px;
+	box-shadow: 0 2px 10px rgba(0, 0, 0, 0.22);
+	opacity: 0;
+	visibility: hidden;
+	pointer-events: none;
+	transition: opacity 0.15s ease, visibility 0.15s ease;
+}
+
+.wpzoom-ctc--right .wpzoom-ctc-btn-label {
+	right: calc(100% + 10px);
+	transform: translateY(-50%);
+	transform-origin: right center;
+}
+.wpzoom-ctc--left .wpzoom-ctc-btn-label {
+	left: calc(100% + 10px);
+	transform: translateY(-50%);
+	transform-origin: left center;
+}
+
+/* Corner buttons scale up on hover; the chip cancels that out so the text is
+   rendered at its real size instead of a blurry enlargement. */
+.wpzoom-ctc--corner .wpzoom-ctc-btn:hover .wpzoom-ctc-btn-label {
+	transform: translateY(-50%) scale(0.909);
+}
+.wpzoom-ctc--corner .wpzoom-ctc-btn--solo:hover .wpzoom-ctc-btn-label {
+	transform: translateY(-50%) scale(0.926);
+}
+
+/* Shown on hover where hovering exists, and always on keyboard focus. */
+@media (hover: hover) {
+	.wpzoom-ctc-btn:hover .wpzoom-ctc-btn-label {
+		opacity: 1;
+		visibility: visible;
+	}
+}
+.wpzoom-ctc-btn:focus-visible .wpzoom-ctc-btn-label {
+	opacity: 1;
+	visibility: visible;
 }
 
 /* Screen reader only */

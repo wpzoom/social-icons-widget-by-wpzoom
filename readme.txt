@@ -5,7 +5,7 @@ Tags: ai chatbot, live chat, click to chat, whatsapp, social icons
 Requires at least: 6.5
 Requires PHP: 7.4
 Tested up to: 7.1
-Stable tag: 4.7.1
+Stable tag: 4.7.2
 License: GNU General Public License v2.0 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -263,6 +263,14 @@ Floating Buttons is a PRO feature that displays your social sharing icons as a f
 10. Social Sharing Buttons - No Label Style
 
 == Changelog ==
+
+= 4.7.2 =
+* NEW: AI Chat can now sit in the Click to Chat launcher alongside WhatsApp, Telegram, Messenger and Viber — visitors ask the AI first and still have a one-tap way to reach a person. Its own floating bubble hides, so there is still only one button in the corner.
+* The new channel also works when the standalone Yamidoo plugin runs the chat
+* NEW: Click to Chat buttons now show a label on hover, on the side facing the page, and each label can be edited in the settings (defaults to the platform name)
+* Click to Chat warns when the Yamidoo chat bubble and the launcher would both show on the front end, with a one-click way to fold the chat into the launcher
+* NEW: the AI Chat channel button can use a plain chat icon instead of the Yamidoo mark — eight to choose from, on the Click to Chat tab
+* Redrawn the Click to Chat launcher icons: a single matching set of nine open and four close icons, replacing the old Font Awesome 3 and Dashicons mix. The close icon is lighter, and the launcher no longer loads an icon font. Existing sites keep their choice and are moved to the equivalent new icon.
 
 = 4.7.1 =
 * NEW: Customer data for Easy Digital Downloads and WooCommerce — orders, licenses and subscriptions next to the conversation, and account answers for logged-in customers
