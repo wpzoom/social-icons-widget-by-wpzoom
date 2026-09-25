@@ -22,7 +22,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 class WPZOOM_AI_Chat_Customer {
 
 	const NAMESPACE  = 'yamidoo/v1';
-	const MAX_ITEMS  = 8;
+	const MAX_ITEMS = 15;
+
+	/**
+	 * Licenses are one line each and the one a customer asks about is often
+	 * not the newest, so they get more room. Live ones are listed first.
+	 */
+	const MAX_LICENSES = 25;
 	const MAX_SKEW_S = 300;
 
 	public static function init() {
@@ -215,8 +221,24 @@ class WPZOOM_AI_Chat_Customer {
 		// Licenses (Software Licensing)
 		if ( function_exists( 'edd_software_licensing' ) ) {
 			$licenses = edd_software_licensing()->licenses_db->get_licenses(
-				array( 'customer_id' => (int) $customer->id, 'number' => self::MAX_ITEMS, 'orderby' => 'date_created', 'order' => 'DESC' )
+				array( 'customer_id' => (int) $customer->id, 'number' => 200, 'orderby' => 'date_created', 'order' => 'DESC' )
 			);
+			// Active and inactive first (the ones that still matter), then newest.
+			$licenses = (array) $licenses;
+			usort(
+				$licenses,
+				function ( $a, $b ) {
+					$rank = array( 'active' => 0, 'inactive' => 1 );
+					$ra   = isset( $rank[ $a->status ] ) ? $rank[ $a->status ] : 2;
+					$rb   = isset( $rank[ $b->status ] ) ? $rank[ $b->status ] : 2;
+					if ( $ra !== $rb ) {
+						return $ra - $rb;
+					}
+					return strcmp( (string) $b->date_created, (string) $a->date_created );
+				}
+			);
+			$total_licenses = count( $licenses );
+			$licenses       = array_slice( $licenses, 0, self::MAX_LICENSES );
 			$items = array();
 			foreach ( (array) $licenses as $lic ) {
 				$name = '';
@@ -252,7 +274,7 @@ class WPZOOM_AI_Chat_Customer {
 					)
 				);
 			}
-			$sections[] = array( 'title' => __( 'Licenses', 'social-icons-widget-by-wpzoom' ), 'items' => $items );
+			$sections[] = array( 'title' => __( 'Licenses', 'social-icons-widget-by-wpzoom' ), 'items' => $items, 'total' => $total_licenses );
 		}
 
 		// Orders
@@ -260,6 +282,7 @@ class WPZOOM_AI_Chat_Customer {
 			$orders = edd_get_orders(
 				array( 'customer_id' => (int) $customer->id, 'number' => self::MAX_ITEMS, 'orderby' => 'date_created', 'order' => 'DESC', 'type' => 'sale' )
 			);
+			$total_orders = function_exists( 'edd_count_orders' ) ? (int) edd_count_orders( array( 'customer_id' => (int) $customer->id, 'type' => 'sale' ) ) : count( (array) $orders );
 			$items = array();
 			foreach ( (array) $orders as $order ) {
 				$products = array();
@@ -283,7 +306,7 @@ class WPZOOM_AI_Chat_Customer {
 					)
 				);
 			}
-			$sections[] = array( 'title' => __( 'Orders', 'social-icons-widget-by-wpzoom' ), 'items' => $items, 'collapsed' => count( $items ) > 3 );
+			$sections[] = array( 'title' => __( 'Orders', 'social-icons-widget-by-wpzoom' ), 'items' => $items, 'collapsed' => count( $items ) > 3, 'total' => $total_orders );
 		}
 
 		// Subscriptions (Recurring)
@@ -303,6 +326,7 @@ class WPZOOM_AI_Chat_Customer {
 					return strcmp( (string) $b->created, (string) $a->created );
 				}
 			);
+			$total_subs = count( $subs );
 			$subs       = array_slice( $subs, 0, self::MAX_ITEMS );
 			$items      = array();
 			foreach ( $subs as $sub ) {
@@ -329,6 +353,7 @@ class WPZOOM_AI_Chat_Customer {
 			}
 			$sections[] = array(
 				'title'     => __( 'Subscriptions', 'social-icons-widget-by-wpzoom' ),
+				'total'     => $total_subs,
 				'items'     => $items,
 				'collapsed' => count( $items ) > 3,
 				'url'       => admin_url( 'edit.php?post_type=download&page=edd-subscriptions&s=' . rawurlencode( $email ) ),
@@ -343,7 +368,9 @@ class WPZOOM_AI_Chat_Customer {
 	// -------------------------------------------------------------------------
 
 	private static function woo_card( $email ) {
-		$orders = wc_get_orders( array( 'customer' => $email, 'limit' => self::MAX_ITEMS, 'orderby' => 'date', 'order' => 'DESC' ) );
+		$paged  = wc_get_orders( array( 'customer' => $email, 'limit' => self::MAX_ITEMS, 'orderby' => 'date', 'order' => 'DESC', 'paginate' => true ) );
+		$orders = $paged && isset( $paged->orders ) ? (array) $paged->orders : array();
+		$total_orders = $paged && isset( $paged->total ) ? (int) $paged->total : count( $orders );
 		$user   = get_user_by( 'email', $email );
 		if ( empty( $orders ) && ! $user ) {
 			return null;
@@ -371,7 +398,7 @@ class WPZOOM_AI_Chat_Customer {
 		}
 		$meta = array();
 		if ( $orders ) {
-			$meta[] = sprintf( _n( '%d order', '%d orders', count( $orders ), 'social-icons-widget-by-wpzoom' ), count( $orders ) );
+			$meta[] = sprintf( _n( '%d order', '%d orders', $total_orders, 'social-icons-widget-by-wpzoom' ), $total_orders );
 			$meta[] = sprintf( __( 'recent total %s', 'social-icons-widget-by-wpzoom' ), self::money( wc_price( $total ) ) );
 		}
 		if ( $user && ! empty( $user->user_registered ) ) {
@@ -381,11 +408,13 @@ class WPZOOM_AI_Chat_Customer {
 			'title' => __( 'Customer', 'social-icons-widget-by-wpzoom' ),
 			'items' => array( self::item( $user ? $user->display_name : $email, array( 'meta' => implode( ' · ', $meta ), 'url' => $admin ) ) ),
 		);
-		$sections[] = array( 'title' => __( 'Orders', 'social-icons-widget-by-wpzoom' ), 'items' => $items, 'collapsed' => count( $items ) > 3 );
+		$sections[] = array( 'title' => __( 'Orders', 'social-icons-widget-by-wpzoom' ), 'items' => $items, 'collapsed' => count( $items ) > 3, 'total' => $total_orders );
 
 		if ( $user && function_exists( 'wcs_get_users_subscriptions' ) ) {
 			$items = array();
-			foreach ( (array) wcs_get_users_subscriptions( $user->ID ) as $sub ) {
+			$all_subs   = (array) wcs_get_users_subscriptions( $user->ID );
+			$total_subs = count( $all_subs );
+			foreach ( array_slice( $all_subs, 0, self::MAX_ITEMS ) as $sub ) {
 				$names = array();
 				foreach ( $sub->get_items() as $it ) {
 					$names[] = $it->get_name();
@@ -401,7 +430,7 @@ class WPZOOM_AI_Chat_Customer {
 					)
 				);
 			}
-			$sections[] = array( 'title' => __( 'Subscriptions', 'social-icons-widget-by-wpzoom' ), 'items' => $items );
+			$sections[] = array( 'title' => __( 'Subscriptions', 'social-icons-widget-by-wpzoom' ), 'items' => $items, 'total' => $total_subs );
 		}
 
 		return array( 'sections' => $sections, 'url' => $admin );

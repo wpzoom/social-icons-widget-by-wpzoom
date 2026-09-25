@@ -5,7 +5,7 @@ Tags: ai chatbot, live chat, click to chat, whatsapp, social icons
 Requires at least: 6.5
 Requires PHP: 7.4
 Tested up to: 7.1
-Stable tag: 4.7.3
+Stable tag: 4.7.4
 License: GNU General Public License v2.0 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -264,6 +264,10 @@ Floating Buttons is a PRO feature that displays your social sharing icons as a f
 
 == Changelog ==
 
+= 4.7.4 =
+* SECURITY: the AI Chat identity signature printed for logged-in users is now domain-separated from the signature that authenticates customer-data lookups. Before, an account registered with a crafted email address could reuse its own signature to read another customer's orders and licenses through the lookup endpoint. Reported by Wordfence.
+* IMPROVED: AI Chat customer data now lists up to 25 licenses (active ones first) and 15 orders and subscriptions, and reports the total count when there are more
+
 = 4.7.3 =
 * Minor fixes
 
@@ -271,6 +275,7 @@ Floating Buttons is a PRO feature that displays your social sharing icons as a f
 * NEW: AI Chat can now sit in the Click to Chat launcher alongside WhatsApp, Telegram, Messenger and Viber — visitors ask the AI first and still have a one-tap way to reach a person. Its own floating bubble hides, so there is still only one button in the corner.
 * The new channel also works when the standalone Yamidoo plugin runs the chat
 * NEW: Click to Chat buttons now show a label on hover, on the side facing the page, and each label can be edited in the settings (defaults to the platform name)
+* Fixed: the AI Chat channel could not be switched on while the Yamidoo plugin had its own bubble turned off. Connected is enough now — the launcher loads the chat itself and keeps the bubble hidden
 * With AI Chat as a channel, Yamidoo's floating messages keep working (needs the current Yamidoo widget; older builds fall back to hiding the whole widget)
 * Click to Chat warns when the Yamidoo chat bubble and the launcher would both show on the front end, with a one-click way to fold the chat into the launcher
 * NEW: the AI Chat channel button can use a plain chat icon instead of the Yamidoo mark — eight to choose from, on the Click to Chat tab

@@ -257,15 +257,17 @@ class WPZOOM_Click_To_Chat {
 	}
 
 	/**
-	 * Whether the AI Chat channel can be offered: the Yamidoo widget has to be
-	 * on the front end already, embedded either by this plugin's AI Chat tab or
-	 * by the standalone Yamidoo plugin. Without it the button has nothing to open.
+	 * Whether the AI Chat channel can be offered: a Yamidoo connection exists,
+	 * made on this plugin's AI Chat tab or in the standalone Yamidoo plugin.
+	 * Whether either of them shows its own bubble does not matter — when the
+	 * chat is a channel here, this plugin loads the widget for the launcher
+	 * and keeps the bubble hidden.
 	 */
 	public static function ai_chat_available() {
 		if ( ! class_exists( 'WPZOOM_AI_Chat' ) ) {
 			return false;
 		}
-		return WPZOOM_AI_Chat::widget_on_front_end();
+		return WPZOOM_AI_Chat::chat_connected();
 	}
 
 	/**
@@ -298,8 +300,8 @@ class WPZOOM_Click_To_Chat {
 		if ( null === $s ) {
 			$s = self::get_settings();
 		}
-		if ( empty( $s['enabled'] ) || ! self::ai_chat_available() ) {
-			return false;
+		if ( empty( $s['enabled'] ) || ! class_exists( 'WPZOOM_AI_Chat' ) || ! WPZOOM_AI_Chat::bubble_on_front_end() ) {
+			return false; // Launcher off, or no Yamidoo bubble of its own to collide with.
 		}
 		if ( ! empty( $s['yamidoo_enabled'] ) ) {
 			return false; // The chat is one of the launcher's channels — one button.
@@ -588,6 +590,7 @@ class WPZOOM_Click_To_Chat {
 
 						$ai_ready      = self::ai_chat_available();
 						$ai_standalone = class_exists( 'WPZOOM_AI_Chat' ) && WPZOOM_AI_Chat::standalone_plugin_active();
+						$ai_bubble     = $ai_ready && WPZOOM_AI_Chat::bubble_on_front_end();
 						$ai_settings   = class_exists( 'WPZOOM_AI_Chat' ) ? WPZOOM_AI_Chat::owner_settings_url() : '';
 
 						$platform_defs = array(
@@ -595,7 +598,7 @@ class WPZOOM_Click_To_Chat {
 								'name'         => __( 'AI Chat', 'social-icons-widget-by-wpzoom' ),
 								'header_class' => 'wpzoom-ctc-platform-header--yamidoo',
 								'icon'         => self::yamidoo_icon(),
-								'fields'       => function() use ( $ai_ready, $ai_standalone, $ai_settings, $s ) { ?>
+								'fields'       => function() use ( $ai_ready, $ai_standalone, $ai_bubble, $ai_settings, $s ) { ?>
 									<?php if ( $ai_ready ) : ?>
 										<div class="wpzoom-ctc-field">
 											<label><?php esc_html_e( 'Button Icon', 'social-icons-widget-by-wpzoom' ); ?></label>
@@ -613,7 +616,11 @@ class WPZOOM_Click_To_Chat {
 											<p class="description"><?php esc_html_e( 'Pick the Yamidoo mark, or a plain chat icon if you would rather not show the logo.', 'social-icons-widget-by-wpzoom' ); ?></p>
 										</div>
 										<p class="description">
-											<?php esc_html_e( 'Adds your Yamidoo AI chat to the launcher, next to the other channels. Its own floating bubble is hidden, so visitors see one button: they can ask the AI first and reach you on WhatsApp or Viber if they would rather talk to a person.', 'social-icons-widget-by-wpzoom' ); ?>
+											<?php if ( $ai_bubble ) : ?>
+												<?php esc_html_e( 'Adds your Yamidoo AI chat to the launcher, next to the other channels. Its own floating bubble is hidden, so visitors see one button: they can ask the AI first and reach you on WhatsApp or Viber if they would rather talk to a person.', 'social-icons-widget-by-wpzoom' ); ?>
+											<?php else : ?>
+												<?php esc_html_e( 'Adds your Yamidoo AI chat to the launcher, next to the other channels. Yamidoo\'s own bubble is switched off, so this launcher is the way into the chat: visitors can ask the AI first and reach you on WhatsApp or Viber if they would rather talk to a person.', 'social-icons-widget-by-wpzoom' ); ?>
+											<?php endif; ?>
 										</p>
 										<p class="description">
 											<?php

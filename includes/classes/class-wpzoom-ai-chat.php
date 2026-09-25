@@ -208,13 +208,64 @@ class WPZOOM_AI_Chat {
 	}
 
 	/**
-	 * Whether the Yamidoo chat widget is on the front end at all — embedded by
-	 * this plugin or by the standalone Yamidoo plugin.
+	 * The chat connection this site has, wherever it was made.
 	 *
-	 * Click to Chat asks this before offering "AI Chat" as one of its channels:
-	 * a button that opens a widget nobody loaded would be a dead end.
+	 * The two plugins never both own a site: when the standalone Yamidoo plugin
+	 * is active, its connection is the one that counts, and this plugin's own
+	 * settings are ignored. Returns what an embed needs — site id, whether to
+	 * identify logged-in users, and the customer-data secret — plus 'source',
+	 * or null when nothing is connected anywhere.
 	 */
-	public static function widget_on_front_end() {
+	public static function connection() {
+		if ( self::standalone_plugin_active() ) {
+			if ( ! class_exists( 'Yamidoo_Settings' ) ) {
+				return null;
+			}
+			$o = Yamidoo_Settings::get();
+			if ( empty( $o['site_id'] ) || ! Yamidoo_Settings::is_uuid( $o['site_id'] ) ) {
+				return null;
+			}
+			return array(
+				'source'              => 'standalone',
+				'site_id'             => $o['site_id'],
+				'identify_logged_in'  => ! empty( $o['identify_logged_in'] ),
+				'lookup_secret'       => isset( $o['lookup_secret'] ) ? (string) $o['lookup_secret'] : '',
+				'share_customer_data' => ! empty( $o['share_customer_data'] ),
+			);
+		}
+		$s = self::get_settings();
+		if ( ! self::is_uuid( $s['site_id'] ) ) {
+			return null;
+		}
+		return array(
+			'source'              => 'own',
+			'site_id'             => $s['site_id'],
+			'identify_logged_in'  => ! empty( $s['identify_logged_in'] ),
+			'lookup_secret'       => (string) $s['lookup_secret'],
+			'share_customer_data' => ! empty( $s['share_customer_data'] ),
+		);
+	}
+
+	/**
+	 * Whether there is a chat to open at all.
+	 *
+	 * Click to Chat asks this before offering "AI Chat" as a channel. Connected
+	 * is enough: if nothing else puts the widget on the page, this plugin loads
+	 * it on the launcher's behalf (see should_load()). The "show the widget"
+	 * switches in either plugin only decide whether Yamidoo's *own bubble*
+	 * appears — they are not a reason to refuse the channel.
+	 */
+	public static function chat_connected() {
+		return null !== self::connection();
+	}
+
+	/**
+	 * Whether Yamidoo's own floating bubble is on the front end, put there by
+	 * the standalone plugin or by this plugin's "show the AI chat" switch —
+	 * independently of Click to Chat. This is what can collide with the
+	 * launcher; a widget loaded only for the launcher has its bubble hidden.
+	 */
+	public static function bubble_on_front_end() {
 		if ( self::standalone_plugin_active() ) {
 			return self::standalone_plugin_will_render();
 		}
@@ -849,12 +900,33 @@ class WPZOOM_AI_Chat {
 	// Front end
 	// -------------------------------------------------------------------------
 
+	/**
+	 * Whether this plugin embeds widget.js on this request.
+	 *
+	 * Two reasons to: the owner switched the chat on here, or Click to Chat has
+	 * AI Chat as a channel and nothing else is loading the widget — including
+	 * the case where the standalone Yamidoo plugin holds the connection but has
+	 * its own bubble switched off. Its switch means "no Yamidoo bubble", which
+	 * the launcher honours anyway (the bubble is hidden when the chat lives in
+	 * it); it is not a reason to leave the launcher's button with nothing to
+	 * open. When the standalone plugin does render, it owns the embed and we
+	 * step back.
+	 */
 	private function should_load() {
-		if ( self::standalone_plugin_active() ) {
+		if ( self::standalone_plugin_will_render() ) {
 			return false; // The standalone plugin renders the widget.
 		}
+		$conn = self::connection();
+		if ( ! $conn ) {
+			return false;
+		}
+		$launcher_needs_it = class_exists( 'WPZOOM_Click_To_Chat' ) && WPZOOM_Click_To_Chat::yamidoo_channel_active();
+		if ( 'standalone' === $conn['source'] ) {
+			// Its bubble is off; load only on the launcher's behalf.
+			return $launcher_needs_it && (bool) apply_filters( 'wpzoom_ai_chat_should_load', true );
+		}
 		$s = self::get_settings();
-		if ( empty( $s['enabled'] ) || ! self::is_uuid( $s['site_id'] ) ) {
+		if ( empty( $s['enabled'] ) && ! $launcher_needs_it ) {
 			return false;
 		}
 		return (bool) apply_filters( 'wpzoom_ai_chat_should_load', true );
@@ -881,8 +953,8 @@ class WPZOOM_AI_Chat {
 		if ( ! $this->should_load() ) {
 			return;
 		}
-		$s             = self::get_settings();
-		$this->site_id = $s['site_id'];
+		$conn          = self::connection();
+		$this->site_id = $conn['site_id'];
 
 		wp_enqueue_script(
 			self::HANDLE,
@@ -894,11 +966,36 @@ class WPZOOM_AI_Chat {
 				'in_footer' => true,
 			)
 		);
-		wp_add_inline_script( self::HANDLE, $this->inline_js( ! empty( $s['identify_logged_in'] ) ), 'before' );
+		wp_add_inline_script( self::HANDLE, $this->inline_js( $conn['identify_logged_in'], $conn ), 'before' );
 	}
 
 	/** Queue stub + site id (survives tag rewrites) + optional identity of the logged-in user. */
-	private function inline_js( $identify ) {
+	/**
+	 * The identity assertion printed for a logged-in user, proving to Yamidoo
+	 * that the email came from WordPress rather than the visitor's console.
+	 *
+	 * The message is domain-separated with an `identify:` prefix. The same
+	 * lookup secret also authenticates Yamidoo's customer-data requests, which
+	 * are signed over `<timestamp>.<email>`. Signing the bare email here let
+	 * those two message spaces overlap: an account registered with the address
+	 * `<timestamp>.victim@example.com` was handed a signature byte-identical to
+	 * the one the lookup endpoint required for victim@example.com at that
+	 * timestamp, and replaying it disclosed the victim's customer card. A
+	 * prefix that can never start with a digit keeps the two apart. Any future
+	 * use of this secret must sign under its own prefix too.
+	 *
+	 * Verified server-side in apps/dashboard/lib/integrations/customer-lookup.ts;
+	 * the standalone Yamidoo plugin's yamidoo_identity_signature() must match.
+	 */
+	public static function identity_signature( $email, $secret ) {
+		return hash_hmac( 'sha256', 'identify:' . strtolower( trim( (string) $email ) ), (string) $secret );
+	}
+
+	/**
+	 * @param bool  $identify Pass the logged-in user to the widget.
+	 * @param array $conn     The connection being embedded (see connection()).
+	 */
+	private function inline_js( $identify, $conn ) {
 		$flags = JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT;
 		$js    = 'window.yamidoo=window.yamidoo||function(){(window.yamidoo.q=window.yamidoo.q||[]).push(arguments)};';
 		$js   .= 'window.yamidooSiteId=' . wp_json_encode( $this->site_id, $flags ) . ';';
@@ -916,9 +1013,16 @@ class WPZOOM_AI_Chat {
 			);
 			// Proof this identity came from WordPress, not the visitor's console —
 			// only then may the AI answer account questions for this email.
-			$settings = self::get_settings();
-			if ( ! empty( $settings['lookup_secret'] ) && ! empty( $settings['share_customer_data'] ) ) {
-				$data['signature'] = hash_hmac( 'sha256', strtolower( trim( $user->user_email ) ), $settings['lookup_secret'] );
+			// A borrowed standalone connection signs with the standalone plugin's
+			// own helper, so its secret and its share_customer_data switch stay
+			// the single authority; otherwise the same HMAC with our settings.
+			if ( 'standalone' === $conn['source'] && function_exists( 'yamidoo_identity_signature' ) ) {
+				$sig = (string) yamidoo_identity_signature( $user->user_email );
+				if ( '' !== $sig ) {
+					$data['signature'] = $sig;
+				}
+			} elseif ( '' !== $conn['lookup_secret'] && $conn['share_customer_data'] ) {
+				$data['signature'] = self::identity_signature( $user->user_email, $conn['lookup_secret'] );
 			}
 			$js .= 'try{var u=' . wp_json_encode( $uid, $flags ) . ";if(localStorage.getItem('yamidoo_wp_uid')!==u){window.yamidoo('logout');localStorage.setItem('yamidoo_wp_uid',u);}}catch(e){}";
 			$js .= 'window.yamidoo(' . wp_json_encode( 'identify', $flags ) . ',' . wp_json_encode( $data, $flags ) . ');';
