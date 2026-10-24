@@ -309,7 +309,7 @@ if ( ! function_exists( 'wpzoom_social_icons_plugin_action_links' ) ) {
 			// Add Go Pro link if the Pro plugin is not active.
 			if ( ! function_exists( 'wpzoom_social_icons_pro' ) ) {
 				$links['go_pro'] = sprintf(
-					'<a href="%1$s" target="_blank" class="wpzoom-social-icons-gopro" style="color:#2271b1;font-weight:bold;">UPGRADE &rarr; <span class="wpzoom-premium-badge" style="background-color: #2271b1; color: #fff; margin-left: 5px; font-size: 11px; min-height: 16px; border-radius: 8px; display: inline-block; font-weight: 600; line-height: 1.6; padding: 0 8px;">%2$s</span></a>',
+					'<a href="%1$s" target="_blank" class="wpzoom-social-icons-gopro" style="color:var(--wp-admin-theme-color, #2271b1);font-weight:bold;">UPGRADE &rarr; <span class="wpzoom-premium-badge" style="background-color: #2271b1; color: #fff; margin-left: 5px; font-size: 11px; min-height: 16px; border-radius: 8px; display: inline-block; font-weight: 600; line-height: 1.6; padding: 0 8px;">%2$s</span></a>',
 					'https://www.wpzoom.com/plugins/social-share/?utm_source=wpadmin&utm_medium=plugin&utm_campaign=social-icons-free&utm_content=plugins-page',
 					esc_html__( 'PRO', 'social-icons-widget-by-wpzoom' )
 				);

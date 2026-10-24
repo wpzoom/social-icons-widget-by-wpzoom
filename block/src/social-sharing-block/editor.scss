@@ -51,7 +51,7 @@
                 cursor: pointer;
                 
                 &:hover {
-                    box-shadow: 0 0 0 2px #007cba;
+                    box-shadow: 0 0 0 2px var(--wp-admin-theme-color, #007cba);
                     position: relative;
                     z-index: 1;
                     
@@ -61,7 +61,7 @@
                         position: absolute;
                         top: -8px;
                         right: -8px;
-                        background: #007cba;
+                        background: var(--wp-admin-theme-color, #007cba);
                         color: white;
                         border-radius: 50%;
                         width: 16px;
@@ -168,8 +168,8 @@
             }
             
             &.drag-over {
-                border-top: 2px solid #007cba;
-                box-shadow: 0 0 0 1px #007cba;
+                border-top: 2px solid var(--wp-admin-theme-color, #007cba);
+                box-shadow: 0 0 0 1px var(--wp-admin-theme-color, #007cba);
                 position: relative;
                 z-index: 0;
                 background-color: #f0f7ff;
@@ -181,7 +181,7 @@
                     left: 0;
                     right: 0;
                     height: 2px;
-                    background-color: #007cba;
+                    background-color: var(--wp-admin-theme-color, #007cba);
                     z-index: 1;
                 }
             }

@@ -225,10 +225,27 @@
 	gap: 4px;
 }
 
-.wpzoom-settings-card__action .dashicons {
-	font-size: 16px;
+.zoom-social-icons-settings .wpzoom-settings-card__action .dashicons {
+	display: block;
 	width: 16px;
 	height: 16px;
+	margin: 0;
+	font-size: 16px;
+	line-height: 1;
+	vertical-align: baseline;
+}
+
+.zoom-social-icons-settings .wpzoom-settings-card__action .dashicons::before {
+	display: block;
+	line-height: 16px;
+}
+
+/* Buttons inside cards are a size down from the page's Save button */
+.zoom-social-icons-settings .wpzoom-settings-card .button {
+	min-height: 32px;
+	height: 32px;
+	padding: 0 12px;
+	line-height: 30px;
 }
 
 /* Rows with a switch */
@@ -280,7 +297,7 @@
 .wpzoom-settings-badge {
 	padding: 2px 8px;
 	border-radius: 999px;
-	background: #f0f6fc;
+	background: color-mix(in srgb, var(--wp-admin-theme-color, #2271b1) 8%, #fff);
 	color: var(--wp-admin-theme-color, #2271b1);
 	font-size: 11px;
 	font-weight: 500;
@@ -431,7 +448,7 @@
 
 .wpzoom-ps-chip input:checked + span {
 	border-color: var(--wp-admin-theme-color, #2271b1);
-	background: #f0f6fc;
+	background: color-mix(in srgb, var(--wp-admin-theme-color, #2271b1) 8%, #fff);
 	color: #1d2327;
 }
 

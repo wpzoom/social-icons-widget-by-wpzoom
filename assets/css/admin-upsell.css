@@ -7,7 +7,7 @@
    Pro Badge
    ===================================================== */
 .wpzoom-pro-badge {
-    background: #2271b1;
+    background: var(--wp-admin-theme-color, #2271b1);
     color: #fff;
     font-size: 10px;
     padding: 2px 6px;
@@ -19,7 +19,7 @@
 }
 
 .wpzoom-pro-badge-large {
-    background: #2271b1;
+    background: var(--wp-admin-theme-color, #2271b1);
     color: #fff;
     font-size: 12px;
     padding: 4px 12px;
@@ -85,7 +85,7 @@
 
 .wpzoom-stat-card .wpzoom-stat-icon {
     font-size: 32px;
-    color: #2271b1;
+    color: var(--wp-admin-theme-color, #2271b1);
 }
 
 .wpzoom-stat-card .wpzoom-stat-number {
@@ -126,7 +126,7 @@
 
 .wpzoom-chart-bar {
     flex: 1;
-    background: #2271b1;
+    background: var(--wp-admin-theme-color, #2271b1);
     border-radius: 4px 4px 0 0;
     min-height: 20px;
 }
@@ -535,7 +535,7 @@
 /* Editor Pro Badge */
 .editor-styles-wrapper .wpzoom-pro-badge,
 .components-panel__body-title .wpzoom-pro-badge {
-    background: #2271b1;
+    background: var(--wp-admin-theme-color, #2271b1);
     color: #fff;
     font-size: 9px;
     padding: 2px 5px;
@@ -982,7 +982,7 @@
     font-size: 20px;
     width: 20px;
     height: 20px;
-    color: #2271b1;
+    color: var(--wp-admin-theme-color, #2271b1);
 }
 
 .wpzoom-floating-settings-group {

@@ -111,13 +111,13 @@
 	box-shadow: 0 1px 3px rgba(0,0,0,0.2);
 }
 .wpzoom-ctc-toggle-switch input:checked + .wpzoom-ctc-slider {
-	background: #2271b1;
+	background: var(--wp-admin-theme-color, #2271b1);
 }
 .wpzoom-ctc-toggle-switch input:checked + .wpzoom-ctc-slider::before {
 	transform: translateX(20px);
 }
 .wpzoom-ctc-toggle-switch input:focus-visible + .wpzoom-ctc-slider {
-	outline: 3px solid #2271b1;
+	outline: 3px solid var(--wp-admin-theme-color, #2271b1);
 	outline-offset: 2px;
 }
 
@@ -444,11 +444,11 @@
 	height: 0;
 }
 .wpzoom-ctc-size-option:hover {
-	color: #2271b1;
+	color: var(--wp-admin-theme-color, #2271b1);
 }
 .wpzoom-ctc-size-option.is-selected {
 	background: #fff;
-	color: #2271b1;
+	color: var(--wp-admin-theme-color, #2271b1);
 	font-weight: 600;
 	box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);
 }
@@ -483,12 +483,12 @@
 	height: 0;
 }
 .wpzoom-ctc-icon-choice:hover {
-	border-color: #2271b1;
-	background: #f0f6fc;
+	border-color: var(--wp-admin-theme-color, #2271b1);
+	background: color-mix(in srgb, var(--wp-admin-theme-color, #2271b1) 8%, #fff);
 }
 .wpzoom-ctc-icon-choice.is-selected {
-	border-color: #2271b1;
-	background: #f0f6fc;
+	border-color: var(--wp-admin-theme-color, #2271b1);
+	background: color-mix(in srgb, var(--wp-admin-theme-color, #2271b1) 8%, #fff);
 }
 .wpzoom-ctc-icon-choice svg,
 .wpzoom-ctc-icon-choice .social-icon,
@@ -508,7 +508,7 @@
 .wpzoom-ctc-icon-choice.is-selected svg,
 .wpzoom-ctc-icon-choice.is-selected .social-icon,
 .wpzoom-ctc-icon-choice.is-selected .dashicons {
-	color: #2271b1;
+	color: var(--wp-admin-theme-color, #2271b1);
 }
 
 /* --------------------------------------------------------------------------

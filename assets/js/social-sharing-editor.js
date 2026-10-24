@@ -77,9 +77,9 @@
                 // Create the instructions panel
                 const instructionsPanel = document.createElement('div');
                 instructionsPanel.className = 'wpzoom-sharing-editor-instructions';
-                instructionsPanel.style.backgroundColor = '#eef8f9';
+                instructionsPanel.style.backgroundColor = 'color-mix(in srgb, var(--wp-admin-theme-color, #0073aa) 7%, #fff)';
                 instructionsPanel.style.padding = '24px';
-                instructionsPanel.style.borderLeft = '4px solid #0073aa';
+                instructionsPanel.style.borderLeft = '4px solid var(--wp-admin-theme-color, #0073aa)';
                 instructionsPanel.style.boxShadow = '0 1px 1px rgba(0, 0, 0, 0.04)';
 
                 instructionsPanel.innerHTML = `
