@@ -867,7 +867,7 @@ return array(
 				'news',
 				'social-media',
 			),
-			'color'    => '#e74a1e',
+			'color'    => '#FF4500',
 		),
 		array(
 			'icon'     => 'researchgate',

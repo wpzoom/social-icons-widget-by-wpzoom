@@ -34,6 +34,7 @@
 
       .arrow-icon {
         margin: 0px auto;
+        fill: currentColor;
       }
     }
 
@@ -135,6 +136,53 @@
         top: 50%;
         transform: translateY(-50%);
         color: #757575;
+      }
+
+      // The matched icon, drawn like the block's own icons: white glyph on the
+      // brand color.
+      .url-input-icon--matched {
+        left: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 22px;
+        height: 22px;
+        border-radius: 50%;
+        background-color: #444140;
+        color: #fff;
+        line-height: 0;
+
+        // Carries `social-icon` (the fonts need it to draw the glyph), so undo
+        // that class's tile styling here.
+        .url-input-icon-glyph,
+        .url-input-icon-glyph.social-icon {
+          display: flex;
+          border: 0;
+          border-radius: 0;
+          box-shadow: none;
+          align-items: center;
+          justify-content: center;
+          width: auto;
+          height: auto;
+          margin: 0;
+          padding: 0;
+          font-size: 12px;
+          line-height: 1;
+          color: inherit;
+          background: none;
+
+          &::before {
+            font-size: 12px;
+            width: auto;
+            height: auto;
+          }
+        }
+
+        svg {
+          width: 12px;
+          height: 12px;
+          fill: currentColor;
+        }
       }
 
       .url-input {

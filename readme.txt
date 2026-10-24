@@ -265,6 +265,8 @@ Floating Buttons is a PRO feature that displays your social sharing icons as a f
 == Changelog ==
 
 = 4.7.4 =
+* Updated the Reddit icon to Reddit's current logo and brand color (#FF4500)
+* Fixed the Socicons font being downloaded twice when font preloading is on
 * SECURITY: the AI Chat identity signature printed for logged-in users is now domain-separated from the signature that authenticates customer-data lookups. Before, an account registered with a crafted email address could reuse its own signature to read another customer's orders and licenses through the lookup endpoint. Reported by Wordfence.
 * IMPROVED: AI Chat customer data now lists up to 25 licenses (active ones first) and 15 orders and subscriptions, and reports the total count when there are more
 

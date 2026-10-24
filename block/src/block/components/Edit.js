@@ -15,6 +15,10 @@ import { useState, useEffect, useRef, Fragment } from '@wordpress/element';
 import { useSelect } from '@wordpress/data';
 import { Icon, Button, Popover, Modal, TextareaControl } from '@wordpress/components';
 import { AlignmentToolbar, BlockControls, useBlockProps } from '@wordpress/block-editor';
+// SVG icons for controls drawn inside the editor canvas (an iframe that only has
+// the Dashicons font when that icon kit is enabled); Dashicon names there can
+// render as empty boxes.
+import { plus } from '@wordpress/icons';
 
 /**
  * Internal dependencies
@@ -353,6 +357,9 @@ export default function Edit( props ) {
 			iconKit: iconObject.modalIconKit,
 			color: iconObject.modalColor,
 			hoverColor: iconObject.modalHoverColor,
+			// A hand-picked icon is the icon for this URL now, so the URL field
+			// should show it even if an earlier Detect Icon found no match.
+			iconDetected: undefined,
 		};
 		setAttributes( { selectedIcons: selectedIconsClone, showModal: false } );
 	};
@@ -676,6 +683,31 @@ export default function Edit( props ) {
 											save={ ( url ) =>
 												popoverSearchHandler( key, url )
 											}
+											// The icon in the URL field: the one this URL is
+											// paired with, once there is a URL and the last
+											// Detect Icon did not fail. Globe otherwise. Drawn
+											// with the same classes as the canvas: the icon
+											// fonts only draw glyphs for `.social-icon.<kit>-<icon>`,
+											// so `social-icon` stays and its tile styling is
+											// reset in editor.scss.
+											icon={
+												list.url && list.iconDetected !== false ? (
+													list.iconKit === 'svg' && list.customSvg ? (
+														<span
+															className="url-input-icon-glyph"
+															dangerouslySetInnerHTML={ { __html: list.customSvg } }
+														/>
+													) : (
+														<span
+															className={ classnames(
+																'url-input-icon-glyph',
+																Helper.getIconClassList( list.iconKit, list.icon )
+															) }
+														/>
+													)
+												) : null
+											}
+											color={ list.color }
 										/>
 									</div>
 									{ list.justUpdated && (
@@ -898,8 +930,9 @@ export default function Edit( props ) {
 						onClick={ insertIcon }
 						style={ { padding: attributes.iconsPadding } }
 						className="insert-icon"
+						label={ __( 'Add icon', 'social-icons-widget-by-wpzoom' ) }
 					>
-						<Icon icon="insert" size="20" />
+						<Icon icon={ plus } size={ 24 } />
 					</Button>
 				) }
 				{ attributes.selectedIcons[ attributes.activeIconIndex ] && (

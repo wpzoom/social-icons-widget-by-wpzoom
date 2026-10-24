@@ -156,7 +156,9 @@ function zoom_social_icons_enqueue_fonts() {
 	}
 
 	if ( wp_style_is( 'wpzoom-social-icons-socicon' ) ) {
-		$fonts[] = WPZOOM_SOCIAL_ICONS_PLUGIN_URL . 'assets/font/socicon.woff2?v=' . WPZOOM_SOCIAL_ICONS_PLUGIN_VERSION;
+		// Same URL as the @font-face in wpzoom-socicon.css, query included: a
+		// different URL makes the browser fetch the font twice. Bump both together.
+		$fonts[] = WPZOOM_SOCIAL_ICONS_PLUGIN_URL . 'assets/font/socicon.woff2?v=4.7.4';
 	}
 
 	/**
