@@ -268,6 +268,7 @@ Floating Buttons is a PRO feature that displays your social sharing icons as a f
 * IMPROVED: Social Icons block — Detect Icon now looks in Socicons first and falls back to the other enabled icon kits (it used to take the last kit with a match, often Font Awesome)
 * NEW: the icon's URL field shows the matching icon as you type
 * NEW: visual style picker for the Social Icons block — each style shows your own icons, so you see the result before choosing. Style names are shorter and easier to tell apart
+* New, clearer icon for the Social Icons block in the block inserter
 * NEW: search in the "Select Icon" dialog covers every enabled icon kit, grouped by kit
 * IMPROVED: "Select Icon" dialog — the URL is no longer rewritten while you type, typing a URL picks its icon from any kit, a custom label or color is kept when you pick another icon, the list no longer jumps while you type, and Search, Delete and Save stay visible on shorter screens
 * Fixed color swatches showing an outdated color after Detect Icon, and the color picker staying open when clicking elsewhere
