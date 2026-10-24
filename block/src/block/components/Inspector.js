@@ -15,6 +15,7 @@ import {
 	ColorIndicator,
 	RangeControl,
 } from '@wordpress/components';
+import StylePicker, { withStyleClass } from './StylePicker';
 
 /**
  * Create an Inspector Controls wrapper Component
@@ -232,6 +233,15 @@ export default class Inspector extends Component {
 				</PanelBody>
             </InspectorControls>
             <InspectorControls group="styles">
+				<StylePicker
+					name={ this.props.name }
+					attributes={ this.props.attributes }
+					onSelect={ ( styleName ) =>
+						setAttributes( {
+							className: withStyleClass( this.props.attributes.className, styleName ),
+						} )
+					}
+				/>
 				<PanelBody
 					title={ __(
 						'Icon Styling Settings',

@@ -329,7 +329,7 @@ registerBlockType( 'wpzoom-blocks/social-icons', {
 		{
 			name: 'with-canvas-round',
 			label: __(
-				'Color Background / Round White Icon',
+				'Filled circle',
 				'social-icons-widget-by-wpzoom'
 			),
 			isDefault: true,
@@ -337,39 +337,39 @@ registerBlockType( 'wpzoom-blocks/social-icons', {
 		{
 			name: 'with-canvas-rounded',
 			label: __(
-				'Color Background / Rounded White Icon',
+				'Filled rounded',
 				'social-icons-widget-by-wpzoom'
 			),
 		},
 		{
 			name: 'with-canvas-squared',
 			label: __(
-				'Color Background / Squared White Icon',
+				'Filled square',
 				'social-icons-widget-by-wpzoom'
 			),
 		},
 		{
 			name: 'without-canvas',
-			label: __( 'Color Icon / No Background', 'social-icons-widget-by-wpzoom' ),
+			label: __( 'Icon only', 'social-icons-widget-by-wpzoom' ),
 		},
 		{
 			name: 'without-canvas-with-border',
 			label: __(
-				'Color Icon / No Background with border',
+				'Outlined',
 				'social-icons-widget-by-wpzoom'
 			),
 		},
 		{
 			name: 'with-label-canvas-rounded',
 			label: __(
-				'Color Background / Rounded White Icon with label',
+				'Filled with labels',
 				'social-icons-widget-by-wpzoom'
 			),
 		},
 		{
 			name: 'without-canvas-with-label',
 			label: __(
-				'Color Icon / No Background with label',
+				'Icon with labels',
 				'social-icons-widget-by-wpzoom'
 			),
 		},
