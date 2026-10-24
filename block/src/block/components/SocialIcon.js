@@ -1,6 +1,7 @@
 import { Component } from '@wordpress/element';
 import classnames from 'classnames';
 import Helper from '../utils/helper';
+import IconGlyph from './IconGlyph';
 
 /**
  * One icon in the "Select Icon" grid. Behaves as a toggle button: focusable,
@@ -30,8 +31,10 @@ class SocialIcon extends Component {
 	render() {
 		const name = Helper.humanizeIconLabel( this.props.icon );
 		return (
-			<span
+			<IconGlyph
 				ref={ this.props.setRef }
+				iconKit={ this.props.iconKit }
+				icon={ this.props.icon }
 				role="button"
 				tabIndex={ 0 }
 				title={ this.props.kitLabel ? `${ name } — ${ this.props.kitLabel }` : name }
@@ -39,16 +42,13 @@ class SocialIcon extends Component {
 				aria-pressed={ !! this.props.isSelected }
 				onClick={ () => this.props.click( this.props.icon ) }
 				onKeyDown={ this.onKeyDown }
-				className={ classnames(
-					Helper.getIconClassList( this.props.iconKit, this.props.icon ),
-					{ selected: this.props.isSelected }
-				) }
+				className={ classnames( { selected: this.props.isSelected } ) }
 				style={ {
 					backgroundColor: this.state.isHover ? this.props.hoverColor : this.props.color,
 				} }
 				onMouseEnter={ this.onMouseEnterCallback }
 				onMouseLeave={ this.onMouseLeaveCallback }
-			></span>
+			/>
 		);
 	}
 }

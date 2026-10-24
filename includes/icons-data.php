@@ -419,7 +419,7 @@ return array(
 			'category' => array(
 				'programming',
 			),
-			'color'    => '#221e1b',
+			'color'    => '#181717',
 		),
 		array(
 			'icon'     => 'goodreads',
@@ -527,7 +527,7 @@ return array(
 				'photography',
 				'social-media',
 			),
-			'color'    => '#e4405f',
+			'color'    => '#FF0069',
 		),
 		array(
 			'icon'     => 'issuu',
@@ -724,7 +724,7 @@ return array(
 			'category' => array(
 				'business',
 			),
-			'color'    => '#01B247',
+			'color'    => '#8ED500',
 		),
 		array(
 			'icon'     => 'odnoklassniki',
@@ -1453,7 +1453,7 @@ return array(
         ),
 
         array(
-            'icon'     => 'cubebrush ',
+            'icon'     => 'cubebrush',
             'category' => array(
                 'games',
             ),
@@ -1477,8 +1477,394 @@ return array(
             ),
             'color'    => '#000',
         ),
+		// SVG only: these have no glyph in the Socicons font, so they show where
+		// icons are drawn as SVG (the block, and the site's front end).
+		array(
+			'icon'     => 'mixcloud',
+			'category' => array(
+				'brand',
+			),
+			'color'    => '#5000FF',
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'home-icon',
+			'category' => array(
+				'travel',
+			),
+			'color'    => '#7b929f',
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'mobile',
+			'category' => array(
+				'travel',
+			),
+			'color'    => '#1ebf2b',
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'heart-icon',
+			'category' => array(
+				'travel',
+			),
+			'color'    => '#F43E37',
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'plane',
+			'category' => array(
+				'travel',
+			),
+			'color'    => '#7247a1',
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'recipes',
+			'category' => array(
+				'travel',
+			),
+			'color'    => '#dd703c',
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'user',
+			'category' => array(
+				'travel',
+			),
+			'color'    => '#7b929f',
+			'svg_only' => true,
+		),
 
 
+		array(
+			'icon'     => 'kick',
+			'category' => array(
+				'video',
+			),
+			'color'    => '#53FC19',
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'twitch',
+			'category' => array(
+				'video',
+			),
+			'color'    => '#9146FF',
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'rumble',
+			'category' => array(
+				'video',
+			),
+			'color'    => '#85C742',
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'odysee',
+			'category' => array(
+				'video',
+			),
+			'color'    => '#EF1970',
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'pixelfed',
+			'category' => array(
+				'photography',
+			),
+			'color'    => '#6366F1',
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'vsco',
+			'category' => array(
+				'photography',
+			),
+			'color'    => '#000000',
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'farcaster',
+			'category' => array(
+				'social-media',
+			),
+			'color'    => '#855DCD',
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'bereal',
+			'category' => array(
+				'social-media',
+			),
+			'color'    => '#000000',
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'weibo',
+			'category' => array(
+				'social-media',
+			),
+			'color'    => '#E6162D',
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'quora',
+			'category' => array(
+				'social-media',
+			),
+			'color'    => '#B92B27',
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'clubhouse',
+			'category' => array(
+				'audio',
+			),
+			'color'    => '#FFE450',
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'audible',
+			'category' => array(
+				'audio',
+			),
+			'color'    => '#F8991C',
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'kakaotalk',
+			'category' => array(
+				'communication',
+			),
+			'color'    => '#FFCD00',
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'signal',
+			'category' => array(
+				'communication',
+			),
+			'color'    => '#3B45FD',
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'threema',
+			'category' => array(
+				'communication',
+			),
+			'color'    => '#3FE669',
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'zoom',
+			'category' => array(
+				'communication',
+			),
+			'color'    => '#0B5CFF',
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'naver',
+			'category' => array(
+				'search-engines',
+			),
+			'color'    => '#03C75A',
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'linktree',
+			'category' => array(
+				'web-tools',
+			),
+			'color'    => '#43E55E',
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'product-hunt',
+			'category' => array(
+				'web-tools',
+			),
+			'color'    => '#DA552F',
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'notion',
+			'category' => array(
+				'web-tools',
+			),
+			'color'    => '#000000',
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'calendly',
+			'category' => array(
+				'calendar',
+			),
+			'color'    => '#006BFF',
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'buy-me-a-coffee',
+			'category' => array(
+				'payment',
+			),
+			'color'    => '#FFDD00',
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'cash-app',
+			'category' => array(
+				'payment',
+			),
+			'color'    => '#00C244',
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'gofundme',
+			'category' => array(
+				'payment',
+			),
+			'color'    => '#00B964',
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'kickstarter',
+			'category' => array(
+				'business',
+			),
+			'color'    => '#05CE78',
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'upwork',
+			'category' => array(
+				'business',
+			),
+			'color'    => '#6FDA44',
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'gitlab',
+			'category' => array(
+				'programming',
+			),
+			'color'    => '#FC6D26',
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'bitbucket',
+			'category' => array(
+				'programming',
+			),
+			'color'    => '#0052CC',
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'dev-to',
+			'category' => array(
+				'programming',
+			),
+			'color'    => '#0A0A0A',
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'leetcode',
+			'category' => array(
+				'programming',
+			),
+			'color'    => '#FFA116',
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'hashnode',
+			'category' => array(
+				'blogging',
+			),
+			'color'    => '#2962FF',
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'apple-music',
+			'category' => array(
+				'music',
+			),
+			'color'    => '#FA243C',
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'youtube-music',
+			'category' => array(
+				'music',
+			),
+			'color'    => '#FF0000',
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'audiomack',
+			'category' => array(
+				'music',
+			),
+			'color'    => '#FFA200',
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'pandora',
+			'category' => array(
+				'music',
+			),
+			'color'    => '#224099',
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'google-play',
+			'category' => array(
+				'software',
+			),
+			'color'    => '#414141',
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'claude',
+			'category' => array(
+				'software',
+			),
+			'color'    => '#D97757',
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'itch-io',
+			'category' => array(
+				'games',
+			),
+			'color'    => '#FA5C5C',
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'epic-games',
+			'category' => array(
+				'games',
+			),
+			'color'    => '#313131',
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'alltrails',
+			'category' => array(
+				'travel',
+			),
+			'color'    => '#142800',
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'website',
+			'category' => array(
+				'web-tools',
+			),
+			'color'    => '#3c434a',
+			'svg_only' => true,
+		),
 	),
 	'dashicons'   => array(
 		array(
@@ -4575,24 +4961,12 @@ return array(
 			),
 			'icon'     => 'pubmed',
 		),
-		array(
-			'category' => array(
-				'',
-			),
-			'icon'     => 'publons',
-		),
         array(
             'category' => array(
                 '',
             ),
             'icon'     => 'pubpeer',
         ),
-		array(
-			'category' => array(
-				'',
-			),
-			'icon'     => 'pubmed',
-		),
 		array(
 			'category' => array(
 				'',
@@ -11348,6 +11722,746 @@ return array(
 		array(
 			'icon'     => '500px',
 			'category' => array(),
+		),
+		array(
+			'icon'     => '42-group',
+			'category' => array(),
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'a11y-project',
+			'category' => array(),
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'arch-linux',
+			'category' => array(),
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'bilibili',
+			'category' => array(),
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'bluesky',
+			'category' => array(),
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'board-game-geek',
+			'category' => array(),
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'bots',
+			'category' => array(),
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'brave',
+			'category' => array(),
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'brave-reverse',
+			'category' => array(),
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'build-awesome',
+			'category' => array(),
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'cash-app',
+			'category' => array(),
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'circle-zulip',
+			'category' => array(),
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'claude',
+			'category' => array(),
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'cloudflare',
+			'category' => array(),
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'cmplid',
+			'category' => array(),
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'codeberg',
+			'category' => array(),
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'copilot',
+			'category' => array(),
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'css',
+			'category' => array(),
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'dailymotion',
+			'category' => array(),
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'dart-lang',
+			'category' => array(),
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'debian',
+			'category' => array(),
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'deezer',
+			'category' => array(),
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'devpost',
+			'category' => array(),
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'disqus',
+			'category' => array(),
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'dolibarr',
+			'category' => array(),
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'duolingo',
+			'category' => array(),
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'edge-legacy',
+			'category' => array(),
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'eleventy',
+			'category' => array(),
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'fediverse',
+			'category' => array(),
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'files-pinwheel',
+			'category' => array(),
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'firefox-browser',
+			'category' => array(),
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'flutter',
+			'category' => array(),
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'forgejo',
+			'category' => array(),
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'gitee',
+			'category' => array(),
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'globaleaks',
+			'category' => array(),
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'golang',
+			'category' => array(),
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'google-pay',
+			'category' => array(),
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'google-scholar',
+			'category' => array(),
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'guilded',
+			'category' => array(),
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'hashnode',
+			'category' => array(),
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'hive',
+			'category' => array(),
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'hugging-face',
+			'category' => array(),
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'ideal',
+			'category' => array(),
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'instalod',
+			'category' => array(),
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'internet-archive',
+			'category' => array(),
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'julia',
+			'category' => array(),
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'jxl',
+			'category' => array(),
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'kakao-talk',
+			'category' => array(),
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'ko-fi',
+			'category' => array(),
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'kubernetes',
+			'category' => array(),
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'leetcode',
+			'category' => array(),
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'lets-encrypt',
+			'category' => array(),
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'letterboxd',
+			'category' => array(),
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'linktree',
+			'category' => array(),
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'lumon',
+			'category' => array(),
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'lumon-drop',
+			'category' => array(),
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'matrix',
+			'category' => array(),
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'mattermost',
+			'category' => array(),
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'meta',
+			'category' => array(),
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'microblog',
+			'category' => array(),
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'mintbit',
+			'category' => array(),
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'mixer',
+			'category' => array(),
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'nextcloud',
+			'category' => array(),
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'nfc-directional',
+			'category' => array(),
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'nfc-symbol',
+			'category' => array(),
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'notion',
+			'category' => array(),
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'obs-studio',
+			'category' => array(),
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'obsidian',
+			'category' => array(),
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'octopus-deploy',
+			'category' => array(),
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'odysee',
+			'category' => array(),
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'openai',
+			'category' => array(),
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'openstreetmap',
+			'category' => array(),
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'opensuse',
+			'category' => array(),
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'padlet',
+			'category' => array(),
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'pandora',
+			'category' => array(),
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'perbyte',
+			'category' => array(),
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'pix',
+			'category' => array(),
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'pixelfed',
+			'category' => array(),
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'pixiv',
+			'category' => array(),
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'postgresql',
+			'category' => array(),
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'roblox-creator-studio',
+			'category' => array(),
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'ror',
+			'category' => array(),
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'rust',
+			'category' => array(),
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'scaleway',
+			'category' => array(),
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'screenpal',
+			'category' => array(),
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'shoelace',
+			'category' => array(),
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'shopify',
+			'category' => array(),
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'signal-messenger',
+			'category' => array(),
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'sitrox',
+			'category' => array(),
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'solana',
+			'category' => array(),
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'space-awesome',
+			'category' => array(),
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'square-bluesky',
+			'category' => array(),
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'square-build-awesome-stroke',
+			'category' => array(),
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'square-deskpro',
+			'category' => array(),
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'square-figma',
+			'category' => array(),
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'square-font-awesome',
+			'category' => array(),
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'square-gitlab',
+			'category' => array(),
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'square-instagram',
+			'category' => array(),
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'square-letterboxd',
+			'category' => array(),
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'square-linkedin',
+			'category' => array(),
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'square-pied-piper',
+			'category' => array(),
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'square-threads',
+			'category' => array(),
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'square-upwork',
+			'category' => array(),
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'square-web-awesome',
+			'category' => array(),
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'square-web-awesome-stroke',
+			'category' => array(),
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'square-x-twitter',
+			'category' => array(),
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'storybook',
+			'category' => array(),
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'stubber',
+			'category' => array(),
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'substack',
+			'category' => array(),
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'supportnow',
+			'category' => array(),
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'svelte',
+			'category' => array(),
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'symfonycasts',
+			'category' => array(),
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'tailwind-css',
+			'category' => array(),
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'tesla',
+			'category' => array(),
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'tex',
+			'category' => array(),
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'threads',
+			'category' => array(),
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'threema',
+			'category' => array(),
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'tidal',
+			'category' => array(),
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'tiktok',
+			'category' => array(),
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'tor-browser',
+			'category' => array(),
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'typescript',
+			'category' => array(),
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'ultralytics',
+			'category' => array(),
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'ultralytics-hub',
+			'category' => array(),
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'ultralytics-yolo',
+			'category' => array(),
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'uncharted',
+			'category' => array(),
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'unison',
+			'category' => array(),
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'unity',
+			'category' => array(),
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'unreal-engine',
+			'category' => array(),
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'unsplash',
+			'category' => array(),
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'upwork',
+			'category' => array(),
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'venmo',
+			'category' => array(),
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'venmo-v',
+			'category' => array(),
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'vim',
+			'category' => array(),
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'visual-studio',
+			'category' => array(),
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'vsco',
+			'category' => array(),
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'w3c',
+			'category' => array(),
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'watchman-monitoring',
+			'category' => array(),
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'web-awesome',
+			'category' => array(),
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'webflow',
+			'category' => array(),
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'wirsindhandwerk',
+			'category' => array(),
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'wodu',
+			'category' => array(),
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'x-twitter',
+			'category' => array(),
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'xmpp',
+			'category' => array(),
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'xrp',
+			'category' => array(),
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'xrpl',
+			'category' => array(),
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'youtube-shorts',
+			'category' => array(),
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'zoom',
+			'category' => array(),
+			'svg_only' => true,
+		),
+		array(
+			'icon'     => 'zulip',
+			'category' => array(),
+			'svg_only' => true,
 		),
 	),
 	'far'         => array(

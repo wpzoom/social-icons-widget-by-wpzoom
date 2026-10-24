@@ -28,6 +28,7 @@ import Inspector from './Inspector';
 import PopoverSearch from './PopoverSearch';
 import SortableArrows from './SortableArrows';
 import ModalColorPicker from './ModalColorPicker';
+import IconGlyph from './IconGlyph';
 import { getStyleVariations, getStyleSwitchAttributes } from '../utils/style-variations';
 
 export default function Edit( props ) {
@@ -110,12 +111,7 @@ export default function Edit( props ) {
 				dangerouslySetInnerHTML={ { __html: customSvg } }
 			/>
 		) : (
-			<span
-				className={ classnames(
-					'url-input-icon-glyph',
-					Helper.getIconClassList( iconKit, icon )
-				) }
-			/>
+			<IconGlyph className="url-input-icon-glyph" iconKit={ iconKit } icon={ icon } />
 		);
 
 	// Always points at the latest attributes so async callbacks (e.g. timers)
@@ -411,13 +407,7 @@ export default function Edit( props ) {
 				/>
 			);
 		} else {
-			iconContent = (
-				<span
-					className={ classnames(
-						Helper.getIconClassList( list.iconKit, list.icon )
-					) }
-				/>
-			);
+			iconContent = <IconGlyph iconKit={ list.iconKit } icon={ list.icon } />;
 		}
 
 		return (

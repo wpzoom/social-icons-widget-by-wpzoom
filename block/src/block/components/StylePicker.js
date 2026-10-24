@@ -9,6 +9,7 @@ import { omit } from 'lodash';
  */
 import { __ } from '@wordpress/i18n';
 import { useSelect } from '@wordpress/data';
+import { useEffect, useRef } from '@wordpress/element';
 import { getSaveElement } from '@wordpress/blocks';
 import { Button, PanelBody } from '@wordpress/components';
 import TokenList from '@wordpress/token-list';
@@ -18,6 +19,7 @@ import TokenList from '@wordpress/token-list';
  */
 import Helper from '../utils/helper';
 import { getStyleSwitchAttributes } from '../utils/style-variations';
+import { fillIconSpans, useIconKits } from '../utils/svg-icons';
 
 /**
  * `className` with its block style swapped for `styleName`.
@@ -52,6 +54,14 @@ export default function StylePicker( { name, attributes, onSelect } ) {
 		[ name ]
 	);
 
+	// The previews are the block's save output, whose icon spans are empty:
+	// draw the icons into them as SVG once their kits have loaded.
+	const gridRef = useRef();
+	useIconKits( ( attributes.selectedIcons || [] ).map( ( item ) => item.iconKit ) );
+	useEffect( () => {
+		fillIconSpans( gridRef.current );
+	} );
+
 	if ( ! styles || ! styles.length ) {
 		return null;
 	}
@@ -66,7 +76,7 @@ export default function StylePicker( { name, attributes, onSelect } ) {
 			title={ __( 'Style', 'social-icons-widget-by-wpzoom' ) }
 			className="wpzoom-style-picker"
 		>
-			<div className="wpzoom-style-picker__grid">
+			<div className="wpzoom-style-picker__grid" ref={ gridRef }>
 				{ styles.map( ( style ) => {
 					const withLabels = /label/.test( style.name );
 					const next = getStyleSwitchAttributes( attributes, style.name ) || {};

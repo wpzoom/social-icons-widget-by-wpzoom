@@ -117,6 +117,18 @@ class Zoom_Social_Icons_Widget extends WP_Widget {
 		$this->icons     = include WPZOOM_SOCIAL_ICONS_PLUGIN_PATH . 'includes/icons-data.php';
 		$removed_keys    = array( 'fab', 'fas', 'far' );
 		$this->icons     = array_diff_key( $this->icons, array_flip( $removed_keys ) );
+		// The widget's icon picker draws with the icon fonts, which don't have
+		// the icons marked svg_only.
+		foreach ( $this->icons as $kit => $kit_icons ) {
+			$this->icons[ $kit ] = array_values(
+				array_filter(
+					$kit_icons,
+					function ( $item ) {
+						return empty( $item['svg_only'] );
+					}
+				)
+			);
+		}
 		$this->icons     = apply_filters( 'zoom_social_icons_filter', $this->icons );
 		$this->protocols = apply_filters( 'zoom_social_protocols_filter', $this->protocols );
 
@@ -504,7 +516,24 @@ class Zoom_Social_Icons_Widget extends WP_Widget {
 	 * @return array
 	 */
 	public function get_icons_pack( $type = 'all' ) {
-		return array_key_exists( $type, $this->icons ) ? $this->icons[ $type ] : $this->icons;
+		// The picker doesn't offer networks that have shut down; widgets that
+		// already use one keep showing it.
+		$retired = WPZOOM_Social_Icons_SVG::retired_icons();
+		$icons   = $this->icons;
+		foreach ( $icons as $kit => $kit_icons ) {
+			if ( empty( $retired[ $kit ] ) ) {
+				continue;
+			}
+			$icons[ $kit ] = array_values(
+				array_filter(
+					$kit_icons,
+					function ( $item ) use ( $retired, $kit ) {
+						return ! in_array( $item['icon'], $retired[ $kit ], true );
+					}
+				)
+			);
+		}
+		return array_key_exists( $type, $icons ) ? $icons[ $type ] : $icons;
 	}
 
 	/**
@@ -1283,6 +1312,26 @@ class Zoom_Social_Icons_Widget extends WP_Widget {
 			}
 			?>
 			<?php
+			// Inline SVG instead of the icon font, on the front end.
+			$svg = '';
+			if ( WPZOOM_Social_Icons_SVG::enabled() ) {
+				$svg_icon = WPZOOM_Social_Icons_SVG::parse_classes( $class );
+				$svg      = $svg_icon ? WPZOOM_Social_Icons_SVG::icon( $svg_icon[0], $svg_icon[1] ) : '';
+				if ( '' !== $svg ) {
+					$class .= ' wpzoom-svg';
+					// An icon without its own color took its brand color from the
+					// Socicons stylesheet, which isn't loaded now.
+					if ( '' === $style && 'socicon' === $svg_icon[0] ) {
+						$brand = wp_list_pluck( $this->icons['socicon'], 'color', 'icon' );
+						if ( ! empty( $brand[ $svg_icon[1] ] ) ) {
+							$style = $rule . ' : ' . esc_attr( $brand[ $svg_icon[1] ] );
+						}
+					}
+				}
+			}
+			?>
+
+			<?php
 			if ( ! empty( $instance['icon_font_size'] ) ) {
 				$style .= '; font-size: ' . esc_attr( $instance['icon_font_size'] ) . 'px';
 			}
@@ -1297,8 +1346,8 @@ class Zoom_Social_Icons_Widget extends WP_Widget {
 			<span class="screen-reader-text"><?php echo esc_html( $field['icon'] ); ?></span>
 			<?php endif; ?>
 
-			<?php // phpcs:disable WordPress.Security.EscapeOutput.OutputNotEscaped ?>
-			<span class="zoom-social_icons-list-span social-icon <?php echo esc_attr( $class ); ?>" <?php echo $hover_style; ?> style="<?php echo $style; ?>" <?php echo $aria_image_role; ?>></span>
+			<?php // phpcs:disable WordPress.Security.EscapeOutput.OutputNotEscaped -- the SVG comes from the plugin's own icon library. ?>
+			<span class="zoom-social_icons-list-span social-icon <?php echo esc_attr( $class ); ?>" <?php echo $hover_style; ?> style="<?php echo $style; ?>" <?php echo $aria_image_role; ?>><?php echo $svg; ?></span>
 			<?php // phpcs:enable WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 
 			<?php
@@ -1374,6 +1423,17 @@ class Zoom_Social_Icons_Widget extends WP_Widget {
 		$disable_css_loading_academicons = WPZOOM_Social_Icons_Settings::get_option_key( 'disable-css-loading-for-academicons' );
 		$disable_css_loading_fa3         = WPZOOM_Social_Icons_Settings::get_option_key( 'disable-css-loading-for-font-awesome-3' );
 		$disable_css_loading_dashicons   = WPZOOM_Social_Icons_Settings::get_option_key( 'disable-css-loading-for-dashicons' );
+
+		// Icons are inline SVG on the front end: one small stylesheet instead
+		// of the icon fonts (an icon without an SVG still gets its font).
+		if ( WPZOOM_Social_Icons_SVG::enabled() ) {
+			WPZOOM_Social_Icons_SVG::enqueue_style();
+			$disable_css_loading_socicons    = false;
+			$disable_css_loading_genericons  = false;
+			$disable_css_loading_academicons = false;
+			$disable_css_loading_fa3         = false;
+			$disable_css_loading_dashicons   = false;
+		}
 
 		if ( ! empty( $disable_css_loading_socicons ) ) {
 			wp_enqueue_style(

@@ -4,6 +4,7 @@ import URI from 'urijs';
 import { find, findKey, forEach, isEmpty, isObject } from 'lodash';
 
 const { icons, iconKitsCategories } = wpzSocialIconsBlock;
+const svgConfig = wpzSocialIconsBlock.svgIcons || {};
 
 /**
  * Kits in lookup order: the order of the "Select Icon Kit" dropdown, which is
@@ -121,9 +122,34 @@ class Helper {
 	}
 
 	/**
+	 * Whether an icon belongs to a network that has shut down or been renamed
+	 * (includes/retired-icons.php). Existing icons keep working; the picker
+	 * hides these and URL detection skips them.
+	 *
+	 * @param {string} kit  Kit name.
+	 * @param {string} icon Icon name.
+	 * @return {boolean} True when retired.
+	 */
+	static isRetired( kit, icon ) {
+		const list = ( svgConfig.retired || {} )[ kit ];
+		return Array.isArray( list ) && list.indexOf( icon ) > -1;
+	}
+
+	/**
+	 * Whether an icon can be drawn: icons marked svg_only have no font glyph,
+	 * so they need SVG (on unless a site turned it off).
+	 *
+	 * @param {Object|string} item Icon data item.
+	 * @return {boolean} True when the icon can be shown.
+	 */
+	static canDraw( item ) {
+		return ! ( isObject( item ) && item.svg_only ) || !! svgConfig.enabled;
+	}
+
+	/**
 	 * The icon for a URL: the platform name from the address, looked up kit by
 	 * kit in priority order — Socicons first, falling back to the other enabled
-	 * kits — and the first exact match wins.
+	 * kits — and the first exact match wins. Retired networks are skipped.
 	 *
 	 * @param {string} url Typed or saved URL; a bare domain is fine.
 	 * @return {?{iconKit: string, icon: string, color: ?string, label: string}} Match, or null.
@@ -143,7 +169,9 @@ class Helper {
 			return null;
 		}
 		for ( const kit of Helper.kitOrder() ) {
-			const item = icons[ kit ].find( ( o ) => iconName( o ) === name );
+			const item = icons[ kit ].find(
+				( o ) => iconName( o ) === name && Helper.canDraw( o ) && ! Helper.isRetired( kit, name )
+			);
 			if ( item ) {
 				return {
 					iconKit: kit,
@@ -190,6 +218,23 @@ class Helper {
 			'lnkd.in': 'linkedin',
 			'threads.net': 'threads',
 			'twitter.com': 'x',
+			'linktr.ee': 'linktree',
+			'buymeacoffee.com': 'buy-me-a-coffee',
+			'cash.app': 'cash-app',
+			'producthunt.com': 'product-hunt',
+			'dev.to': 'dev-to',
+			'music.apple.com': 'apple-music',
+			'podcasts.apple.com': 'apple-podcasts',
+			'music.youtube.com': 'youtube-music',
+			'play.google.com': 'google-play',
+			'epicgames.com': 'epic-games',
+			'store.epicgames.com': 'epic-games',
+			'warpcast.com': 'farcaster',
+			'farcaster.xyz': 'farcaster',
+			'bere.al': 'bereal',
+			'open.kakao.com': 'kakaotalk',
+			'pf.kakao.com': 'kakaotalk',
+			'gofund.me': 'gofundme',
 		};
 
 		// Common domain name mappings
@@ -205,6 +250,7 @@ class Helper {
 			'github': 'github',
 			'spotify': 'spotify',
 			'tiktok': 'tiktok',
+			'itch': 'itch-io',
 		};
 
 		const uri = new URI( url );

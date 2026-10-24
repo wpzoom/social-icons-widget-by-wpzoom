@@ -98,6 +98,7 @@ function wpzoom_social_icons_block_enqueue_assets() {
 			'sharingConfigUrl'         => $sharing_config_url,
 			'isEditingSharingConfig'   => $is_editing_sharing_config,
 			'preferredSource'          => WPZOOM_Preferred_Source::editor_data(),
+			'svgIcons'                 => WPZOOM_Social_Icons_SVG::editor_data(),
 		)
 	);
 
@@ -739,13 +740,20 @@ function wpzoom_has_reusable_block( $block_name, $id = 0 ) {
  * Enqueue css and js files.
  */
 function wpzoom_social_icons_block_enqueue_secondary_assets() {
+	// Icon fonts are for the Social Icons block only: Sharing Buttons draw
+	// their icons as inline SVG on the front end.
 	if ( wpzoom_has_reusable_block( 'wpzoom-blocks/social-icons' ) ||
-		 wpzoom_has_reusable_block( 'wpzoom-blocks/social-sharing' ) ||
 		 has_block( 'wpzoom-blocks/social-icons' ) ||
-		 has_block( 'wpzoom-blocks/social-sharing' ) ||
 		 wpzoom_has_block_in_widget_area( 'wpzoom-blocks/social-icons' ) ||
-		 wpzoom_has_block_in_widget_area( 'wpzoom-blocks/social-sharing' ) ||
 		 is_admin() ) {
+		// The icons are inline SVG, on the front end and in the editor: one
+		// small stylesheet instead of the icon fonts (an icon without an SVG
+		// still gets its font on the front end).
+		if ( WPZOOM_Social_Icons_SVG::use_svg() ) {
+			WPZOOM_Social_Icons_SVG::enqueue_style();
+			return;
+		}
+
 		$disable_css_loading_socicons    = WPZOOM_Social_Icons_Settings::get_option_key( 'disable-css-loading-for-socicons' );
 		$disable_css_loading_genericons  = WPZOOM_Social_Icons_Settings::get_option_key( 'disable-css-loading-for-genericons' );
 		$disable_css_loading_academicons = WPZOOM_Social_Icons_Settings::get_option_key( 'disable-css-loading-for-academicons' );

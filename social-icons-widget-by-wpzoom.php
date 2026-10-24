@@ -30,6 +30,12 @@ if ( ! defined( 'WPZOOM_SOCIAL_ICONS_PLUGIN_PATH' ) ) {
 if ( ! defined( 'WPZOOM_SOCIAL_ICONS_PLUGIN_BASE' ) ) {
 	define( 'WPZOOM_SOCIAL_ICONS_PLUGIN_BASE', plugin_basename( __FILE__ ) );
 }
+// Icons as inline SVG on the front end, from the shared icon library.
+if ( ! class_exists( 'WPZOOM_Social_Icons_Library' ) ) {
+	require_once plugin_dir_path( __FILE__ ) . 'includes/classes/class-wpzoom-social-icons-library.php';
+}
+require_once plugin_dir_path( __FILE__ ) . 'includes/classes/class-wpzoom-social-icons-svg.php';
+
 // Shared with the PRO plugin; both can be loaded for a moment while PRO activates.
 if ( ! class_exists( 'WPZOOM_Preferred_Source' ) ) {
 	require_once plugin_dir_path( __FILE__ ) . 'includes/classes/class-wpzoom-preferred-source.php';
@@ -219,7 +225,7 @@ function zoom_social_icons_kits_categories_list( $type = 'widget' ) {
 	$categories_list = array(
 		array(
 			'value' => 'socicon',
-			'label' => __( 'Socicons', 'social-icons-widget-by-wpzoom' ),
+			'label' => __( 'WPZOOM Icons', 'social-icons-widget-by-wpzoom' ),
 		),
 		array(
 			'value' => 'dashicons',

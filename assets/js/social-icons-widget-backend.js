@@ -408,7 +408,7 @@
                         'genericon': 'Genericons',
                         'academicons': 'Academicons',
                         'dashicons': 'Dashicons',
-                        'socicon': 'Socicons',
+                        'socicon': 'WPZOOM Icons',
                         'fab' : 'Font Awesome Brands',
                         'far' : 'Font Awesome Regular',
                         'fas' : 'Font Awesome Solid',

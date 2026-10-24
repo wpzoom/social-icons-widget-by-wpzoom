@@ -1,0 +1,93 @@
+/**
+ * Social Icons drawn as inline SVG (front end).
+ *
+ * Replaces the icon fonts' stylesheets: these are the boxes those
+ * stylesheets gave the icon spans, without the fonts. :where() keeps each
+ * rule exactly as specific as the font stylesheet's own, so the block's
+ * and widget's styles still win where they did before, and only this
+ * plugin's icons are affected.
+ */
+.socicon:where(.social-icon) {
+	position: relative;
+	top: 3px;
+	display: inline-block;
+	font-style: normal;
+	font-weight: normal;
+	line-height: 1;
+	font-size: 1.2em;
+}
+
+.socicon:where(.social-icon):empty,
+.socicon:where(.social-icon.wpzoom-svg) {
+	width: 1em;
+}
+
+.genericon:where(.social-icon) {
+	font-size: 16px;
+	vertical-align: top;
+	text-align: center;
+	transition: color .1s ease-in 0s;
+	display: inline-block;
+	font-style: normal;
+	font-weight: normal;
+	font-variant: normal;
+	line-height: 1;
+	text-decoration: inherit;
+	text-transform: none;
+}
+
+.academicons:where(.social-icon),
+.fa:where(.social-icon) {
+	display: inline-block;
+	font-style: normal;
+	font-weight: normal;
+	line-height: 1;
+}
+
+.fab:where(.social-icon),
+.far:where(.social-icon),
+.fas:where(.social-icon) {
+	display: inline-block;
+	font-style: normal;
+	font-variant: normal;
+	line-height: 1;
+}
+
+.dashicons:where(.social-icon) {
+	display: inline-block;
+	line-height: 1;
+	font-weight: 400;
+	font-style: normal;
+	text-decoration: inherit;
+	text-transform: none;
+	width: 20px;
+	height: 20px;
+	font-size: 20px;
+	vertical-align: top;
+	text-align: center;
+	transition: color .1s ease-in;
+}
+
+/* A theme's own icon font must not draw a second icon next to the SVG. */
+.social-icon.wpzoom-svg::before {
+	content: none !important;
+}
+
+/*
+ * Center the icon in its box. A font glyph sat on the text baseline, whose
+ * position came from the icon font; without the font it would come from the
+ * theme's font and move the icon up or down. The block and the widget give
+ * the box an explicit size, and the glyph's em box was centered in it, so
+ * centering the SVG puts it exactly where the glyph was, whatever the font.
+ */
+.social-icon.wpzoom-svg {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.social-icon.wpzoom-svg > .wpzoom-svg-icon {
+	display: block;
+	flex: none;
+	overflow: visible;
+}

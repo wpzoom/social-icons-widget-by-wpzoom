@@ -8,11 +8,20 @@ jQuery(function ($) {
         localStorage.setItem("socialIconsCurrentSettingsTab", hashTab);
     }
 
+    // Tabs with nothing to save (Custom Icons) hide the Save button.
+    var toggleSubmit = function (panel) {
+        $inner.find("form > .submit").toggle(!$(panel).data("hide-submit"));
+    };
+
     $inner.tabs({
         classes: {"ui-tabs-active": "current"},
         active: hashTab > -1 ? hashTab : localStorage.getItem("socialIconsCurrentSettingsTab"),
+        create: function (event, ui) {
+            toggleSubmit(ui.panel);
+        },
         activate: function (event, ui) {
             localStorage.setItem("socialIconsCurrentSettingsTab", $(this).tabs('option', 'active'));
+            toggleSubmit(ui.newPanel);
         }
     });
 

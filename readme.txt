@@ -127,13 +127,20 @@ Upgrade to [Social Icons Widget PRO](https://www.wpzoom.com/plugins/social-share
 
 = Icons =
 
-Twitter, X, Facebook, Instagram, Pinterest, Snapchat, Threads, Yelp, LinkedIn, Bloglovin', Lookbook, Feedly, Periscope, SoundCloud, Spotify, Last.fm, YouTube, Vimeo, Flickr, 500px, Tumblr, Blogger, Reddit, Dribbble, Envato, Behance, DeviantArt, GitHub, RSS, Disqus, Stackoverflow, Komoot, Tiktok, Mailchimp, Podcasts, Telegram, TripAdvisor, AirBnb, Baidu, ebay, Medium, Periscope, Snapchat, Bandcamp, Eyem, Viber, Quora, Etsy, Meetup, Linode, IMDB, Overwatch, Strava, Tidal, Deezer, Unsplash, Codered, Udemy, CrunchBase, Angie's List, App Store, Nextdoor, WhatsApp, ResearchGate, Slack, Songkick, ReverbNation, Bluesky
+Twitter, X, Facebook, Instagram, Pinterest, Snapchat, Threads, Yelp, LinkedIn, Bloglovin', Lookbook, Feedly, SoundCloud, Spotify, Last.fm, YouTube, Vimeo, Flickr, 500px, Tumblr, Blogger, Reddit, Dribbble, Envato, Behance, DeviantArt, GitHub, RSS, Disqus, Stackoverflow, Komoot, Tiktok, Mailchimp, Podcasts, Telegram, TripAdvisor, AirBnb, Baidu, ebay, Medium, Bandcamp, Eyem, Viber, Quora, Etsy, Meetup, Linode, IMDB, Overwatch, Strava, Tidal, Deezer, Unsplash, Codered, Udemy, CrunchBase, App Store, Nextdoor, WhatsApp, ResearchGate, Slack, Songkick, ReverbNation, Bluesky
 
-= Credits =
+= Third-party resources =
 
-Some Social Icons are provided by the Socicon icon font.
+The icons are bundled with the plugin as SVG. Each set keeps the license of its source; the full notices are in `includes/icon-library/LICENSES.md`.
 
-[Academicons](https://jpswalsh.github.io/academicons/) are provided by James Walsh.
+* **WPZOOM Icons**: based on the Socicon icon font, extended and maintained by WPZOOM. License: SIL Open Font License 1.1. Newer networks are added from [Simple Icons](https://simpleicons.org) (CC0 1.0, public domain).
+* **Font Awesome Free 5 and 7** by Fonticons, Inc. ([fontawesome.com](https://fontawesome.com/license/free)). Icons: CC BY 4.0; fonts: SIL OFL 1.1; code: MIT.
+* **Font Awesome 4.7** by Dave Gandy. Font: SIL OFL 1.1; CSS: MIT.
+* **[Academicons](https://jpswalsh.github.io/academicons/)** by James Walsh and Katja Bercic. Font: SIL OFL 1.1; CSS: MIT.
+* **Genericons** by Joen Asmussen. License: GPLv2 or later.
+* **Dashicons**, the WordPress icon font. License: GPLv2 or later.
+
+All brand names and logos are trademarks of their respective owners and are shown only to link to the matching profiles.
 
 = External services (AI Chat) =
 
@@ -285,6 +292,20 @@ Floating Buttons is a PRO feature that displays your social sharing icons as a f
 * WordPress links get the Socicons WordPress icon in WordPress blue, and twitter.com links get the X icon
 * Updated the Reddit icon to Reddit's current logo and brand color (#FF4500)
 * Fixed the Socicons font being downloaded twice when font preloading is on
+* Sharing Buttons no longer load the icon font stylesheets, which they never used (their icons are SVG)
+* Fixed the Cubebrush icon, and removed duplicate Publons and PubMed entries from Academicons
+* The older Font Awesome set is now correctly labelled Font Awesome 4 in Settings
+* Updated brand colors for GitHub, Instagram and Nextdoor
+* IMPROVED: the Social Icons block and widget now draw their icons as inline SVG on your site instead of loading icon fonts. Pages no longer download up to 130 KB of icon CSS and 330 KB of font files, and icons appear instantly. Icons look exactly as before, and saved content is unchanged (developers can switch back with the `wpzoom_social_icons_use_svg` filter)
+* Fixed 15 Font Awesome 5 icons (LinkedIn, Vimeo, Facebook F, Calendar and others) showing a different icon on the site when the Font Awesome 4 set was also enabled
+* Fixed a theme's own Font Awesome drawing a second icon next to a social icon
+* The block editor draws icons as SVG too, so the editor and the Settings page no longer load icon fonts
+* Icons of networks that have shut down (Google+, Skype, Vine, StumbleUpon, Periscope, Pocket and others) are no longer offered in the icon pickers. Icons already on your site keep working, and pasting such a link no longer picks them
+* Settings: the Optimization tab is gone (icons are SVG, so there are no fonts to preload; it comes back if a site turns SVG off). New Custom Icons and Pinterest tabs show what PRO adds: your own SVG icons, and a Pinterest Save button on images
+* NEW: 41 more networks in WPZOOM Icons: Twitch, Kick, Rumble, Linktree, Buy Me a Coffee, Cash App, Signal, Threema, KakaoTalk, Weibo, Quora, Farcaster, BeReal, Pixelfed, Zoom, Calendly, Notion, Product Hunt, Upwork, GitLab, Bitbucket, DEV, Hashnode, Apple Music, YouTube Music, Audiomack, Pandora, Audible, Google Play, itch.io, Epic Games, Claude and more, plus a Website icon. Pasting one of their links picks the icon
+* NEW: 148 brand icons from Font Awesome 7 in the Font Awesome Brands set, including X, Threads, Bluesky, TikTok, Signal, Linktree and Substack
+* The Socicons set is now called WPZOOM Icons: the same icons, maintained by WPZOOM. Licenses for all bundled icon sets are listed in the readme and in includes/icon-library/LICENSES.md
+* Added Mixcloud and six general icons (home, mobile, heart, plane, recipes, user) to the Social Icons block
 * SECURITY: the AI Chat identity signature printed for logged-in users is now domain-separated from the signature that authenticates customer-data lookups. Before, an account registered with a crafted email address could reuse its own signature to read another customer's orders and licenses through the lookup endpoint. Reported by Wordfence.
 * IMPROVED: AI Chat customer data now lists up to 25 licenses (active ones first) and 15 orders and subscriptions, and reports the total count when there are more
 

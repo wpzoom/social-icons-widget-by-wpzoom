@@ -304,6 +304,137 @@
 	line-height: 1.5;
 }
 
+/* Custom Icons tab (PRO feature) */
+.wpzoom-settings-pro-tag {
+	margin-left: 4px;
+	padding: 1px 5px;
+	border-radius: 3px;
+	background: var(--wp-admin-theme-color, #2271b1);
+	color: #fff;
+	font-size: 9px;
+	font-weight: 600;
+	line-height: 1.6;
+	letter-spacing: .04em;
+	vertical-align: 1px;
+}
+
+.wpzoom-settings-upsell__body {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 32px;
+	padding: 24px 20px;
+}
+
+.wpzoom-settings-upsell__preview {
+	flex: 0 1 300px;
+	padding: 16px;
+	border-radius: 8px;
+	background: #f6f7f7;
+}
+
+.wpzoom-settings-upsell__drop {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 6px;
+	padding: 18px 12px;
+	border: 1px dashed #a7aaad;
+	border-radius: 6px;
+	background: #fff;
+	color: #50575e;
+}
+
+.wpzoom-settings-upsell__drop .dashicons {
+	width: 24px;
+	height: 24px;
+	font-size: 24px;
+	color: var(--wp-admin-theme-color, #2271b1);
+}
+
+.wpzoom-settings-upsell__label {
+	margin: 16px 0 8px;
+	color: #50575e;
+	font-size: 11px;
+	font-weight: 600;
+	text-transform: uppercase;
+	letter-spacing: .04em;
+}
+
+.wpzoom-settings-upsell__icons {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+}
+
+.wpzoom-settings-upsell__icons span {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 36px;
+	height: 36px;
+	border-radius: 50%;
+	color: #fff;
+	font-size: 16px;
+}
+
+.wpzoom-settings-upsell__icons svg {
+	vertical-align: 0 !important;
+}
+
+.wpzoom-settings-upsell__image {
+	position: relative;
+	aspect-ratio: 4 / 3;
+	border-radius: 6px;
+	background:
+		radial-gradient(circle at 72% 30%, #ffe2a8 0 12%, transparent 13%),
+		linear-gradient(160deg, transparent 55%, #6b8f71 56%),
+		linear-gradient(200deg, transparent 60%, #4f7358 61%),
+		linear-gradient(180deg, #9cc7e6, #d9ecf7);
+	overflow: hidden;
+}
+
+.wpzoom-settings-upsell__pin {
+	position: absolute;
+	top: 10px;
+	left: 10px;
+	display: inline-flex;
+	align-items: center;
+	gap: 5px;
+	padding: 5px 10px;
+	border-radius: 999px;
+	background: #e60023;
+	color: #fff;
+	font-size: 12px;
+	font-weight: 600;
+	box-shadow: 0 1px 3px rgba(0, 0, 0, .2);
+}
+
+.wpzoom-settings-upsell__pin svg {
+	vertical-align: 0 !important;
+}
+
+.wpzoom-settings-upsell__info {
+	flex: 1 1 320px;
+	min-width: 0;
+}
+
+.wpzoom-settings-upsell__info ul {
+	margin: 0 0 20px;
+}
+
+.wpzoom-settings-upsell__info li {
+	display: flex;
+	gap: 8px;
+	margin-bottom: 10px;
+	color: #1d2327;
+}
+
+.wpzoom-settings-upsell__info li .dashicons {
+	flex: none;
+	color: var(--wp-admin-theme-color, #2271b1);
+}
+
 /* Icon set samples */
 .wpzoom-settings-kit__samples {
 	flex: none;

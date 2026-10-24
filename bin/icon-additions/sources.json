@@ -1,0 +1,1074 @@
+{
+	"socicon": [
+		{
+			"icon": "kick",
+			"category": [
+				"video"
+			],
+			"color": "#53FC19",
+			"source": "Simple Icons 16.34.0 (kick), CC0 1.0"
+		},
+		{
+			"icon": "twitch",
+			"category": [
+				"video"
+			],
+			"color": "#9146FF",
+			"source": "Simple Icons 16.34.0 (twitch), CC0 1.0"
+		},
+		{
+			"icon": "rumble",
+			"category": [
+				"video"
+			],
+			"color": "#85C742",
+			"source": "Simple Icons 16.34.0 (rumble), CC0 1.0"
+		},
+		{
+			"icon": "odysee",
+			"category": [
+				"video"
+			],
+			"color": "#EF1970",
+			"source": "Simple Icons 16.34.0 (odysee), CC0 1.0"
+		},
+		{
+			"icon": "pixelfed",
+			"category": [
+				"photography"
+			],
+			"color": "#6366F1",
+			"source": "Simple Icons 16.34.0 (pixelfed), CC0 1.0"
+		},
+		{
+			"icon": "vsco",
+			"category": [
+				"photography"
+			],
+			"color": "#000000",
+			"source": "Simple Icons 16.34.0 (vsco), CC0 1.0"
+		},
+		{
+			"icon": "farcaster",
+			"category": [
+				"social-media"
+			],
+			"color": "#855DCD",
+			"source": "Simple Icons 16.34.0 (farcaster), CC0 1.0"
+		},
+		{
+			"icon": "bereal",
+			"category": [
+				"social-media"
+			],
+			"color": "#000000",
+			"source": "Simple Icons 16.34.0 (bereal), CC0 1.0"
+		},
+		{
+			"icon": "weibo",
+			"category": [
+				"social-media"
+			],
+			"color": "#E6162D",
+			"source": "Simple Icons 16.34.0 (sinaweibo), CC0 1.0"
+		},
+		{
+			"icon": "quora",
+			"category": [
+				"social-media"
+			],
+			"color": "#B92B27",
+			"source": "Simple Icons 16.34.0 (quora), CC0 1.0"
+		},
+		{
+			"icon": "clubhouse",
+			"category": [
+				"audio"
+			],
+			"color": "#FFE450",
+			"source": "Simple Icons 16.34.0 (clubhouse), CC0 1.0"
+		},
+		{
+			"icon": "audible",
+			"category": [
+				"audio"
+			],
+			"color": "#F8991C",
+			"source": "Simple Icons 16.34.0 (audible), CC0 1.0"
+		},
+		{
+			"icon": "kakaotalk",
+			"category": [
+				"communication"
+			],
+			"color": "#FFCD00",
+			"source": "Simple Icons 16.34.0 (kakaotalk), CC0 1.0"
+		},
+		{
+			"icon": "signal",
+			"category": [
+				"communication"
+			],
+			"color": "#3B45FD",
+			"source": "Simple Icons 16.34.0 (signal), CC0 1.0"
+		},
+		{
+			"icon": "threema",
+			"category": [
+				"communication"
+			],
+			"color": "#3FE669",
+			"source": "Simple Icons 16.34.0 (threema), CC0 1.0"
+		},
+		{
+			"icon": "zoom",
+			"category": [
+				"communication"
+			],
+			"color": "#0B5CFF",
+			"source": "Simple Icons 16.34.0 (zoom), CC0 1.0"
+		},
+		{
+			"icon": "naver",
+			"category": [
+				"search-engines"
+			],
+			"color": "#03C75A",
+			"source": "Simple Icons 16.34.0 (naver), CC0 1.0"
+		},
+		{
+			"icon": "linktree",
+			"category": [
+				"web-tools"
+			],
+			"color": "#43E55E",
+			"source": "Simple Icons 16.34.0 (linktree), CC0 1.0"
+		},
+		{
+			"icon": "product-hunt",
+			"category": [
+				"web-tools"
+			],
+			"color": "#DA552F",
+			"source": "Simple Icons 16.34.0 (producthunt), CC0 1.0"
+		},
+		{
+			"icon": "notion",
+			"category": [
+				"web-tools"
+			],
+			"color": "#000000",
+			"source": "Simple Icons 16.34.0 (notion), CC0 1.0"
+		},
+		{
+			"icon": "calendly",
+			"category": [
+				"calendar"
+			],
+			"color": "#006BFF",
+			"source": "Simple Icons 16.34.0 (calendly), CC0 1.0"
+		},
+		{
+			"icon": "buy-me-a-coffee",
+			"category": [
+				"payment"
+			],
+			"color": "#FFDD00",
+			"source": "Simple Icons 16.34.0 (buymeacoffee), CC0 1.0"
+		},
+		{
+			"icon": "cash-app",
+			"category": [
+				"payment"
+			],
+			"color": "#00C244",
+			"source": "Simple Icons 16.34.0 (cashapp), CC0 1.0"
+		},
+		{
+			"icon": "gofundme",
+			"category": [
+				"payment"
+			],
+			"color": "#00B964",
+			"source": "Simple Icons 16.34.0 (gofundme), CC0 1.0"
+		},
+		{
+			"icon": "kickstarter",
+			"category": [
+				"business"
+			],
+			"color": "#05CE78",
+			"source": "Simple Icons 16.34.0 (kickstarter), CC0 1.0"
+		},
+		{
+			"icon": "upwork",
+			"category": [
+				"business"
+			],
+			"color": "#6FDA44",
+			"source": "Simple Icons 16.34.0 (upwork), CC0 1.0"
+		},
+		{
+			"icon": "gitlab",
+			"category": [
+				"programming"
+			],
+			"color": "#FC6D26",
+			"source": "Simple Icons 16.34.0 (gitlab), CC0 1.0"
+		},
+		{
+			"icon": "bitbucket",
+			"category": [
+				"programming"
+			],
+			"color": "#0052CC",
+			"source": "Simple Icons 16.34.0 (bitbucket), CC0 1.0"
+		},
+		{
+			"icon": "dev-to",
+			"category": [
+				"programming"
+			],
+			"color": "#0A0A0A",
+			"source": "Simple Icons 16.34.0 (devdotto), CC0 1.0"
+		},
+		{
+			"icon": "leetcode",
+			"category": [
+				"programming"
+			],
+			"color": "#FFA116",
+			"source": "Simple Icons 16.34.0 (leetcode), CC0 1.0"
+		},
+		{
+			"icon": "hashnode",
+			"category": [
+				"blogging"
+			],
+			"color": "#2962FF",
+			"source": "Simple Icons 16.34.0 (hashnode), CC0 1.0"
+		},
+		{
+			"icon": "apple-music",
+			"category": [
+				"music"
+			],
+			"color": "#FA243C",
+			"source": "Simple Icons 16.34.0 (applemusic), CC0 1.0"
+		},
+		{
+			"icon": "youtube-music",
+			"category": [
+				"music"
+			],
+			"color": "#FF0000",
+			"source": "Simple Icons 16.34.0 (youtubemusic), CC0 1.0"
+		},
+		{
+			"icon": "audiomack",
+			"category": [
+				"music"
+			],
+			"color": "#FFA200",
+			"source": "Simple Icons 16.34.0 (audiomack), CC0 1.0"
+		},
+		{
+			"icon": "pandora",
+			"category": [
+				"music"
+			],
+			"color": "#224099",
+			"source": "Simple Icons 16.34.0 (pandora), CC0 1.0"
+		},
+		{
+			"icon": "google-play",
+			"category": [
+				"software"
+			],
+			"color": "#414141",
+			"source": "Simple Icons 16.34.0 (googleplay), CC0 1.0"
+		},
+		{
+			"icon": "claude",
+			"category": [
+				"software"
+			],
+			"color": "#D97757",
+			"source": "Simple Icons 16.34.0 (claude), CC0 1.0"
+		},
+		{
+			"icon": "itch-io",
+			"category": [
+				"games"
+			],
+			"color": "#FA5C5C",
+			"source": "Simple Icons 16.34.0 (itchdotio), CC0 1.0"
+		},
+		{
+			"icon": "epic-games",
+			"category": [
+				"games"
+			],
+			"color": "#313131",
+			"source": "Simple Icons 16.34.0 (epicgames), CC0 1.0"
+		},
+		{
+			"icon": "alltrails",
+			"category": [
+				"travel"
+			],
+			"color": "#142800",
+			"source": "Simple Icons 16.34.0 (alltrails), CC0 1.0"
+		},
+		{
+			"icon": "website",
+			"category": [
+				"web-tools"
+			],
+			"color": "#3c434a",
+			"source": "Font Awesome Free 7.3.1 (solid globe), CC BY 4.0"
+		}
+	],
+	"fab": [
+		{
+			"icon": "42-group",
+			"category": [],
+			"source": "Font Awesome Free 7.3.1 (brands), CC BY 4.0"
+		},
+		{
+			"icon": "a11y-project",
+			"category": [],
+			"source": "Font Awesome Free 7.3.1 (brands), CC BY 4.0"
+		},
+		{
+			"icon": "arch-linux",
+			"category": [],
+			"source": "Font Awesome Free 7.3.1 (brands), CC BY 4.0"
+		},
+		{
+			"icon": "bilibili",
+			"category": [],
+			"source": "Font Awesome Free 7.3.1 (brands), CC BY 4.0"
+		},
+		{
+			"icon": "bluesky",
+			"category": [],
+			"source": "Font Awesome Free 7.3.1 (brands), CC BY 4.0"
+		},
+		{
+			"icon": "board-game-geek",
+			"category": [],
+			"source": "Font Awesome Free 7.3.1 (brands), CC BY 4.0"
+		},
+		{
+			"icon": "bots",
+			"category": [],
+			"source": "Font Awesome Free 7.3.1 (brands), CC BY 4.0"
+		},
+		{
+			"icon": "brave",
+			"category": [],
+			"source": "Font Awesome Free 7.3.1 (brands), CC BY 4.0"
+		},
+		{
+			"icon": "brave-reverse",
+			"category": [],
+			"source": "Font Awesome Free 7.3.1 (brands), CC BY 4.0"
+		},
+		{
+			"icon": "build-awesome",
+			"category": [],
+			"source": "Font Awesome Free 7.3.1 (brands), CC BY 4.0"
+		},
+		{
+			"icon": "cash-app",
+			"category": [],
+			"source": "Font Awesome Free 7.3.1 (brands), CC BY 4.0"
+		},
+		{
+			"icon": "circle-zulip",
+			"category": [],
+			"source": "Font Awesome Free 7.3.1 (brands), CC BY 4.0"
+		},
+		{
+			"icon": "claude",
+			"category": [],
+			"source": "Font Awesome Free 7.3.1 (brands), CC BY 4.0"
+		},
+		{
+			"icon": "cloudflare",
+			"category": [],
+			"source": "Font Awesome Free 7.3.1 (brands), CC BY 4.0"
+		},
+		{
+			"icon": "cmplid",
+			"category": [],
+			"source": "Font Awesome Free 7.3.1 (brands), CC BY 4.0"
+		},
+		{
+			"icon": "codeberg",
+			"category": [],
+			"source": "Font Awesome Free 7.3.1 (brands), CC BY 4.0"
+		},
+		{
+			"icon": "copilot",
+			"category": [],
+			"source": "Font Awesome Free 7.3.1 (brands), CC BY 4.0"
+		},
+		{
+			"icon": "css",
+			"category": [],
+			"source": "Font Awesome Free 7.3.1 (brands), CC BY 4.0"
+		},
+		{
+			"icon": "dailymotion",
+			"category": [],
+			"source": "Font Awesome Free 7.3.1 (brands), CC BY 4.0"
+		},
+		{
+			"icon": "dart-lang",
+			"category": [],
+			"source": "Font Awesome Free 7.3.1 (brands), CC BY 4.0"
+		},
+		{
+			"icon": "debian",
+			"category": [],
+			"source": "Font Awesome Free 7.3.1 (brands), CC BY 4.0"
+		},
+		{
+			"icon": "deezer",
+			"category": [],
+			"source": "Font Awesome Free 7.3.1 (brands), CC BY 4.0"
+		},
+		{
+			"icon": "devpost",
+			"category": [],
+			"source": "Font Awesome Free 7.3.1 (brands), CC BY 4.0"
+		},
+		{
+			"icon": "disqus",
+			"category": [],
+			"source": "Font Awesome Free 7.3.1 (brands), CC BY 4.0"
+		},
+		{
+			"icon": "dolibarr",
+			"category": [],
+			"source": "Font Awesome Free 7.3.1 (brands), CC BY 4.0"
+		},
+		{
+			"icon": "duolingo",
+			"category": [],
+			"source": "Font Awesome Free 7.3.1 (brands), CC BY 4.0"
+		},
+		{
+			"icon": "edge-legacy",
+			"category": [],
+			"source": "Font Awesome Free 7.3.1 (brands), CC BY 4.0"
+		},
+		{
+			"icon": "eleventy",
+			"category": [],
+			"source": "Font Awesome Free 7.3.1 (brands), CC BY 4.0"
+		},
+		{
+			"icon": "fediverse",
+			"category": [],
+			"source": "Font Awesome Free 7.3.1 (brands), CC BY 4.0"
+		},
+		{
+			"icon": "files-pinwheel",
+			"category": [],
+			"source": "Font Awesome Free 7.3.1 (brands), CC BY 4.0"
+		},
+		{
+			"icon": "firefox-browser",
+			"category": [],
+			"source": "Font Awesome Free 7.3.1 (brands), CC BY 4.0"
+		},
+		{
+			"icon": "flutter",
+			"category": [],
+			"source": "Font Awesome Free 7.3.1 (brands), CC BY 4.0"
+		},
+		{
+			"icon": "forgejo",
+			"category": [],
+			"source": "Font Awesome Free 7.3.1 (brands), CC BY 4.0"
+		},
+		{
+			"icon": "gitee",
+			"category": [],
+			"source": "Font Awesome Free 7.3.1 (brands), CC BY 4.0"
+		},
+		{
+			"icon": "globaleaks",
+			"category": [],
+			"source": "Font Awesome Free 7.3.1 (brands), CC BY 4.0"
+		},
+		{
+			"icon": "golang",
+			"category": [],
+			"source": "Font Awesome Free 7.3.1 (brands), CC BY 4.0"
+		},
+		{
+			"icon": "google-pay",
+			"category": [],
+			"source": "Font Awesome Free 7.3.1 (brands), CC BY 4.0"
+		},
+		{
+			"icon": "google-scholar",
+			"category": [],
+			"source": "Font Awesome Free 7.3.1 (brands), CC BY 4.0"
+		},
+		{
+			"icon": "guilded",
+			"category": [],
+			"source": "Font Awesome Free 7.3.1 (brands), CC BY 4.0"
+		},
+		{
+			"icon": "hashnode",
+			"category": [],
+			"source": "Font Awesome Free 7.3.1 (brands), CC BY 4.0"
+		},
+		{
+			"icon": "hive",
+			"category": [],
+			"source": "Font Awesome Free 7.3.1 (brands), CC BY 4.0"
+		},
+		{
+			"icon": "hugging-face",
+			"category": [],
+			"source": "Font Awesome Free 7.3.1 (brands), CC BY 4.0"
+		},
+		{
+			"icon": "ideal",
+			"category": [],
+			"source": "Font Awesome Free 7.3.1 (brands), CC BY 4.0"
+		},
+		{
+			"icon": "instalod",
+			"category": [],
+			"source": "Font Awesome Free 7.3.1 (brands), CC BY 4.0"
+		},
+		{
+			"icon": "internet-archive",
+			"category": [],
+			"source": "Font Awesome Free 7.3.1 (brands), CC BY 4.0"
+		},
+		{
+			"icon": "julia",
+			"category": [],
+			"source": "Font Awesome Free 7.3.1 (brands), CC BY 4.0"
+		},
+		{
+			"icon": "jxl",
+			"category": [],
+			"source": "Font Awesome Free 7.3.1 (brands), CC BY 4.0"
+		},
+		{
+			"icon": "kakao-talk",
+			"category": [],
+			"source": "Font Awesome Free 7.3.1 (brands), CC BY 4.0"
+		},
+		{
+			"icon": "ko-fi",
+			"category": [],
+			"source": "Font Awesome Free 7.3.1 (brands), CC BY 4.0"
+		},
+		{
+			"icon": "kubernetes",
+			"category": [],
+			"source": "Font Awesome Free 7.3.1 (brands), CC BY 4.0"
+		},
+		{
+			"icon": "leetcode",
+			"category": [],
+			"source": "Font Awesome Free 7.3.1 (brands), CC BY 4.0"
+		},
+		{
+			"icon": "lets-encrypt",
+			"category": [],
+			"source": "Font Awesome Free 7.3.1 (brands), CC BY 4.0"
+		},
+		{
+			"icon": "letterboxd",
+			"category": [],
+			"source": "Font Awesome Free 7.3.1 (brands), CC BY 4.0"
+		},
+		{
+			"icon": "linktree",
+			"category": [],
+			"source": "Font Awesome Free 7.3.1 (brands), CC BY 4.0"
+		},
+		{
+			"icon": "lumon",
+			"category": [],
+			"source": "Font Awesome Free 7.3.1 (brands), CC BY 4.0"
+		},
+		{
+			"icon": "lumon-drop",
+			"category": [],
+			"source": "Font Awesome Free 7.3.1 (brands), CC BY 4.0"
+		},
+		{
+			"icon": "matrix",
+			"category": [],
+			"source": "Font Awesome Free 7.3.1 (brands), CC BY 4.0"
+		},
+		{
+			"icon": "mattermost",
+			"category": [],
+			"source": "Font Awesome Free 7.3.1 (brands), CC BY 4.0"
+		},
+		{
+			"icon": "meta",
+			"category": [],
+			"source": "Font Awesome Free 7.3.1 (brands), CC BY 4.0"
+		},
+		{
+			"icon": "microblog",
+			"category": [],
+			"source": "Font Awesome Free 7.3.1 (brands), CC BY 4.0"
+		},
+		{
+			"icon": "mintbit",
+			"category": [],
+			"source": "Font Awesome Free 7.3.1 (brands), CC BY 4.0"
+		},
+		{
+			"icon": "mixer",
+			"category": [],
+			"source": "Font Awesome Free 7.3.1 (brands), CC BY 4.0"
+		},
+		{
+			"icon": "nextcloud",
+			"category": [],
+			"source": "Font Awesome Free 7.3.1 (brands), CC BY 4.0"
+		},
+		{
+			"icon": "nfc-directional",
+			"category": [],
+			"source": "Font Awesome Free 7.3.1 (brands), CC BY 4.0"
+		},
+		{
+			"icon": "nfc-symbol",
+			"category": [],
+			"source": "Font Awesome Free 7.3.1 (brands), CC BY 4.0"
+		},
+		{
+			"icon": "notion",
+			"category": [],
+			"source": "Font Awesome Free 7.3.1 (brands), CC BY 4.0"
+		},
+		{
+			"icon": "obs-studio",
+			"category": [],
+			"source": "Font Awesome Free 7.3.1 (brands), CC BY 4.0"
+		},
+		{
+			"icon": "obsidian",
+			"category": [],
+			"source": "Font Awesome Free 7.3.1 (brands), CC BY 4.0"
+		},
+		{
+			"icon": "octopus-deploy",
+			"category": [],
+			"source": "Font Awesome Free 7.3.1 (brands), CC BY 4.0"
+		},
+		{
+			"icon": "odysee",
+			"category": [],
+			"source": "Font Awesome Free 7.3.1 (brands), CC BY 4.0"
+		},
+		{
+			"icon": "openai",
+			"category": [],
+			"source": "Font Awesome Free 7.3.1 (brands), CC BY 4.0"
+		},
+		{
+			"icon": "openstreetmap",
+			"category": [],
+			"source": "Font Awesome Free 7.3.1 (brands), CC BY 4.0"
+		},
+		{
+			"icon": "opensuse",
+			"category": [],
+			"source": "Font Awesome Free 7.3.1 (brands), CC BY 4.0"
+		},
+		{
+			"icon": "padlet",
+			"category": [],
+			"source": "Font Awesome Free 7.3.1 (brands), CC BY 4.0"
+		},
+		{
+			"icon": "pandora",
+			"category": [],
+			"source": "Font Awesome Free 7.3.1 (brands), CC BY 4.0"
+		},
+		{
+			"icon": "perbyte",
+			"category": [],
+			"source": "Font Awesome Free 7.3.1 (brands), CC BY 4.0"
+		},
+		{
+			"icon": "pix",
+			"category": [],
+			"source": "Font Awesome Free 7.3.1 (brands), CC BY 4.0"
+		},
+		{
+			"icon": "pixelfed",
+			"category": [],
+			"source": "Font Awesome Free 7.3.1 (brands), CC BY 4.0"
+		},
+		{
+			"icon": "pixiv",
+			"category": [],
+			"source": "Font Awesome Free 7.3.1 (brands), CC BY 4.0"
+		},
+		{
+			"icon": "postgresql",
+			"category": [],
+			"source": "Font Awesome Free 7.3.1 (brands), CC BY 4.0"
+		},
+		{
+			"icon": "roblox-creator-studio",
+			"category": [],
+			"source": "Font Awesome Free 7.3.1 (brands), CC BY 4.0"
+		},
+		{
+			"icon": "ror",
+			"category": [],
+			"source": "Font Awesome Free 7.3.1 (brands), CC BY 4.0"
+		},
+		{
+			"icon": "rust",
+			"category": [],
+			"source": "Font Awesome Free 7.3.1 (brands), CC BY 4.0"
+		},
+		{
+			"icon": "scaleway",
+			"category": [],
+			"source": "Font Awesome Free 7.3.1 (brands), CC BY 4.0"
+		},
+		{
+			"icon": "screenpal",
+			"category": [],
+			"source": "Font Awesome Free 7.3.1 (brands), CC BY 4.0"
+		},
+		{
+			"icon": "shoelace",
+			"category": [],
+			"source": "Font Awesome Free 7.3.1 (brands), CC BY 4.0"
+		},
+		{
+			"icon": "shopify",
+			"category": [],
+			"source": "Font Awesome Free 7.3.1 (brands), CC BY 4.0"
+		},
+		{
+			"icon": "signal-messenger",
+			"category": [],
+			"source": "Font Awesome Free 7.3.1 (brands), CC BY 4.0"
+		},
+		{
+			"icon": "sitrox",
+			"category": [],
+			"source": "Font Awesome Free 7.3.1 (brands), CC BY 4.0"
+		},
+		{
+			"icon": "solana",
+			"category": [],
+			"source": "Font Awesome Free 7.3.1 (brands), CC BY 4.0"
+		},
+		{
+			"icon": "space-awesome",
+			"category": [],
+			"source": "Font Awesome Free 7.3.1 (brands), CC BY 4.0"
+		},
+		{
+			"icon": "square-bluesky",
+			"category": [],
+			"source": "Font Awesome Free 7.3.1 (brands), CC BY 4.0"
+		},
+		{
+			"icon": "square-build-awesome-stroke",
+			"category": [],
+			"source": "Font Awesome Free 7.3.1 (brands), CC BY 4.0"
+		},
+		{
+			"icon": "square-deskpro",
+			"category": [],
+			"source": "Font Awesome Free 7.3.1 (brands), CC BY 4.0"
+		},
+		{
+			"icon": "square-figma",
+			"category": [],
+			"source": "Font Awesome Free 7.3.1 (brands), CC BY 4.0"
+		},
+		{
+			"icon": "square-font-awesome",
+			"category": [],
+			"source": "Font Awesome Free 7.3.1 (brands), CC BY 4.0"
+		},
+		{
+			"icon": "square-gitlab",
+			"category": [],
+			"source": "Font Awesome Free 7.3.1 (brands), CC BY 4.0"
+		},
+		{
+			"icon": "square-instagram",
+			"category": [],
+			"source": "Font Awesome Free 7.3.1 (brands), CC BY 4.0"
+		},
+		{
+			"icon": "square-letterboxd",
+			"category": [],
+			"source": "Font Awesome Free 7.3.1 (brands), CC BY 4.0"
+		},
+		{
+			"icon": "square-linkedin",
+			"category": [],
+			"source": "Font Awesome Free 7.3.1 (brands), CC BY 4.0"
+		},
+		{
+			"icon": "square-pied-piper",
+			"category": [],
+			"source": "Font Awesome Free 7.3.1 (brands), CC BY 4.0"
+		},
+		{
+			"icon": "square-threads",
+			"category": [],
+			"source": "Font Awesome Free 7.3.1 (brands), CC BY 4.0"
+		},
+		{
+			"icon": "square-upwork",
+			"category": [],
+			"source": "Font Awesome Free 7.3.1 (brands), CC BY 4.0"
+		},
+		{
+			"icon": "square-web-awesome",
+			"category": [],
+			"source": "Font Awesome Free 7.3.1 (brands), CC BY 4.0"
+		},
+		{
+			"icon": "square-web-awesome-stroke",
+			"category": [],
+			"source": "Font Awesome Free 7.3.1 (brands), CC BY 4.0"
+		},
+		{
+			"icon": "square-x-twitter",
+			"category": [],
+			"source": "Font Awesome Free 7.3.1 (brands), CC BY 4.0"
+		},
+		{
+			"icon": "storybook",
+			"category": [],
+			"source": "Font Awesome Free 7.3.1 (brands), CC BY 4.0"
+		},
+		{
+			"icon": "stubber",
+			"category": [],
+			"source": "Font Awesome Free 7.3.1 (brands), CC BY 4.0"
+		},
+		{
+			"icon": "substack",
+			"category": [],
+			"source": "Font Awesome Free 7.3.1 (brands), CC BY 4.0"
+		},
+		{
+			"icon": "supportnow",
+			"category": [],
+			"source": "Font Awesome Free 7.3.1 (brands), CC BY 4.0"
+		},
+		{
+			"icon": "svelte",
+			"category": [],
+			"source": "Font Awesome Free 7.3.1 (brands), CC BY 4.0"
+		},
+		{
+			"icon": "symfonycasts",
+			"category": [],
+			"source": "Font Awesome Free 7.3.1 (brands), CC BY 4.0"
+		},
+		{
+			"icon": "tailwind-css",
+			"category": [],
+			"source": "Font Awesome Free 7.3.1 (brands), CC BY 4.0"
+		},
+		{
+			"icon": "tesla",
+			"category": [],
+			"source": "Font Awesome Free 7.3.1 (brands), CC BY 4.0"
+		},
+		{
+			"icon": "tex",
+			"category": [],
+			"source": "Font Awesome Free 7.3.1 (brands), CC BY 4.0"
+		},
+		{
+			"icon": "threads",
+			"category": [],
+			"source": "Font Awesome Free 7.3.1 (brands), CC BY 4.0"
+		},
+		{
+			"icon": "threema",
+			"category": [],
+			"source": "Font Awesome Free 7.3.1 (brands), CC BY 4.0"
+		},
+		{
+			"icon": "tidal",
+			"category": [],
+			"source": "Font Awesome Free 7.3.1 (brands), CC BY 4.0"
+		},
+		{
+			"icon": "tiktok",
+			"category": [],
+			"source": "Font Awesome Free 7.3.1 (brands), CC BY 4.0"
+		},
+		{
+			"icon": "tor-browser",
+			"category": [],
+			"source": "Font Awesome Free 7.3.1 (brands), CC BY 4.0"
+		},
+		{
+			"icon": "typescript",
+			"category": [],
+			"source": "Font Awesome Free 7.3.1 (brands), CC BY 4.0"
+		},
+		{
+			"icon": "ultralytics",
+			"category": [],
+			"source": "Font Awesome Free 7.3.1 (brands), CC BY 4.0"
+		},
+		{
+			"icon": "ultralytics-hub",
+			"category": [],
+			"source": "Font Awesome Free 7.3.1 (brands), CC BY 4.0"
+		},
+		{
+			"icon": "ultralytics-yolo",
+			"category": [],
+			"source": "Font Awesome Free 7.3.1 (brands), CC BY 4.0"
+		},
+		{
+			"icon": "uncharted",
+			"category": [],
+			"source": "Font Awesome Free 7.3.1 (brands), CC BY 4.0"
+		},
+		{
+			"icon": "unison",
+			"category": [],
+			"source": "Font Awesome Free 7.3.1 (brands), CC BY 4.0"
+		},
+		{
+			"icon": "unity",
+			"category": [],
+			"source": "Font Awesome Free 7.3.1 (brands), CC BY 4.0"
+		},
+		{
+			"icon": "unreal-engine",
+			"category": [],
+			"source": "Font Awesome Free 7.3.1 (brands), CC BY 4.0"
+		},
+		{
+			"icon": "unsplash",
+			"category": [],
+			"source": "Font Awesome Free 7.3.1 (brands), CC BY 4.0"
+		},
+		{
+			"icon": "upwork",
+			"category": [],
+			"source": "Font Awesome Free 7.3.1 (brands), CC BY 4.0"
+		},
+		{
+			"icon": "venmo",
+			"category": [],
+			"source": "Font Awesome Free 7.3.1 (brands), CC BY 4.0"
+		},
+		{
+			"icon": "venmo-v",
+			"category": [],
+			"source": "Font Awesome Free 7.3.1 (brands), CC BY 4.0"
+		},
+		{
+			"icon": "vim",
+			"category": [],
+			"source": "Font Awesome Free 7.3.1 (brands), CC BY 4.0"
+		},
+		{
+			"icon": "visual-studio",
+			"category": [],
+			"source": "Font Awesome Free 7.3.1 (brands), CC BY 4.0"
+		},
+		{
+			"icon": "vsco",
+			"category": [],
+			"source": "Font Awesome Free 7.3.1 (brands), CC BY 4.0"
+		},
+		{
+			"icon": "w3c",
+			"category": [],
+			"source": "Font Awesome Free 7.3.1 (brands), CC BY 4.0"
+		},
+		{
+			"icon": "watchman-monitoring",
+			"category": [],
+			"source": "Font Awesome Free 7.3.1 (brands), CC BY 4.0"
+		},
+		{
+			"icon": "web-awesome",
+			"category": [],
+			"source": "Font Awesome Free 7.3.1 (brands), CC BY 4.0"
+		},
+		{
+			"icon": "webflow",
+			"category": [],
+			"source": "Font Awesome Free 7.3.1 (brands), CC BY 4.0"
+		},
+		{
+			"icon": "wirsindhandwerk",
+			"category": [],
+			"source": "Font Awesome Free 7.3.1 (brands), CC BY 4.0"
+		},
+		{
+			"icon": "wodu",
+			"category": [],
+			"source": "Font Awesome Free 7.3.1 (brands), CC BY 4.0"
+		},
+		{
+			"icon": "x-twitter",
+			"category": [],
+			"source": "Font Awesome Free 7.3.1 (brands), CC BY 4.0"
+		},
+		{
+			"icon": "xmpp",
+			"category": [],
+			"source": "Font Awesome Free 7.3.1 (brands), CC BY 4.0"
+		},
+		{
+			"icon": "xrp",
+			"category": [],
+			"source": "Font Awesome Free 7.3.1 (brands), CC BY 4.0"
+		},
+		{
+			"icon": "xrpl",
+			"category": [],
+			"source": "Font Awesome Free 7.3.1 (brands), CC BY 4.0"
+		},
+		{
+			"icon": "youtube-shorts",
+			"category": [],
+			"source": "Font Awesome Free 7.3.1 (brands), CC BY 4.0"
+		},
+		{
+			"icon": "zoom",
+			"category": [],
+			"source": "Font Awesome Free 7.3.1 (brands), CC BY 4.0"
+		},
+		{
+			"icon": "zulip",
+			"category": [],
+			"source": "Font Awesome Free 7.3.1 (brands), CC BY 4.0"
+		}
+	]
+}

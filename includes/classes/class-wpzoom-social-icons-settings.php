@@ -114,8 +114,8 @@ class WPZOOM_Social_Icons_Settings {
 			// For the button preview on the Google Preferred Sources tab.
 			wp_enqueue_style( WPZOOM_Preferred_Source::STYLE_HANDLE );
 
-			// For the sample icons on the Icon Sets tab.
-			foreach ( self::icon_set_stylesheets() as $handle => $file ) {
+			// For the sample icons on the Icon Sets tab, unless they're drawn as SVG.
+			foreach ( WPZOOM_Social_Icons_SVG::use_svg() ? array() : self::icon_set_stylesheets() as $handle => $file ) {
 				if ( 'dashicons' === $handle ) {
 					wp_enqueue_style( 'dashicons' );
 					continue;
@@ -197,8 +197,16 @@ class WPZOOM_Social_Icons_Settings {
 					<a href="#font-styles"><?php esc_html_e( 'Icon Sets', 'social-icons-widget-by-wpzoom' ); ?></a>
 				</li>
 				<li>
+					<a href="#custom-icons"><?php esc_html_e( 'Custom Icons', 'social-icons-widget-by-wpzoom' ); ?> <span class="wpzoom-settings-pro-tag"><?php esc_html_e( 'PRO', 'social-icons-widget-by-wpzoom' ); ?></span></a>
+				</li>
+				<li>
+					<a href="#pinterest"><?php esc_html_e( 'Pinterest', 'social-icons-widget-by-wpzoom' ); ?> <span class="wpzoom-settings-pro-tag"><?php esc_html_e( 'PRO', 'social-icons-widget-by-wpzoom' ); ?></span></a>
+				</li>
+				<?php if ( ! WPZOOM_Social_Icons_SVG::use_svg() ) : ?>
+				<li>
 					<a href="#font-preload"><?php esc_html_e( 'Optimization', 'social-icons-widget-by-wpzoom' ); ?></a>
 				</li>
+				<?php endif; ?>
 				<li>
 					<a href="#general-tab"><?php esc_html_e( 'Modules', 'social-icons-widget-by-wpzoom' ); ?></a>
 				</li>
@@ -218,9 +226,19 @@ class WPZOOM_Social_Icons_Settings {
 				<?php $this->render_icon_sets_tab(); ?>
 			</div>
 
+			<div id="custom-icons" class="tab" data-hide-submit="1">
+				<?php $this->render_custom_icons_tab(); ?>
+			</div>
+
+			<div id="pinterest" class="tab" data-hide-submit="1">
+				<?php $this->render_pinterest_tab(); ?>
+			</div>
+
+			<?php if ( ! WPZOOM_Social_Icons_SVG::use_svg() ) : ?>
 			<div id="font-preload" class="tab">
 				<?php $this->render_optimization_tab(); ?>
 			</div>
+			<?php endif; ?>
 
 			<div id="general-tab" class="tab">
 				<?php $this->render_modules_tab(); ?>
@@ -365,9 +383,9 @@ class WPZOOM_Social_Icons_Settings {
 	private static function icon_sets() {
 		return array(
 			'disable-css-loading-for-socicons'       => array(
-				'title'       => __( 'Socicons', 'social-icons-widget-by-wpzoom' ),
+				'title'       => __( 'WPZOOM Icons', 'social-icons-widget-by-wpzoom' ),
 				'badge'       => __( 'Main set', 'social-icons-widget-by-wpzoom' ),
-				'description' => __( 'Brand icons for social networks and apps. Used by default in the block and the widget.', 'social-icons-widget-by-wpzoom' ),
+				'description' => __( 'Brand icons for social networks and apps, based on the Socicon font. Used by default in the block and the widget.', 'social-icons-widget-by-wpzoom' ),
 				'kits'        => array( 'socicon' ),
 				'samples'     => array( 'social-icon socicon socicon-facebook', 'social-icon socicon socicon-x', 'social-icon socicon socicon-instagram', 'social-icon socicon socicon-youtube', 'social-icon socicon socicon-linkedin', 'social-icon socicon socicon-tiktok' ),
 			),
@@ -378,7 +396,7 @@ class WPZOOM_Social_Icons_Settings {
 				'samples'     => array( 'fab fa-facebook', 'fab fa-twitter', 'fab fa-instagram', 'fab fa-youtube', 'fab fa-github', 'fas fa-envelope' ),
 			),
 			'disable-css-loading-for-font-awesome-3' => array(
-				'title'       => __( 'Font Awesome 3', 'social-icons-widget-by-wpzoom' ),
+				'title'       => __( 'Font Awesome 4', 'social-icons-widget-by-wpzoom' ),
 				'description' => __( 'The older Font Awesome set. Available only in the Social Icons widget.', 'social-icons-widget-by-wpzoom' ),
 				'kits'        => array( 'fa' ),
 				'samples'     => array( 'fa fa-facebook', 'fa fa-twitter', 'fa fa-instagram', 'fa fa-youtube', 'fa fa-github', 'fa fa-envelope' ),
@@ -481,7 +499,9 @@ class WPZOOM_Social_Icons_Settings {
 			$this->render_card_header(
 				'share',
 				__( 'Icon Sets', 'social-icons-widget-by-wpzoom' ),
-				__( 'Choose the icon fonts your site loads. Each set adds a stylesheet and a font file to your pages, so turn on only the sets you use.', 'social-icons-widget-by-wpzoom' )
+				WPZOOM_Social_Icons_SVG::use_svg()
+					? __( 'Choose the icon sets the block and widget pickers offer. Icons are drawn as SVG, so a page loads only the icons it shows, whichever sets are on.', 'social-icons-widget-by-wpzoom' )
+					: __( 'Choose the icon fonts your site loads. Each set adds a stylesheet and a font file to your pages, so turn on only the sets you use.', 'social-icons-widget-by-wpzoom' )
 			);
 			?>
 
@@ -496,7 +516,24 @@ class WPZOOM_Social_Icons_Settings {
 				<div class="wpzoom-settings-row wpzoom-settings-kit">
 					<div class="wpzoom-settings-kit__samples" aria-hidden="true">
 						<?php foreach ( $set['samples'] as $class ) : ?>
-							<i class="<?php echo esc_attr( $class ); ?>"></i>
+							<?php
+							$sample = WPZOOM_Social_Icons_SVG::use_svg() ? WPZOOM_Social_Icons_SVG::parse_classes( $class ) : null;
+							$sample_svg = $sample ? WPZOOM_Social_Icons_Library::inline_svg( $sample[0], $sample[1] ) : '';
+							?>
+							<?php if ( '' !== $sample_svg ) : ?>
+								<?php // No font classes: another plugin's icon font would draw over the SVG. ?>
+								<?php
+								// Socicons in their brand colors, as the font stylesheet showed them.
+								$sample_color = '';
+								if ( 'socicon' === $sample[0] ) {
+									$brand        = wp_list_pluck( $icons['socicon'], 'color', 'icon' );
+									$sample_color = isset( $brand[ $sample[1] ] ) ? $brand[ $sample[1] ] : '';
+								}
+								?>
+								<i<?php echo $sample_color ? ' style="color:' . esc_attr( $sample_color ) . '"' : ''; ?>><?php echo $sample_svg; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- SVG from the plugin's own icon library. ?></i>
+							<?php else : ?>
+								<i class="<?php echo esc_attr( $class ); ?>"></i>
+							<?php endif; ?>
 						<?php endforeach; ?>
 					</div>
 					<div class="wpzoom-settings-row__main">
@@ -536,7 +573,121 @@ class WPZOOM_Social_Icons_Settings {
 	}
 
 	/**
-	 * Optimization tab.
+	 * A card for a PRO feature: a preview, what it does and a link to PRO.
+	 *
+	 * @param array $args {
+	 *     @type string   $icon        Dashicon name, without the "dashicons-" prefix.
+	 *     @type string   $title       Title.
+	 *     @type string   $description Description.
+	 *     @type callable $preview     Prints the preview.
+	 *     @type string[] $points      What the feature does.
+	 *     @type string   $button      Button text.
+	 *     @type string   $utm_content utm_content of the link, to tell the cards apart.
+	 * }
+	 */
+	private function render_upsell_card( $args ) {
+		$upgrade_url = 'https://www.wpzoom.com/plugins/social-share/?utm_source=wpadmin&utm_medium=plugin&utm_campaign=social-icons-free&utm_content=' . rawurlencode( $args['utm_content'] );
+		?>
+		<div class="wpzoom-settings-card wpzoom-settings-upsell">
+			<?php $this->render_card_header( $args['icon'], $args['title'], $args['description'] ); ?>
+			<div class="wpzoom-settings-upsell__body">
+				<div class="wpzoom-settings-upsell__preview" aria-hidden="true">
+					<?php call_user_func( $args['preview'] ); ?>
+				</div>
+				<div class="wpzoom-settings-upsell__info">
+					<ul>
+						<?php foreach ( $args['points'] as $point ) : ?>
+							<li><span class="dashicons dashicons-yes" aria-hidden="true"></span><?php echo esc_html( $point ); ?></li>
+						<?php endforeach; ?>
+					</ul>
+					<a class="button button-primary" href="<?php echo esc_url( $upgrade_url ); ?>" target="_blank" rel="noopener noreferrer">
+						<?php echo esc_html( $args['button'] ); ?>
+						<span class="screen-reader-text"><?php esc_html_e( '(opens in a new tab)', 'social-icons-widget-by-wpzoom' ); ?></span>
+					</a>
+				</div>
+			</div>
+		</div>
+		<?php
+	}
+
+	/**
+	 * Custom Icons tab: what uploading your own SVG icons in PRO looks like.
+	 */
+	private function render_custom_icons_tab() {
+		$this->render_upsell_card(
+			array(
+				'icon'        => 'upload',
+				'title'       => __( 'Custom Icons', 'social-icons-widget-by-wpzoom' ),
+				'description' => __( 'Add your own SVG icons and use them next to the built-in ones.', 'social-icons-widget-by-wpzoom' ),
+				'preview'     => function () {
+					// Stand-ins for a site's own logos.
+					$samples = array(
+						array( 'store', '#e2574c' ),
+						array( 'microphone', '#7b5cd6' ),
+						array( 'utensils', '#f0a020' ),
+						array( 'paw', '#2e9e6a' ),
+						array( 'graduation-cap', '#2a6fdb' ),
+						array( 'heart', '#e0457b' ),
+					);
+					?>
+					<div class="wpzoom-settings-upsell__drop">
+						<span class="dashicons dashicons-upload"></span>
+						<span><?php esc_html_e( 'Upload an SVG icon', 'social-icons-widget-by-wpzoom' ); ?></span>
+					</div>
+					<div class="wpzoom-settings-upsell__label"><?php esc_html_e( 'Custom Icons', 'social-icons-widget-by-wpzoom' ); ?></div>
+					<div class="wpzoom-settings-upsell__icons">
+						<?php foreach ( $samples as $sample ) : ?>
+							<span style="background-color:<?php echo esc_attr( $sample[1] ); ?>">
+								<?php echo WPZOOM_Social_Icons_Library::inline_svg( 'fas', $sample[0] ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Markup from the plugin's own icon library. ?>
+							</span>
+						<?php endforeach; ?>
+					</div>
+					<?php
+				},
+				'points'      => array(
+					__( 'Upload any SVG: your own logo, a podcast, a shop, or a network that isn’t in the library yet.', 'social-icons-widget-by-wpzoom' ),
+					__( 'Uploaded icons appear in a “Custom Icons” category in the Social Icons block and widget, next to the built-in sets.', 'social-icons-widget-by-wpzoom' ),
+					__( 'They take the block’s colors, sizes and styles like any other icon.', 'social-icons-widget-by-wpzoom' ),
+				),
+				'button'      => __( 'Get Custom Icons with PRO', 'social-icons-widget-by-wpzoom' ),
+				'utm_content' => 'settings-custom-icons',
+			)
+		);
+	}
+
+	/**
+	 * Pinterest tab: the Save button PRO adds to images on hover.
+	 */
+	private function render_pinterest_tab() {
+		$this->render_upsell_card(
+			array(
+				'icon'        => 'pinterest',
+				'title'       => __( 'Pinterest', 'social-icons-widget-by-wpzoom' ),
+				'description' => __( 'Show a Pinterest "Save" button when visitors hover over the images in your content.', 'social-icons-widget-by-wpzoom' ),
+				'preview'     => function () {
+					?>
+					<div class="wpzoom-settings-upsell__image">
+						<span class="wpzoom-settings-upsell__pin">
+							<?php echo WPZOOM_Social_Icons_Library::inline_svg( 'fab', 'pinterest' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Markup from the plugin's own icon library. ?>
+							<?php esc_html_e( 'Save', 'social-icons-widget-by-wpzoom' ); ?>
+						</span>
+					</div>
+					<?php
+				},
+				'points'      => array(
+					__( 'Visitors pin your images to their Pinterest boards straight from your posts, sending traffic back to you.', 'social-icons-widget-by-wpzoom' ),
+					__( 'Choose the post types, the corner, the shape and an optional label for the button.', 'social-icons-widget-by-wpzoom' ),
+					__( 'Skip small images or images with certain CSS classes, and decide whether the button shows on phones.', 'social-icons-widget-by-wpzoom' ),
+				),
+				'button'      => __( 'Get Pinterest pins with PRO', 'social-icons-widget-by-wpzoom' ),
+				'utm_content' => 'settings-pinterest',
+			)
+		);
+	}
+
+	/**
+	 * Optimization tab, shown only when a site turns SVG icons off with the
+	 * wpzoom_social_icons_use_svg filter and so loads the icon fonts again.
 	 */
 	private function render_optimization_tab() {
 		?>

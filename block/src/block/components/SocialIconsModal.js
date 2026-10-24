@@ -150,6 +150,24 @@ class SocialIconsModal extends Component {
 		} );
 	};
 
+	/**
+	 * Icons to offer: no networks that have shut down (the icon already chosen
+	 * stays, so an existing block still shows it) and no icons that can't be
+	 * drawn.
+	 *
+	 * @param {string} iconKit Kit.
+	 * @param {Array}  items   Icon data items.
+	 * @return {Array} Visible items.
+	 */
+	visibleItems( iconKit, items ) {
+		return items.filter(
+			( item ) =>
+				Helper.canDraw( item ) &&
+				( ! Helper.isRetired( iconKit, item.icon ) ||
+					( this.state.modalIcon === item.icon && this.state.modalIconKit === iconKit ) )
+		);
+	}
+
 	isSearching() {
 		return ( this.state.modalSearch || '' ).trim() !== '';
 	}
@@ -184,7 +202,7 @@ class SocialIconsModal extends Component {
 			// Search every enabled kit, in priority order.
 			const filtered = Helper.filterIcons( this.state.modalSearch );
 			const groups = Helper.kitOrder()
-				.map( ( kit ) => ( { kit, items: filtered[ kit ] || [] } ) )
+				.map( ( kit ) => ( { kit, items: this.visibleItems( kit, filtered[ kit ] || [] ) } ) )
 				.filter( ( group ) => group.items.length );
 
 			iconElements = groups.length ? (
@@ -203,15 +221,23 @@ class SocialIconsModal extends Component {
 				</div>
 			) : (
 				<p className="icon-search-empty">
-					{ sprintf(
-						/* translators: %s: search term */
-						__( 'No icons match “%s” in any icon kit.', 'social-icons-widget-by-wpzoom' ),
-						this.state.modalSearch.trim()
-					) }
+					{ Helper.kitOrder().some( ( kit ) =>
+						( filtered[ kit ] || [] ).some( ( item ) => Helper.isRetired( kit, item.icon ) )
+					)
+						? sprintf(
+							/* translators: %s: search term */
+							__( '“%s” is a network that has shut down, so it is no longer offered. Icons already on your site keep working.', 'social-icons-widget-by-wpzoom' ),
+							this.state.modalSearch.trim()
+						)
+						: sprintf(
+							/* translators: %s: search term */
+							__( 'No icons match “%s” in any icon kit.', 'social-icons-widget-by-wpzoom' ),
+							this.state.modalSearch.trim()
+						) }
 				</p>
 			);
 		} else {
-			const items = Helper.filterIcons( '' )[ this.state.modalIconKit ] || [];
+			const items = this.visibleItems( this.state.modalIconKit, Helper.filterIcons( '' )[ this.state.modalIconKit ] || [] );
 			iconElements = (
 				<div className={ classnames( 'option-item', 'icon-kit', `${ this.state.modalIconKit }-wrapper` ) }>
 					{ this.renderIcons( this.state.modalIconKit, items, false ) }
