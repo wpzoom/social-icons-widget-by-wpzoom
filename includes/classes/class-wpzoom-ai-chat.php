@@ -541,7 +541,7 @@ class WPZOOM_AI_Chat {
 				<p class="wpzoom-ai-chat-offer">
 					<span class="dashicons dashicons-tag"></span>
 					<span>
-						<?php esc_html_e( 'WordPress founding offer: 50% off any Yamidoo plan for your first year, applied automatically when you connect from here. The free plan needs no card.', 'social-icons-widget-by-wpzoom' ); ?>
+						<?php esc_html_e( 'WordPress founding offer: 50% off any Yamidoo plan for your first year if you upgrade within 14 days of connecting. Applied automatically at checkout, no code needed. The free plan needs no card.', 'social-icons-widget-by-wpzoom' ); ?>
 						<a href="<?php echo esc_url( self::site_link( 'ai-chat-offer' ) ); ?>" target="_blank" rel="noopener"><?php esc_html_e( 'See how Yamidoo works and what it costs ↗', 'social-icons-widget-by-wpzoom' ); ?></a>
 					</span>
 				</p>
@@ -812,7 +812,7 @@ class WPZOOM_AI_Chat {
 			'heading'        => __( 'Your chat button can now answer questions itself', 'social-icons-widget-by-wpzoom' ),
 			'content'        => '<p>' . sprintf(
 				/* translators: %s: link to yamidoo.ai */
-				esc_html__( 'AI Chat answers visitors from your own pages in seconds and hands off to you when needed — powered by %s, a WPZOOM product. Scan your site first to see what it would say, then turn it on with one click. Free plan, plus 50%% off your first year on any paid plan.', 'social-icons-widget-by-wpzoom' ),
+				esc_html__( 'AI Chat answers visitors from your own pages in seconds and hands off to you when needed — powered by %s, a WPZOOM product. Scan your site first to see what it would say, then turn it on with one click. Free plan, plus 50%% off your first year on any paid plan if you upgrade within 14 days of connecting.', 'social-icons-widget-by-wpzoom' ),
 				'<a href="' . esc_url( self::site_link( 'notice-center' ) ) . '" target="_blank" rel="noopener">Yamidoo.ai</a>'
 			) . '</p>',
 			'icon'           => array(
