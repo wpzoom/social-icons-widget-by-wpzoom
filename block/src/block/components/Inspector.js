@@ -13,7 +13,6 @@ import {
 	FormToggle,
 	ColorPalette,
 	ColorIndicator,
-	ButtonGroup,
 	RangeControl,
 } from '@wordpress/components';
 
@@ -89,21 +88,21 @@ export default class Inspector extends Component {
 			<InspectorControls group="settings">
 				<PanelBody
 					title={ __(
-						'Icon Labels Settings',
+						'Labels & Links',
 						'social-icons-widget-by-wpzoom'
 					) }
 				>
 					<PanelRow>
 						<label htmlFor="show-icon-labels">
 							{ __(
-								' Show icon labels?',
+								'Show icon labels',
 								'social-icons-widget-by-wpzoom'
 							) }
 						</label>
 						<FormToggle
 							id="show-icon-labels"
 							label={ __(
-								' Show icon labels?',
+								'Show icon labels',
 								'social-icons-widget-by-wpzoom'
 							) }
 							checked={ this.props.attributes.showIconsLabel }
@@ -118,14 +117,14 @@ export default class Inspector extends Component {
 					<PanelRow>
 						<label htmlFor="open-link-in-new-tab">
 							{ __(
-								'Open links in new tab?',
+								'Open links in a new tab',
 								'social-icons-widget-by-wpzoom'
 							) }
 						</label>
 						<FormToggle
 							id="open-link-in-new-tab"
 							label={ __(
-								'Open links in new tab?',
+								'Open links in a new tab',
 								'social-icons-widget-by-wpzoom'
 							) }
 							checked={ this.props.attributes.openLinkInNewTab }
@@ -267,12 +266,16 @@ export default class Inspector extends Component {
 						</Fragment>
 					) : null }
 					<PanelRow>
-						<label htmlFor="add-noopener-to-links">
+						<span id="wpzoom-icons-alignment-label">
 							{ __( 'Icons Alignment:', 'social-icons-widget-by-wpzoom' ) }
-						</label>
+						</span>
 					</PanelRow>
 					<PanelRow>
-						<ButtonGroup>
+						<div
+							className="components-button-group"
+							role="group"
+							aria-labelledby="wpzoom-icons-alignment-label"
+						>
 							<Button
 								onClick={ () => this.setAlignment( 'left' ) }
 								isPrimary={ isLeftAlignment }
@@ -294,7 +297,7 @@ export default class Inspector extends Component {
 							>
 								{ __( 'Right', 'social-icons-widget-by-wpzoom' ) }
 							</Button>
-						</ButtonGroup>
+						</div>
 					</PanelRow>
 					<PanelRow>
 						<label htmlFor="icons-font-size">

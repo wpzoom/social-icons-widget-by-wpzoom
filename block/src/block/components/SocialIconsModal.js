@@ -5,8 +5,7 @@ import SocialIcon from './SocialIcon';
 import Helper from '../utils/helper';
 import React from 'react';
 import classnames from 'classnames';
-import { isEmpty, debounce } from 'lodash';
-import { __ } from '@wordpress/i18n';
+import { __, sprintf } from '@wordpress/i18n';
 import { Component } from '@wordpress/element';
 import {
 	Button,
@@ -14,7 +13,6 @@ import {
 	TextControl,
 	SelectControl,
 } from '@wordpress/components';
-import URI from 'urijs';
 
 const { iconKitsCategories } = wpzSocialIconsBlock;
 
@@ -33,26 +31,52 @@ class SocialIconsModal extends Component {
 	constructor( props ) {
 		super( props );
 		this.myRef = React.createRef();
-
-		this.scrollMeDebounced = debounce( this.scrollMe, 1000 );
 	}
 
-	urlTextControlHandler = ( value ) => {
-		value = isEmpty( new URI( value ).protocol() ) ? `https://${ value }` : value;
+	/**
+	 * State for choosing `icon` from `iconKit`. Keeps what the user customised:
+	 * the label only follows the icon while it is still the automatic one, and
+	 * colors follow the icon's brand color until a color is picked in this
+	 * dialog.
+	 *
+	 * @param {Object} state   Current state.
+	 * @param {string} iconKit Kit of the chosen icon.
+	 * @param {string} icon    Chosen icon.
+	 */
+	static selectIconState( state, iconKit, icon ) {
+		const next = { modalIcon: icon, modalIconKit: iconKit };
 
-		const newState = { modalUrl: value };
-
-		const iconFromUrl = Helper.filterUrlScheme( value );
-
-		if ( iconFromUrl ) {
-			const filteredIcons = Helper.filterIcons( iconFromUrl );
-
-			if ( filteredIcons[ this.state.modalIconKit ].length ) {
-				newState.modalIcon = filteredIcons[ this.state.modalIconKit ][ 0 ].icon;
-			}
+		const autoLabel = Helper.humanizeIconLabel( state.modalIcon || '' );
+		if ( ! state.modalLabel || state.modalLabel === autoLabel ) {
+			next.modalLabel = Helper.humanizeIconLabel( icon );
 		}
 
-		this.setState( newState );
+		const newBrand = Helper.brandColor( iconKit, icon );
+		if ( newBrand ) {
+			if ( ! state.colorTouched ) {
+				next.modalColor = newBrand;
+			}
+			if ( ! state.hoverColorTouched ) {
+				next.modalHoverColor = newBrand;
+			}
+		}
+		return next;
+	}
+
+	/*
+	 * The URL is kept exactly as typed (it used to be rewritten to
+	 * "https://…" on the first keystroke) and normalised on save. A recognised
+	 * address selects its icon from any kit — Socicons first.
+	 */
+	urlTextControlHandler = ( value ) => {
+		this.setState( ( state ) => {
+			const next = { modalUrl: value };
+			const match = Helper.detectIcon( value );
+			if ( match && ( match.icon !== state.modalIcon || match.iconKit !== state.modalIconKit ) ) {
+				Object.assign( next, SocialIconsModal.selectIconState( state, match.iconKit, match.icon ) );
+			}
+			return next;
+		} );
 	};
 
 	labelTextControlHandler = ( value ) => {
@@ -64,11 +88,18 @@ class SocialIconsModal extends Component {
 	};
 
 	saveColorPickerHandler = ( arg ) => {
-		this.setState( { modalColor: arg.color } );
+		this.setState( { modalColor: arg.color, colorTouched: true } );
 	};
 
 	saveHoverColorPickerHandler = ( arg ) => {
-		this.setState( { modalHoverColor: arg.color } );
+		this.setState( { modalHoverColor: arg.color, hoverColorTouched: true } );
+	};
+
+	onSave = () => {
+		this.props.save( {
+			...this.state,
+			modalUrl: Helper.normalizeUrl( this.state.modalUrl ),
+		} );
 	};
 
 	static getDerivedStateFromProps( props, state ) {
@@ -82,67 +113,111 @@ class SocialIconsModal extends Component {
 				modalColor: props.color,
 				modalHoverColor: props.hoverColor,
 				modalSearch: '',
+				colorTouched: false,
+				hoverColorTouched: false,
 			};
 		}
 
 		return null;
 	}
 
-	onClickIconHandler = ( icon ) => {
-		this.setState( {
-			modalIcon: icon,
-			modalLabel: Helper.humanizeIconLabel( icon ),
+	onClickIconHandler = ( icon, iconKit ) => {
+		this.setState( ( state ) => SocialIconsModal.selectIconState( state, iconKit, icon ) );
+	};
+
+	componentDidMount() {
+		if ( this.state.modalShow ) {
+			this.scrollToSelected();
+		}
+	}
+
+	// Bring the selected icon into view when the modal opens or the kit
+	// changes — not after every update, which made the list jump while typing.
+	componentDidUpdate( prevProps, prevState ) {
+		const opened = ! prevState.modalShow && this.state.modalShow;
+		const kitChanged = prevState.modalIconKit !== this.state.modalIconKit;
+		if ( this.state.modalShow && ( opened || kitChanged ) && ! this.isSearching() ) {
+			this.scrollToSelected();
+		}
+	}
+
+	scrollToSelected = () => {
+		window.requestAnimationFrame( () => {
+			const node = this.myRef.current;
+			if ( node && node.scrollIntoView ) {
+				node.scrollIntoView( { block: 'nearest', inline: 'nearest' } );
+			}
 		} );
 	};
 
-	componentDidUpdate() {
-		this.scrollMeDebounced();
+	isSearching() {
+		return ( this.state.modalSearch || '' ).trim() !== '';
 	}
 
-	scrollMe = () => {
-		const node = this.myRef.current;
-
-		if ( ! ( null === node ) ) {
-			node.scrollIntoView( true );
-		}
-	};
+	renderIcons( iconKit, items, withKitName ) {
+		return items.map( ( element ) => {
+			const isSelected =
+				this.state.modalIcon === element.icon && this.state.modalIconKit === iconKit;
+			return (
+				<SocialIcon
+					key={ `${ iconKit }-${ element.icon }` }
+					setRef={ isSelected ? this.myRef : null }
+					color={ this.state.modalColor }
+					hoverColor={ this.state.modalHoverColor }
+					icon={ element.icon }
+					iconKit={ iconKit }
+					kitLabel={ withKitName ? Helper.kitLabel( iconKit ) : null }
+					click={ () => this.onClickIconHandler( element.icon, iconKit ) }
+					isSelected={ isSelected }
+				/>
+			);
+		} );
+	}
 
 	render() {
 		if ( ! this.state.modalShow ) {
 			return null;
 		}
 
-		const iconElements = Object.keys(
-			Helper.filterIcons( this.state.modalSearch )
-		).map( ( iconKit, iconKey ) => (
-			<div
-				key={ iconKey }
-				className={ classnames( 'option-item', 'icon-kit', `${ iconKit }-wrapper` ) }
-				style={ {
-					display: this.state.modalIconKit === iconKit ? 'block' : 'none',
-				} }
-			>
-				{ Helper.filterIcons( this.state.modalSearch )[ iconKit ].map(
-					( element, key ) => (
-						<SocialIcon
-							key={ key }
-							setRef={
-								this.state.modalIcon === element.icon &&
-								this.state.modalIconKit === iconKit
-									? this.myRef
-									: null
-							}
-							color={ this.state.modalColor }
-							hoverColor={ this.state.modalHoverColor }
-							icon={ element.icon }
-							click={ this.onClickIconHandler }
-							isSelected={ this.state.modalIcon === element.icon }
-							iconKit={ iconKit }
-						></SocialIcon>
-					)
-				) }
-			</div>
-		) );
+		let iconElements;
+		if ( this.isSearching() ) {
+			// Search every enabled kit, in priority order.
+			const filtered = Helper.filterIcons( this.state.modalSearch );
+			const groups = Helper.kitOrder()
+				.map( ( kit ) => ( { kit, items: filtered[ kit ] || [] } ) )
+				.filter( ( group ) => group.items.length );
+
+			iconElements = groups.length ? (
+				<div className="icon-search-results">
+					{ groups.map( ( { kit, items } ) => (
+						<div key={ kit } className="icon-search-group">
+							<div className="icon-search-group__title">
+								{ Helper.kitLabel( kit ) }
+								<span className="icon-search-group__count">{ items.length }</span>
+							</div>
+							<div className={ classnames( 'icon-kit', `${ kit }-wrapper` ) }>
+								{ this.renderIcons( kit, items, true ) }
+							</div>
+						</div>
+					) ) }
+				</div>
+			) : (
+				<p className="icon-search-empty">
+					{ sprintf(
+						/* translators: %s: search term */
+						__( 'No icons match “%s” in any icon kit.', 'social-icons-widget-by-wpzoom' ),
+						this.state.modalSearch.trim()
+					) }
+				</p>
+			);
+		} else {
+			const items = Helper.filterIcons( '' )[ this.state.modalIconKit ] || [];
+			iconElements = (
+				<div className={ classnames( 'option-item', 'icon-kit', `${ this.state.modalIconKit }-wrapper` ) }>
+					{ this.renderIcons( this.state.modalIconKit, items, false ) }
+				</div>
+			);
+		}
 
 		return (
 			<Modal
@@ -165,6 +240,7 @@ class SocialIconsModal extends Component {
 							<TextControl
 								value={ this.state.modalUrl }
 								onChange={ this.urlTextControlHandler }
+								placeholder={ __( 'https://example.com', 'social-icons-widget-by-wpzoom' ) }
 							/>
 						</div>
 					</div>
@@ -185,6 +261,7 @@ class SocialIconsModal extends Component {
 						</div>
 						<div className="option-wrapper">
 							<ModalColorPicker
+								title={ __( 'Icon color', 'social-icons-widget-by-wpzoom' ) }
 								save={ this.saveColorPickerHandler }
 								color={ this.state.modalColor }
 							/>
@@ -196,6 +273,7 @@ class SocialIconsModal extends Component {
 						</div>
 						<div className="option-wrapper">
 							<ModalColorPicker
+								title={ __( 'Hover color', 'social-icons-widget-by-wpzoom' ) }
 								save={ this.saveHoverColorPickerHandler }
 								color={ this.state.modalHoverColor }
 							/>
@@ -212,6 +290,11 @@ class SocialIconsModal extends Component {
 									this.setState( { modalIconKit: currentIconKit } );
 								} }
 								options={ Object.values( iconKitsCategories ) }
+								help={
+									this.isSearching()
+										? __( 'Searching all icon kits.', 'social-icons-widget-by-wpzoom' )
+										: undefined
+								}
 							/>
 						</div>
 					</div>
@@ -221,11 +304,12 @@ class SocialIconsModal extends Component {
 					<div className="modal-search">
 						<TextControl
 							placeholder={ __(
-								'Type to search icon',
+								'Search all icon kits',
 								'social-icons-widget-by-wpzoom'
 							) }
 							value={ this.state.modalSearch }
 							onChange={ this.searchTextControlHandler }
+							type="search"
 						/>
 					</div>
 					<div className="modal-buttons">
@@ -237,7 +321,7 @@ class SocialIconsModal extends Component {
 								{ __( 'Delete Icon', 'social-icons-widget-by-wpzoom' ) }
 							</Button>
 						) }
-						<Button isPrimary onClick={ () => this.props.save( this.state ) }>
+						<Button isPrimary onClick={ this.onSave }>
 							{ __( 'Save', 'social-icons-widget-by-wpzoom' ) }
 						</Button>
 					</div>

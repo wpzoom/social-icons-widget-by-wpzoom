@@ -3,8 +3,7 @@
 /**
  * External dependencies
  */
-import { get, isEmpty, omit, find, map, filter } from 'lodash';
-import URI from 'urijs';
+import { get, isEmpty, omit, find } from 'lodash';
 import classnames from 'classnames';
 
 /**
@@ -14,7 +13,7 @@ import { __ } from '@wordpress/i18n';
 import { useState, useEffect, useRef, Fragment } from '@wordpress/element';
 import { useSelect } from '@wordpress/data';
 import { Icon, Button, Popover, Modal, TextareaControl } from '@wordpress/components';
-import { AlignmentToolbar, BlockControls, useBlockProps } from '@wordpress/block-editor';
+import { AlignmentControl, BlockControls, useBlockProps } from '@wordpress/block-editor';
 // SVG icons for controls drawn inside the editor canvas (an iframe that only has
 // the Dashicons font when that icon kit is enabled); Dashicon names there can
 // render as empty boxes.
@@ -275,6 +274,30 @@ export default function Edit( props ) {
 		}
 	}, [] ); // eslint-disable-line react-hooks/exhaustive-deps
 
+	/**
+	 * An icon as drawn in the popover's URL field. Same classes as the canvas:
+	 * the icon fonts only draw glyphs for `.social-icon.<kit>-<icon>`, so
+	 * `social-icon` stays and its tile styling is reset in editor.scss.
+	 *
+	 * @param {string} iconKit   Kit.
+	 * @param {string} icon      Icon name.
+	 * @param {string} customSvg Custom SVG markup, for the "svg" kit.
+	 */
+	const renderUrlFieldGlyph = ( iconKit, icon, customSvg = null ) =>
+		iconKit === 'svg' && customSvg ? (
+			<span
+				className="url-input-icon-glyph"
+				dangerouslySetInnerHTML={ { __html: customSvg } }
+			/>
+		) : (
+			<span
+				className={ classnames(
+					'url-input-icon-glyph',
+					Helper.getIconClassList( iconKit, icon )
+				) }
+			/>
+		);
+
 	// Always points at the latest attributes so async callbacks (e.g. timers)
 	// never operate on a stale closure snapshot.
 	const latestAttributesRef = useRef( attributes );
@@ -454,50 +477,23 @@ export default function Edit( props ) {
 	};
 
 	const popoverSearchHandler = ( key, newUrl ) => {
-		newUrl = isEmpty( new URI( newUrl ).protocol() )
-			? `https://${ newUrl }`
-			: newUrl;
+		newUrl = Helper.normalizeUrl( newUrl );
 
 		const selectedIconsClone = JSON.parse(
 			JSON.stringify( attributes.selectedIcons )
 		);
 
-		const isWordPressUrl =
-			newUrl.includes( 'wordpress.org' ) ||
-			newUrl.includes( 'wordpress.com' ) ||
-			newUrl.includes( 'wp.org' );
-
-		const iconFromUrl = isWordPressUrl
-			? 'wordpress'
-			: Helper.filterUrlScheme( newUrl );
-		let iconDetected = false;
-
-		if ( isWordPressUrl ) {
-			selectedIconsClone[ key ].iconKit = 'dashicons';
-			selectedIconsClone[ key ].icon = 'wordpress';
-			iconDetected = true;
-			selectedIconsClone[ key ].label = 'WordPress';
-			selectedIconsClone[ key ].color = '#0866FF';
-			selectedIconsClone[ key ].hoverColor = '#0866FF';
-		} else if ( iconFromUrl ) {
-			const filteredIcons = Helper.filterIcons( iconFromUrl );
-			map( filteredIcons, ( icon, iconKit ) => {
-				if ( ! isEmpty( icon ) ) {
-					filter( icon, function ( o ) {
-						if ( o.icon === iconFromUrl ) {
-							selectedIconsClone[ key ].iconKit = iconKit;
-							selectedIconsClone[ key ].icon = o.icon;
-							iconDetected = true;
-							if ( o.color ) {
-								selectedIconsClone[ key ].color = o.color;
-								selectedIconsClone[ key ].hoverColor = o.color;
-							}
-							selectedIconsClone[ key ].label =
-								Helper.humanizeIconLabel( iconFromUrl );
-						}
-					} );
-				}
-			} );
+		// Socicons first, then the other enabled kits; first exact match wins.
+		const match = Helper.detectIcon( newUrl );
+		const iconDetected = !! match;
+		if ( match ) {
+			selectedIconsClone[ key ].iconKit = match.iconKit;
+			selectedIconsClone[ key ].icon = match.icon;
+			selectedIconsClone[ key ].label = match.label;
+			if ( match.color ) {
+				selectedIconsClone[ key ].color = match.color;
+				selectedIconsClone[ key ].hoverColor = match.color;
+			}
 		}
 
 		selectedIconsClone[ key ].url = newUrl;
@@ -653,6 +649,9 @@ export default function Edit( props ) {
 							className={ classnames( 'wpzoom-social-icons-popover' ) }
 							key={ key }
 							position="bottom center"
+							// Keep it inside the viewport: next to the screen edge it
+							// used to open partly off-screen (WordPress 6.1+).
+							shift
 							onClose={ () => popoverCloseHandler( key ) }
 						>
 							<div className={ classnames( 'popover-content' ) }>
@@ -691,22 +690,21 @@ export default function Edit( props ) {
 											// so `social-icon` stays and its tile styling is
 											// reset in editor.scss.
 											icon={
-												list.url && list.iconDetected !== false ? (
-													list.iconKit === 'svg' && list.customSvg ? (
-														<span
-															className="url-input-icon-glyph"
-															dangerouslySetInnerHTML={ { __html: list.customSvg } }
-														/>
-													) : (
-														<span
-															className={ classnames(
-																'url-input-icon-glyph',
-																Helper.getIconClassList( list.iconKit, list.icon )
-															) }
-														/>
-													)
-												) : null
+												list.url && list.iconDetected !== false
+													? renderUrlFieldGlyph( list.iconKit, list.icon, list.customSvg )
+													: null
 											}
+											// Live preview while typing: the icon Detect
+											// Icon would apply, before it is applied.
+											preview={ ( typed ) => {
+												const match = Helper.detectIcon( typed );
+												return match
+													? {
+														node: renderUrlFieldGlyph( match.iconKit, match.icon ),
+														color: match.color || list.color,
+													  }
+													: null;
+											} }
 											color={ list.color }
 										/>
 									</div>
@@ -796,17 +794,18 @@ export default function Edit( props ) {
 												className={ classnames(
 													'popover-color-picker'
 												) }
-												save={ ( arg ) => {
-													const selectedIconsClone = [
-														...attributes.selectedIcons,
-													];
-													selectedIconsClone[
-														attributes.activeIconIndex
-													].color = arg.color;
+												save={ ( arg ) =>
+													// Copy, never mutate: attributes must be
+													// replaced for undo and change detection.
 													setAttributes( {
-														selectedIcons: selectedIconsClone,
-													} );
-												} }
+														selectedIcons: attributes.selectedIcons.map(
+															( item, i ) =>
+																i === key
+																	? { ...item, color: arg.color }
+																	: item
+														),
+													} )
+												}
 												color={ list.color }
 											/>
 										</div>
@@ -831,17 +830,18 @@ export default function Edit( props ) {
 												className={ classnames(
 													'popover-color-picker'
 												) }
-												save={ ( arg ) => {
-													const selectedIconsClone = [
-														...attributes.selectedIcons,
-													];
-													selectedIconsClone[
-														attributes.activeIconIndex
-													].hoverColor = arg.color;
+												save={ ( arg ) =>
+													// Copy, never mutate: attributes must be
+													// replaced for undo and change detection.
 													setAttributes( {
-														selectedIcons: selectedIconsClone,
-													} );
-												} }
+														selectedIcons: attributes.selectedIcons.map(
+															( item, i ) =>
+																i === key
+																	? { ...item, hoverColor: arg.color }
+																	: item
+														),
+													} )
+												}
 												color={ list.hoverColor }
 											/>
 										</div>
@@ -883,8 +883,8 @@ export default function Edit( props ) {
 	return (
 		<Fragment>
 			<Inspector { ...props } />
-			<BlockControls>
-				<AlignmentToolbar
+			<BlockControls group="block">
+				<AlignmentControl
 					value={ attributes.iconsAlignment }
 					onChange={ ( iconsAlignment ) => setAlignment( iconsAlignment ) }
 				/>

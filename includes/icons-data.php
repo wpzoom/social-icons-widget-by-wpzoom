@@ -1202,7 +1202,7 @@ return array(
 				'blogging',
 				'web-tools',
 			),
-			'color'    => '#464646',
+			'color'    => '#3858E9',
 		),
 		array(
 			'icon'     => 'xbox',

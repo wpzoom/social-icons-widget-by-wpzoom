@@ -153,28 +153,40 @@
         line-height: 0;
 
         // Carries `social-icon` (the fonts need it to draw the glyph), so undo
-        // that class's tile styling here.
+        // that class's tile styling here — and the icon fonts' own inline-text
+        // tweaks (socicon nudges every glyph with `position: relative; top: 3px`,
+        // which sat it low in the badge). An exact 12px square with a 12px line
+        // box centers glyphs that fill the font's em box, as socicons do.
         .url-input-icon-glyph,
         .url-input-icon-glyph.social-icon {
-          display: flex;
+          display: block;
+          position: static;
+          top: auto;
+          flex: none;
           border: 0;
           border-radius: 0;
           box-shadow: none;
-          align-items: center;
-          justify-content: center;
-          width: auto;
-          height: auto;
+          width: 12px;
+          height: 12px;
           margin: 0;
           padding: 0;
           font-size: 12px;
-          line-height: 1;
+          line-height: 12px;
+          text-align: center;
+          vertical-align: top;
           color: inherit;
           background: none;
 
           &::before {
+            display: block;
+            position: static;
+            width: 12px;
+            height: 12px;
+            margin: 0;
+            padding: 0;
             font-size: 12px;
-            width: auto;
-            height: auto;
+            line-height: 12px;
+            text-align: center;
           }
         }
 
@@ -468,7 +480,63 @@
       padding: 9px;
       border-width: 1px;
       border-style: solid;
-      box-shadow: 2px 2px 5px 0px rgba(0, 0, 0, 1);
+      cursor: pointer;
+      // A ring instead of the old hard black drop shadow.
+      box-shadow: 0 0 0 2px #fff, 0 0 0 4px rgba(30, 30, 30, 0.25);
+    }
+
+    .social-icon.selected {
+      box-shadow: 0 0 0 2px #fff, 0 0 0 4px var(--wp-admin-theme-color, #3858e9);
+    }
+
+    .social-icon[role="button"]:focus-visible {
+      outline: none;
+      box-shadow: 0 0 0 2px #fff, 0 0 0 4px var(--wp-admin-theme-color, #3858e9);
+    }
+
+    // Search results from every enabled kit, one scroll area, a heading per kit.
+    .icon-search-results {
+      flex: 1;
+      max-height: 290px;
+      overflow-y: auto;
+    }
+
+    .icon-search-group + .icon-search-group {
+      margin-top: 12px;
+    }
+
+    .icon-search-group__title {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin: 0 5px 4px;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: #757575;
+    }
+
+    .icon-search-group__count {
+      padding: 0 6px;
+      border-radius: 9px;
+      background: #f0f0f0;
+      color: #1e1e1e;
+      font-weight: 500;
+      letter-spacing: 0;
+    }
+
+    .icon-search-results .icon-kit {
+      display: flex;
+      overflow: visible;
+      max-height: none;
+    }
+
+    .icon-search-empty {
+      flex: 1;
+      margin: 24px 0;
+      color: #757575;
+      text-align: center;
     }
 
   }
@@ -478,9 +546,15 @@
     justify-content: space-between;
     border-top: 1px solid #e2e4e7;
     padding: 0 16px;
-    margin: 0 -24px -16px;
+    margin: 0 -24px -24px;
     height: 56px;
     align-items: center;
+    // Stay visible at the bottom of the dialog: on shorter screens the content
+    // scrolls and used to take Search, Delete and Save out of view.
+    position: sticky;
+    bottom: -24px;
+    z-index: 2;
+    background: #fff;
 
     .components-base-control .components-base-control__field {
       margin-bottom: 0px;
@@ -656,3 +730,21 @@
   }
 }
 
+
+// The swatch is a button wrapping a ColorIndicator; keep the button invisible
+// so the swatch looks as it did.
+.wpzoom-color-indicator-wrap {
+  display: inline-flex;
+}
+
+.wpzoom-color-indicator-button.components-button {
+  height: auto;
+  min-width: 0;
+  padding: 0;
+  background: none;
+  border-radius: 50%;
+
+  &:focus-visible {
+    box-shadow: 0 0 0 2px var(--wp-admin-theme-color, #3858e9);
+  }
+}

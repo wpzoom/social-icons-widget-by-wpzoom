@@ -265,6 +265,14 @@ Floating Buttons is a PRO feature that displays your social sharing icons as a f
 == Changelog ==
 
 = 4.7.4 =
+* IMPROVED: Social Icons block — Detect Icon now looks in Socicons first and falls back to the other enabled icon kits (it used to take the last kit with a match, often Font Awesome)
+* NEW: the icon's URL field shows the matching icon as you type
+* NEW: search in the "Select Icon" dialog covers every enabled icon kit, grouped by kit
+* IMPROVED: "Select Icon" dialog — the URL is no longer rewritten while you type, typing a URL picks its icon from any kit, a custom label or color is kept when you pick another icon, the list no longer jumps while you type, and Search, Delete and Save stay visible on shorter screens
+* Fixed color swatches showing an outdated color after Detect Icon, and the color picker staying open when clicking elsewhere
+* Fixed the icon settings popover opening partly off-screen next to the edge of the editor
+* Icons in the picker and the color swatches can now be used with the keyboard
+* WordPress links get the Socicons WordPress icon in WordPress blue, and twitter.com links get the X icon
 * Updated the Reddit icon to Reddit's current logo and brand color (#FF4500)
 * Fixed the Socicons font being downloaded twice when font preloading is on
 * SECURITY: the AI Chat identity signature printed for logged-in users is now domain-separated from the signature that authenticates customer-data lookups. Before, an account registered with a crafted email address could reuse its own signature to read another customer's orders and licenses through the lookup endpoint. Reported by Wordfence.

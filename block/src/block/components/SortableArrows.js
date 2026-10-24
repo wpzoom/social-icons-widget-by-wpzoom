@@ -1,6 +1,6 @@
 import classnames from 'classnames';
 import { __ } from '@wordpress/i18n';
-import { Icon, Button, ButtonGroup } from '@wordpress/components';
+import { Icon, Button } from '@wordpress/components';
 import { chevronLeft, chevronRight } from '@wordpress/icons';
 
 /*
@@ -12,7 +12,11 @@ import { chevronLeft, chevronRight } from '@wordpress/icons';
 const SortableArrows = ( props ) => {
 	return (
 		props.isActive && (
-			<ButtonGroup className={ classnames( 'sortable-arrows' ) }>
+			<div
+				className={ classnames( 'sortable-arrows' ) }
+				role="group"
+				aria-label={ __( 'Reorder icon', 'social-icons-widget-by-wpzoom' ) }
+			>
 				<Button
 					className={ classnames( 'arrow-btn' ) }
 					isSmall
@@ -39,7 +43,7 @@ const SortableArrows = ( props ) => {
 						className={ classnames( 'arrow-icon' ) }
 					/>
 				</Button>
-			</ButtonGroup>
+			</div>
 		)
 	);
 };
