@@ -111,6 +111,18 @@ class WPZOOM_Social_Icons_Settings {
 				WPZOOM_SOCIAL_ICONS_PLUGIN_VERSION
 			);
 
+			// For the button preview on the Google Preferred Sources tab.
+			wp_enqueue_style( WPZOOM_Preferred_Source::STYLE_HANDLE );
+
+			// For the sample icons on the Icon Sets tab.
+			foreach ( self::icon_set_stylesheets() as $handle => $file ) {
+				if ( 'dashicons' === $handle ) {
+					wp_enqueue_style( 'dashicons' );
+					continue;
+				}
+				wp_enqueue_style( $handle, WPZOOM_SOCIAL_ICONS_PLUGIN_URL . 'assets/css/' . $file, array(), filemtime( WPZOOM_SOCIAL_ICONS_PLUGIN_PATH . 'assets/css/' . $file ) );
+			}
+
 			wp_enqueue_script(
 				'zoom-social-icons-settings-page',
 				WPZOOM_SOCIAL_ICONS_PLUGIN_URL . 'assets/js/social-icons-settings-page.js',
@@ -184,37 +196,38 @@ class WPZOOM_Social_Icons_Settings {
 				<li>
 					<a href="#font-styles"><?php esc_html_e( 'Icon Sets', 'social-icons-widget-by-wpzoom' ); ?></a>
 				</li>
-
 				<li>
 					<a href="#font-preload"><?php esc_html_e( 'Optimization', 'social-icons-widget-by-wpzoom' ); ?></a>
 				</li>
 				<li>
-					<a href="#general-tab"><?php esc_html_e( 'Misc.', 'social-icons-widget-by-wpzoom' ); ?></a>
+					<a href="#general-tab"><?php esc_html_e( 'Modules', 'social-icons-widget-by-wpzoom' ); ?></a>
+				</li>
+				<li>
+					<a href="#<?php echo esc_attr( WPZOOM_Preferred_Source::SETTINGS_TAB ); ?>"><?php esc_html_e( 'Google Preferred Sources', 'social-icons-widget-by-wpzoom' ); ?></a>
 				</li>
 			</ul>
 		</div>
 
 		<form method="post" action="options.php">
+			<?php
+			// Every tab posts with this one form, under the General group.
+			settings_fields( 'wpzoom-social-icons-widget-settings-group-general' );
+			?>
 
 			<div id="font-styles" class="tab">
-				<?php
-						settings_fields( 'wpzoom-social-icons-widget-settings-group-font-styles' );
-						do_settings_sections( 'wpzoom-social-icons-widget-settings-group-font-styles' );
-				?>
+				<?php $this->render_icon_sets_tab(); ?>
 			</div>
 
 			<div id="font-preload" class="tab">
-				<?php
-						settings_fields( 'wpzoom-social-icons-widget-settings-group-font-preload' );
-						do_settings_sections( 'wpzoom-social-icons-widget-settings-group-font-preload' );
-				?>
+				<?php $this->render_optimization_tab(); ?>
 			</div>
 
 			<div id="general-tab" class="tab">
-				<?php
-						settings_fields( 'wpzoom-social-icons-widget-settings-group-general' );
-						do_settings_sections( 'wpzoom-social-icons-widget-settings-group-general' );
-				?>
+				<?php $this->render_modules_tab(); ?>
+			</div>
+
+			<div id="<?php echo esc_attr( WPZOOM_Preferred_Source::SETTINGS_TAB ); ?>" class="tab">
+				<?php WPZOOM_Preferred_Source::render_settings_tab(); ?>
 			</div>
 
 			<?php submit_button(); ?>
@@ -275,116 +288,6 @@ class WPZOOM_Social_Icons_Settings {
 				'default'           => self::$option_defaults,
 			)
 		);
-
-		/**
-		 * General tab section and settings.
-		 */
-		add_settings_section(
-			'wpzoom-social-icons-widget-settings-general',
-			false, // Title.
-			'__return_false', // Callback.
-			'wpzoom-social-icons-widget-settings-group-general'
-		);
-
-		add_settings_field(
-			'wpzoom-disable-social-icons-widget-checkbox',
-			__( 'Social Icons Widget', 'social-icons-widget-by-wpzoom' ),
-			array( $this, 'field_disable_widget_checkbox' ),
-			'wpzoom-social-icons-widget-settings-group-general',
-			'wpzoom-social-icons-widget-settings-general'
-		);
-
-		add_settings_field(
-			'wpzoom-disable-social-icons-block-checkbox',
-			__( 'Social Icons Block', 'social-icons-widget-by-wpzoom' ),
-			array( $this, 'field_disable_block_checkbox' ),
-			'wpzoom-social-icons-widget-settings-group-general',
-			'wpzoom-social-icons-widget-settings-general'
-		);
-
-		/**
-		 * Font Preloader tab section and settings.
-		 */
-		add_settings_section(
-			'wpzoom-social-icons-widget-settings-font-preload',
-			false,
-			'__return_false',
-			'wpzoom-social-icons-widget-settings-group-font-preload'
-		);
-
-		add_settings_field(
-			'wpzoom-enable-social-icons-fonts-preloader',
-			__( 'Preload Fonts', 'social-icons-widget-by-wpzoom' ),
-			array( $this, 'field_disable_fonts_preloading' ),
-			'wpzoom-social-icons-widget-settings-group-font-preload',
-			'wpzoom-social-icons-widget-settings-font-preload'
-		);
-
-		/**
-		 * Font Styles tab section and settings.
-		 */
-		add_settings_section(
-			'wpzoom-social-icons-widget-settings-font-styles',
-			false, // Title.
-			'__return_false',
-			'wpzoom-social-icons-widget-settings-group-font-styles'
-		);
-
-		add_settings_field(
-			'wpzoom-disable-css-loading-for-academicons',
-			__( 'Academicons', 'social-icons-widget-by-wpzoom' ),
-			array( $this, 'field_disable_css_loading_for_academicons' ),
-			'wpzoom-social-icons-widget-settings-group-font-styles',
-			'wpzoom-social-icons-widget-settings-font-styles'
-		);
-
-		add_settings_field(
-			'wpzoom-disable-css-loading-for-font-awesome-3',
-			__( 'Font Awesome 3', 'social-icons-widget-by-wpzoom' ),
-			array( $this, 'field_disable_css_loading_for_font_awesome_3' ),
-			'wpzoom-social-icons-widget-settings-group-font-styles',
-			'wpzoom-social-icons-widget-settings-font-styles'
-		);
-
-		add_settings_field(
-			'wpzoom-disable-css-loading-for-font-awesome-5',
-			__( 'Font Awesome 5', 'social-icons-widget-by-wpzoom' ),
-			array( $this, 'field_disable_css_loading_for_font_awesome_5' ),
-			'wpzoom-social-icons-widget-settings-group-font-styles',
-			'wpzoom-social-icons-widget-settings-font-styles'
-		);
-
-		add_settings_field(
-			'wpzoom-disable-css-loading-for-font-genericons',
-			__( 'Genericons', 'social-icons-widget-by-wpzoom' ),
-			array( $this, 'field_disable_css_loading_for_genericons' ),
-			'wpzoom-social-icons-widget-settings-group-font-styles',
-			'wpzoom-social-icons-widget-settings-font-styles'
-		);
-
-		add_settings_field(
-			'wpzoom-disable-css-loading-for-font-dashicons',
-			__( 'Dashicons', 'social-icons-widget-by-wpzoom' ),
-			array( $this, 'field_disable_css_loading_for_dashicons' ),
-			'wpzoom-social-icons-widget-settings-group-font-styles',
-			'wpzoom-social-icons-widget-settings-font-styles'
-		);
-
-		add_settings_field(
-			'wpzoom-disable-css-loading-for-font-socicons',
-			__( 'Socicons', 'social-icons-widget-by-wpzoom' ),
-			array( $this, 'field_disable_css_loading_for_socicons' ),
-			'wpzoom-social-icons-widget-settings-group-font-styles',
-			'wpzoom-social-icons-widget-settings-font-styles'
-		);
-
-		add_settings_field(
-			'wpzoom-categories-sync',
-			__( 'Sync Icon Sets', 'social-icons-widget-by-wpzoom' ),
-			array( $this, 'field_categories_sync' ),
-			'wpzoom-social-icons-widget-settings-group-font-styles',
-			'wpzoom-social-icons-widget-settings-font-styles'
-		);
 	}
 
 	/**
@@ -439,145 +342,249 @@ class WPZOOM_Social_Icons_Settings {
 	}
 
 	/**
-	 * Render Disable Widget checkbox in settings page.
+	 * Icon font stylesheets, keyed by handle, for the samples on the Icon Sets tab.
+	 *
+	 * @return array
 	 */
-	public function field_disable_widget_checkbox() {
-		?>
-        <label>
-        	<input type="hidden" name="wpzoom-social-icons-widget-settings[disable-widget]" value="0" />
-        	<input type="checkbox" id="disable-widget" name="wpzoom-social-icons-widget-settings[disable-widget]" value="1" <?php checked( self::get_option_key( 'disable-widget' ), 1 ); ?> />
-        		<?php esc_html_e( 'Disable', 'social-icons-widget-by-wpzoom' ); ?>
-        </label>
-        <span class="description"><?php esc_html_e( 'Social Icons Widget module functionality, by default enabled.', 'social-icons-widget-by-wpzoom' ); ?></span>
+	public static function icon_set_stylesheets() {
+		return array(
+			'wpzoom-social-icons-socicon'       => 'wpzoom-socicon.css',
+			'wpzoom-social-icons-font-awesome-5' => 'font-awesome-5.min.css',
+			'wpzoom-social-icons-font-awesome-3' => 'font-awesome-3.min.css',
+			'dashicons'                         => '',
+			'wpzoom-social-icons-genericons'    => 'genericons.css',
+			'wpzoom-social-icons-academicons'   => 'academicons.min.css',
+		);
+	}
 
+	/**
+	 * The icon sets shown on the Icon Sets tab, keyed by their setting.
+	 *
+	 * @return array
+	 */
+	private static function icon_sets() {
+		return array(
+			'disable-css-loading-for-socicons'       => array(
+				'title'       => __( 'Socicons', 'social-icons-widget-by-wpzoom' ),
+				'badge'       => __( 'Main set', 'social-icons-widget-by-wpzoom' ),
+				'description' => __( 'Brand icons for social networks and apps. Used by default in the block and the widget.', 'social-icons-widget-by-wpzoom' ),
+				'kits'        => array( 'socicon' ),
+				'samples'     => array( 'social-icon socicon socicon-facebook', 'social-icon socicon socicon-x', 'social-icon socicon socicon-instagram', 'social-icon socicon socicon-youtube', 'social-icon socicon socicon-linkedin', 'social-icon socicon socicon-tiktok' ),
+			),
+			'disable-css-loading-for-font-awesome-5' => array(
+				'title'       => __( 'Font Awesome 5', 'social-icons-widget-by-wpzoom' ),
+				'description' => __( 'Brand, solid and regular icons. Available in the Social Icons block.', 'social-icons-widget-by-wpzoom' ),
+				'kits'        => array( 'fab', 'far', 'fas' ),
+				'samples'     => array( 'fab fa-facebook', 'fab fa-twitter', 'fab fa-instagram', 'fab fa-youtube', 'fab fa-github', 'fas fa-envelope' ),
+			),
+			'disable-css-loading-for-font-awesome-3' => array(
+				'title'       => __( 'Font Awesome 3', 'social-icons-widget-by-wpzoom' ),
+				'description' => __( 'The older Font Awesome set. Available only in the Social Icons widget.', 'social-icons-widget-by-wpzoom' ),
+				'kits'        => array( 'fa' ),
+				'samples'     => array( 'fa fa-facebook', 'fa fa-twitter', 'fa fa-instagram', 'fa fa-youtube', 'fa fa-github', 'fa fa-envelope' ),
+			),
+			'disable-css-loading-for-dashicons'      => array(
+				'title'       => __( 'Dashicons', 'social-icons-widget-by-wpzoom' ),
+				'description' => __( 'The WordPress icon font, with a few social and general icons.', 'social-icons-widget-by-wpzoom' ),
+				'kits'        => array( 'dashicons' ),
+				'samples'     => array( 'dashicons dashicons-facebook', 'dashicons dashicons-twitter', 'dashicons dashicons-instagram', 'dashicons dashicons-email', 'dashicons dashicons-wordpress', 'dashicons dashicons-rss' ),
+			),
+			'disable-css-loading-for-genericons'     => array(
+				'title'       => __( 'Genericons', 'social-icons-widget-by-wpzoom' ),
+				'description' => __( 'Simple generic icons, such as mail, phone, RSS and location.', 'social-icons-widget-by-wpzoom' ),
+				'kits'        => array( 'genericon' ),
+				'samples'     => array( 'genericon genericon-facebook', 'genericon genericon-twitter', 'genericon genericon-instagram', 'genericon genericon-mail', 'genericon genericon-github', 'genericon genericon-youtube' ),
+			),
+			'disable-css-loading-for-academicons'    => array(
+				'title'       => __( 'Academicons', 'social-icons-widget-by-wpzoom' ),
+				'description' => __( 'Icons for academic profiles: Google Scholar, ORCID, ResearchGate, arXiv and more.', 'social-icons-widget-by-wpzoom' ),
+				'kits'        => array( 'academicons' ),
+				'samples'     => array( 'academicons academicons-google-scholar', 'academicons academicons-orcid', 'academicons academicons-researchgate', 'academicons academicons-arxiv', 'academicons academicons-academia', 'academicons academicons-pubmed' ),
+			),
+		);
+	}
+
+	/**
+	 * Card header shared by the settings tabs.
+	 *
+	 * @param string $icon        Dashicon name, without the "dashicons-" prefix.
+	 * @param string $title       Title.
+	 * @param string $description Description.
+	 */
+	private function render_card_header( $icon, $title, $description ) {
+		?>
+		<div class="wpzoom-settings-card__header">
+			<span class="wpzoom-settings-card__icon dashicons dashicons-<?php echo esc_attr( $icon ); ?>" aria-hidden="true"></span>
+			<div class="wpzoom-settings-card__text">
+				<h2><?php echo esc_html( $title ); ?></h2>
+				<p><?php echo esc_html( $description ); ?></p>
+			</div>
+		</div>
 		<?php
 	}
 
 	/**
-	 * Render Disable Block checkbox in settings page.
+	 * On/off switch for a boolean setting.
+	 *
+	 * @param string $key      Setting key.
+	 * @param string $label_id ID of the element that labels the switch.
+	 * @param bool   $inverted True for "disable-…" settings shown as "on = enabled".
 	 */
-	public function field_disable_block_checkbox() {
+	private function render_switch( $key, $label_id, $inverted = false ) {
+		$name = self::$option_name . '[' . $key . ']';
+		$on   = (bool) self::get_option_key( $key );
+		if ( $inverted ) {
+			$on = ! $on;
+		}
+		// The hidden field is what's sent when the switch is off; a checked
+		// switch comes later in the form and overrides it.
 		?>
-        <label>
-        	<input type="hidden" name="wpzoom-social-icons-widget-settings[disable-block]" value="0" />
-        	<input type="checkbox" id="disable-block" name="wpzoom-social-icons-widget-settings[disable-block]" value="1" <?php checked( self::get_option_key( 'disable-block' ), 1 ); ?> />
-        		<?php esc_html_e( 'Disable', 'social-icons-widget-by-wpzoom' ); ?>
-        </label>
-        <span class="description"><?php esc_html_e( 'Social Icons Block module functionality, by default enabled.', 'social-icons-widget-by-wpzoom' ); ?></span>
-
+		<input type="hidden" name="<?php echo esc_attr( $name ); ?>" value="<?php echo $inverted ? '1' : '0'; ?>" />
+		<label class="wpzoom-settings-switch">
+			<input type="checkbox" name="<?php echo esc_attr( $name ); ?>" value="<?php echo $inverted ? '0' : '1'; ?>" aria-labelledby="<?php echo esc_attr( $label_id ); ?>" <?php checked( $on ); ?> />
+			<span class="wpzoom-settings-switch__track" aria-hidden="true"></span>
+		</label>
 		<?php
 	}
 
 	/**
-	 * Render Fonts Preloading checkbox in settings page.
+	 * A row with a title, a description and a switch.
+	 *
+	 * @param string $key         Setting key.
+	 * @param string $title       Title.
+	 * @param string $description Description.
+	 * @param bool   $inverted    See render_switch().
 	 */
-	public function field_disable_fonts_preloading() {
+	private function render_switch_row( $key, $title, $description, $inverted = false ) {
+		$id = 'wpzoom-setting-' . $key;
 		?>
-        <label>
-        	<input type="hidden" name="wpzoom-social-icons-widget-settings[disable-fonts-preloading]" value="0" />
-        	<input type="checkbox" id="disable-fonts-preloading" name="wpzoom-social-icons-widget-settings[disable-fonts-preloading]" value="1" <?php checked( self::get_option_key( 'disable-fonts-preloading' ), 1 ); ?> />
-        		<?php esc_html_e( 'Enable', 'social-icons-widget-by-wpzoom' ); ?>
-        </label>
-        <span class="description"><?php esc_html_e( 'Preload web fonts using rel="preload" to remove any flash of unstyled text and improve the PageSpeed score.', 'social-icons-widget-by-wpzoom' ); ?></span>
+		<div class="wpzoom-settings-row">
+			<div class="wpzoom-settings-row__main">
+				<div class="wpzoom-settings-row__title" id="<?php echo esc_attr( $id ); ?>"><?php echo esc_html( $title ); ?></div>
+				<p class="wpzoom-settings-row__description"><?php echo esc_html( $description ); ?></p>
+			</div>
+			<div class="wpzoom-settings-row__control">
+				<?php $this->render_switch( $key, $id, $inverted ); ?>
+			</div>
+		</div>
 		<?php
 	}
 
 	/**
-	 * Render Academicons CSS Loading checkbox in settings page.
+	 * Icon Sets tab.
 	 */
-	public function field_disable_css_loading_for_academicons() {
+	private function render_icon_sets_tab() {
+		$icons = include WPZOOM_SOCIAL_ICONS_PLUGIN_PATH . 'includes/icons-data.php';
 		?>
-        <label>
-        	<input type="hidden" name="wpzoom-social-icons-widget-settings[disable-css-loading-for-academicons]" value="0" />
-        	<input type="checkbox" id="disable-css-loading-for-academicons" name="wpzoom-social-icons-widget-settings[disable-css-loading-for-academicons]" value="1" <?php checked( self::get_option_key( 'disable-css-loading-for-academicons' ), 1 ); ?> />
-        		<?php esc_html_e( 'Enable this font', 'social-icons-widget-by-wpzoom' ); ?>
-        </label>
+		<div class="wpzoom-settings-card">
+			<?php
+			$this->render_card_header(
+				'share',
+				__( 'Icon Sets', 'social-icons-widget-by-wpzoom' ),
+				__( 'Choose the icon fonts your site loads. Each set adds a stylesheet and a font file to your pages, so turn on only the sets you use.', 'social-icons-widget-by-wpzoom' )
+			);
+			?>
+
+			<?php foreach ( self::icon_sets() as $key => $set ) : ?>
+				<?php
+				$id    = 'wpzoom-setting-' . $key;
+				$count = 0;
+				foreach ( $set['kits'] as $kit ) {
+					$count += isset( $icons[ $kit ] ) ? count( $icons[ $kit ] ) : 0;
+				}
+				?>
+				<div class="wpzoom-settings-row wpzoom-settings-kit">
+					<div class="wpzoom-settings-kit__samples" aria-hidden="true">
+						<?php foreach ( $set['samples'] as $class ) : ?>
+							<i class="<?php echo esc_attr( $class ); ?>"></i>
+						<?php endforeach; ?>
+					</div>
+					<div class="wpzoom-settings-row__main">
+						<div class="wpzoom-settings-row__title" id="<?php echo esc_attr( $id ); ?>">
+							<?php echo esc_html( $set['title'] ); ?>
+							<?php if ( ! empty( $set['badge'] ) ) : ?>
+								<span class="wpzoom-settings-badge"><?php echo esc_html( $set['badge'] ); ?></span>
+							<?php endif; ?>
+						</div>
+						<p class="wpzoom-settings-row__description">
+							<?php echo esc_html( $set['description'] ); ?>
+							<span class="wpzoom-settings-row__meta">
+								<?php
+								/* translators: %s: number of icons */
+								echo esc_html( sprintf( _n( '%s icon', '%s icons', $count, 'social-icons-widget-by-wpzoom' ), number_format_i18n( $count ) ) );
+								?>
+							</span>
+						</p>
+					</div>
+					<div class="wpzoom-settings-row__control">
+						<?php $this->render_switch( $key, $id ); ?>
+					</div>
+				</div>
+			<?php endforeach; ?>
+		</div>
+
+		<div class="wpzoom-settings-card">
+			<?php
+			$this->render_switch_row(
+				'categories-sync',
+				__( 'Show only enabled sets in the icon picker', 'social-icons-widget-by-wpzoom' ),
+				__( 'The block and widget icon pickers list just the sets turned on above. Turn off to list every set.', 'social-icons-widget-by-wpzoom' )
+			);
+			?>
+		</div>
 		<?php
 	}
 
 	/**
-	 * Render Font Awesome 3 CSS Loading checkbox in settings page.
+	 * Optimization tab.
 	 */
-	public function field_disable_css_loading_for_font_awesome_3() {
+	private function render_optimization_tab() {
 		?>
-        <label>
-        	<input type="hidden" name="wpzoom-social-icons-widget-settings[disable-css-loading-for-font-awesome-3]" value="0" />
-        	<input type="checkbox" id="disable-css-loading-for-font-awesome-3" name="wpzoom-social-icons-widget-settings[disable-css-loading-for-font-awesome-3]" value="1" <?php checked( self::get_option_key( 'disable-css-loading-for-font-awesome-3' ), 1 ); ?> />
-        		<?php esc_html_e( 'Enable this font', 'social-icons-widget-by-wpzoom' ); ?>
-        </label>
-        <span class="description"><?php esc_html_e( 'Font Awesome 3 is loaded only in the Social Icons Widget', 'social-icons-widget-by-wpzoom' ); ?></span>
+		<div class="wpzoom-settings-card">
+			<?php
+			$this->render_card_header(
+				'performance',
+				__( 'Optimization', 'social-icons-widget-by-wpzoom' ),
+				__( 'Control how icon fonts are loaded on your site.', 'social-icons-widget-by-wpzoom' )
+			);
+			$this->render_switch_row(
+				'disable-fonts-preloading',
+				__( 'Preload icon fonts', 'social-icons-widget-by-wpzoom' ),
+				__( 'Loads the fonts of the enabled icon sets early with rel="preload", so icons show up without a flash of empty squares and your PageSpeed score improves.', 'social-icons-widget-by-wpzoom' )
+			);
+			?>
+		</div>
 		<?php
 	}
 
 	/**
-	 * Render Font Awesome 5 CSS Loading checkbox in settings page.
+	 * Modules tab.
 	 */
-	public function field_disable_css_loading_for_font_awesome_5() {
+	private function render_modules_tab() {
 		?>
-        <label>
-        	<input type="hidden" name="wpzoom-social-icons-widget-settings[disable-css-loading-for-font-awesome-5]" value="0" />
-        	<input type="checkbox" id="disable-css-loading-for-font-awesome-5" name="wpzoom-social-icons-widget-settings[disable-css-loading-for-font-awesome-5]" value="1" <?php checked( self::get_option_key( 'disable-css-loading-for-font-awesome-5' ), 1 ); ?> />
-        		<?php esc_html_e( 'Enable this font', 'social-icons-widget-by-wpzoom' ); ?>
-        </label>
-        <span class="description"><?php esc_html_e( 'Font Awesome 5 is loaded only in the Social Icons Block.', 'social-icons-widget-by-wpzoom' ); ?></span>
+		<div class="wpzoom-settings-card">
+			<?php
+			$this->render_card_header(
+				'screenoptions',
+				__( 'Modules', 'social-icons-widget-by-wpzoom' ),
+				__( 'Turn off the parts of the plugin you don’t use.', 'social-icons-widget-by-wpzoom' )
+			);
+			$this->render_switch_row(
+				'disable-block',
+				__( 'Blocks', 'social-icons-widget-by-wpzoom' ),
+				__( 'The Social Icons, Social Sharing Buttons and Google Preferred Source blocks in the block editor.', 'social-icons-widget-by-wpzoom' ),
+				true
+			);
+			$this->render_switch_row(
+				'disable-widget',
+				__( 'Social Icons widget', 'social-icons-widget-by-wpzoom' ),
+				__( 'The classic widget for widget areas and the Customizer.', 'social-icons-widget-by-wpzoom' ),
+				true
+			);
+			?>
+		</div>
 		<?php
 	}
-
-	/**
-	 * Render Genericons CSS Loading checkbox in settings page.
-	 */
-	public function field_disable_css_loading_for_genericons() {
-		?>
-        <label>
-        	<input type="hidden" name="wpzoom-social-icons-widget-settings[disable-css-loading-for-genericons]" value="0" />
-        	<input type="checkbox" id="disable-css-loading-for-genericons" name="wpzoom-social-icons-widget-settings[disable-css-loading-for-genericons]" value="1" <?php checked( self::get_option_key( 'disable-css-loading-for-genericons' ), 1 ); ?> />
-        		<?php esc_html_e( 'Enable this font', 'social-icons-widget-by-wpzoom' ); ?>
-        </label>
-		<?php
-	}
-
-	/**
-	 * Render Dashicons CSS Loading checkbox in settings page.
-	 */
-	public function field_disable_css_loading_for_dashicons() {
-		?>
-        <label>
-        	<input type="hidden" name="wpzoom-social-icons-widget-settings[disable-css-loading-for-dashicons]" value="0" />
-        	<input type="checkbox" id="disable-css-loading-for-dashicons" name="wpzoom-social-icons-widget-settings[disable-css-loading-for-dashicons]" value="1" <?php checked( self::get_option_key( 'disable-css-loading-for-dashicons' ), 1 ); ?> />
-        		<?php esc_html_e( 'Enable this font', 'social-icons-widget-by-wpzoom' ); ?>
-        </label>
-		<?php
-	}
-
-	/**
-	 * Render Socicons CSS Loading checkbox in settings page.
-	 */
-	public function field_disable_css_loading_for_socicons() {
-		?>
-        <label>
-        	<input type="hidden" name="wpzoom-social-icons-widget-settings[disable-css-loading-for-socicons]" value="0" />
-        	<input type="checkbox" id="disable-css-loading-for-socicons" name="wpzoom-social-icons-widget-settings[disable-css-loading-for-socicons]" value="1" <?php checked( self::get_option_key( 'disable-css-loading-for-socicons' ), 1 ); ?> />
-        		<?php esc_html_e( 'Enable this font', 'social-icons-widget-by-wpzoom' ); ?>
-        </label>
-        <span class="description"><?php esc_html_e( 'Main icon set', 'social-icons-widget-by-wpzoom' ); ?></span>
-		<?php
-	}
-
-	/**
-	 * Render categories sync checkbox in settings page.
-	 */
-	public function field_categories_sync() {
-		?>
-        <label>
-        	<input type="hidden" name="wpzoom-social-icons-widget-settings[categories-sync]" value="0" />
-        	<input type="checkbox" id="categories-sync" name="wpzoom-social-icons-widget-settings[categories-sync]" value="1" <?php checked( self::get_option_key( 'categories-sync' ), 1 ); ?> />
-        		<?php esc_html_e( 'Enable sync', 'social-icons-widget-by-wpzoom' ); ?>
-        </label>
-        <span class="description"><?php esc_html_e( 'Sync Icon sets with Block and Widget Settings from popup.', 'social-icons-widget-by-wpzoom' ); ?></span>
-		<?php
-	}
-
-
 }
 
 if ( is_admin() ) {

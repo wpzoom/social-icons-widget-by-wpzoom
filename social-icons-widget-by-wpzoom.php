@@ -30,6 +30,10 @@ if ( ! defined( 'WPZOOM_SOCIAL_ICONS_PLUGIN_PATH' ) ) {
 if ( ! defined( 'WPZOOM_SOCIAL_ICONS_PLUGIN_BASE' ) ) {
 	define( 'WPZOOM_SOCIAL_ICONS_PLUGIN_BASE', plugin_basename( __FILE__ ) );
 }
+// Shared with the PRO plugin; both can be loaded for a moment while PRO activates.
+if ( ! class_exists( 'WPZOOM_Preferred_Source' ) ) {
+	require_once plugin_dir_path( __FILE__ ) . 'includes/classes/class-wpzoom-preferred-source.php';
+}
 require_once plugin_dir_path( __FILE__ ) . 'includes/classes/class-wpzoom-social-sharing-buttons.php';
 
 require_once plugin_dir_path( __FILE__ ) . 'includes/classes/class-wpzoom-social-icons-settings.php';

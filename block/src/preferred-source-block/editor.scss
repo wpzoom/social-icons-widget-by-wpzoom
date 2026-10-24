@@ -1,0 +1,23 @@
+/**
+ * Editor styles for the Preferred Source block. The button itself is styled
+ * by assets/css/wpzoom-preferred-source.css, loaded in the editor too.
+ */
+
+// In the editor the logo is the block icon wrapped in a span.
+.wp-block-wpzoom-blocks-preferred-source .wpzoom-preferred-source__logo svg {
+	display: block;
+	width: 100%;
+	height: 100%;
+}
+
+.wpzoom-preferred-source-panel {
+	.components-notice {
+		margin: 0 0 16px;
+	}
+
+	.wpzoom-preferred-source-panel__help {
+		margin-top: 0;
+		color: #757575;
+		font-size: 12px;
+	}
+}

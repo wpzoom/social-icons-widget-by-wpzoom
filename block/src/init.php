@@ -97,6 +97,7 @@ function wpzoom_social_icons_block_enqueue_assets() {
 			'sharingConfigId'          => $sharing_config_id,
 			'sharingConfigUrl'         => $sharing_config_url,
 			'isEditingSharingConfig'   => $is_editing_sharing_config,
+			'preferredSource'          => WPZOOM_Preferred_Source::editor_data(),
 		)
 	);
 
@@ -155,6 +156,54 @@ function wpzoom_social_icons_block_enqueue_assets() {
 					),
 				),
 				'render_callback' => 'wpzoom_social_sharing_block_render_callback',
+			)
+		);
+	}
+
+	/**
+	 * Register the Preferred Source block. Rendered on the server, so the
+	 * link follows the site address when the site moves to another domain.
+	 */
+	if ( ! WP_Block_Type_Registry::get_instance()->is_registered( 'wpzoom-blocks/preferred-source' ) ) {
+		register_block_type(
+			'wpzoom-blocks/preferred-source',
+			array(
+				'style'           => WPZOOM_Preferred_Source::STYLE_HANDLE,
+				'editor_script'   => 'wpzoom-social-icons-block-js',
+				'editor_style'    => 'wpzoom-social-icons-block-editor',
+				'attributes'      => array(
+					'label'        => array(
+						'type'    => 'string',
+						'default' => '',
+					),
+					'theme'        => array(
+						'type'    => 'string',
+						'default' => 'light',
+					),
+					'size'         => array(
+						'type'    => 'string',
+						'default' => 'medium',
+					),
+					'textAlign'    => array(
+						'type'    => 'string',
+						'default' => '',
+					),
+					'domain'       => array(
+						'type'    => 'string',
+						'default' => '',
+					),
+					'openInNewTab' => array(
+						'type'    => 'boolean',
+						'default' => true,
+					),
+				),
+				'supports'        => array(
+					'html'    => false,
+					'spacing' => array(
+						'margin' => true,
+					),
+				),
+				'render_callback' => array( 'WPZOOM_Preferred_Source', 'render_block' ),
 			)
 		);
 	}

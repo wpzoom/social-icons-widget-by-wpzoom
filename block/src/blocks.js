@@ -11,6 +11,7 @@
 
 import './block/block.js';
 import './social-sharing-block/block.js';
+import './preferred-source-block/block.js';
 import wpzoomCategoryIcon from './block/wpzoomCategoryIcon';
 
 import { updateCategory } from '@wordpress/blocks';

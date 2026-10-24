@@ -314,6 +314,15 @@ class WPZOOM_Social_Sharing_Buttons {
 		
 		<div class="description" style="margin-top: 15px;">
 			<p><?php esc_html_e( 'Configure the social sharing buttons above, then use these settings to control where they appear on your site.', 'social-icons-widget-by-wpzoom' ); ?></p>
+			<p>
+				<?php
+				printf(
+					/* translators: %s: link to the settings tab */
+					esc_html__( 'Want the “Add to Preferred Sources” button for Google too? Turn it on in %s.', 'social-icons-widget-by-wpzoom' ),
+					'<a href="' . esc_url( WPZOOM_Preferred_Source::settings_url() ) . '">' . esc_html__( 'Settings → Google Preferred Sources', 'social-icons-widget-by-wpzoom' ) . '</a>'
+				);
+				?>
+			</p>
 		</div>
 		<?php
 	}
@@ -450,51 +459,32 @@ class WPZOOM_Social_Sharing_Buttons {
 		$post_types = get_post_meta( $config->ID, '_wpzoom_sharing_post_types', true );
 		$show_on_front = get_post_meta( $config->ID, '_wpzoom_sharing_show_on_front', true );
 		
-		// Check if we're on the front page and if it's enabled
+		// The front page has its own toggle; elsewhere, the selected post types.
 		if ( is_front_page() ) {
-			if ( $show_on_front === '1' ) {
-				// Get sharing buttons from the config
-				$sharing_buttons = do_blocks( $config->post_content );
-				$sharing_buttons = self::prevent_pinterest_sdk_hijack( $sharing_buttons );
-
-				// Add buttons based on position setting
-				if ( 'top' === $position || 'both' === $position ) {
-					$content = '<div class="wpzoom-social-sharing-buttons-top">' . $sharing_buttons . '</div>' . $content;
-				}
-				
-				if ( 'bottom' === $position || 'both' === $position ) {
-					$content .= '<div class="wpzoom-social-sharing-buttons-bottom">' . $sharing_buttons . '</div>';
-				}
-				
+			if ( '1' !== $show_on_front ) {
 				return $content;
 			}
+		} elseif ( empty( $post_types ) || ! is_array( $post_types ) || ! is_singular( $post_types ) ) {
 			return $content;
 		}
-		
-		// If no post types are selected or post_types is not an array, don't show buttons anywhere except front page
-		if ( empty( $post_types ) || ! is_array( $post_types ) ) {
-			return $content;
-		}
-		
-		// Check if we should show buttons on this post type
-		if ( ! is_singular( $post_types ) ) {
-			return $content;
-		}
-		
+
 		// Get sharing buttons from the config
 		$sharing_buttons = do_blocks( $config->post_content );
 		$sharing_buttons = self::prevent_pinterest_sdk_hijack( $sharing_buttons );
 
+		$top    = '';
+		$bottom = '';
+
 		// Add buttons based on position setting
 		if ( 'top' === $position || 'both' === $position ) {
-			$content = '<div class="wpzoom-social-sharing-buttons-top">' . $sharing_buttons . '</div>' . $content;
+			$top .= '<div class="wpzoom-social-sharing-buttons-top">' . $sharing_buttons . '</div>';
 		}
-		
+
 		if ( 'bottom' === $position || 'both' === $position ) {
-			$content .= '<div class="wpzoom-social-sharing-buttons-bottom">' . $sharing_buttons . '</div>';
+			$bottom .= '<div class="wpzoom-social-sharing-buttons-bottom">' . $sharing_buttons . '</div>';
 		}
-		
-		return $content;
+
+		return $top . $content . $bottom;
 	}
 
 	/**

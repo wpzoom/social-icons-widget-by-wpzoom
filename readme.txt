@@ -212,6 +212,12 @@ The floating Click to Chat button supports WhatsApp, Telegram, Facebook Messenge
 
 Yes. The Click to Chat floating contact button is included free in Social Icons & Sharing Buttons by WPZOOM, with support for WhatsApp, Telegram, Messenger, and Viber chat buttons.
 
+= How do I add an "Add to Preferred Sources" button for Google? =
+
+Readers who add your site as a preferred source on Google see more of your articles in Top Stories and in AI Mode / AI Overviews. To show the button on all your posts (or pages, or any post type), open **AI Chat → Settings → Google Preferred Sources** in your WordPress admin, turn on *Show automatically*, and pick the post types, position (above or below the content), theme, size and alignment. Posts that already contain the button are skipped. To place it anywhere else, use the **Google Preferred Source** block or the `[wpzoom_preferred_source]` shortcode (options: `theme="light|dark|auto"`, `size="small|medium|large"`, `align="left|center|right"`, `label`, `domain`).
+
+The button is a plain link to Google: no Google script is loaded. Google only offers sites it lists, and only whole domains or subdomains (not a site in a subfolder). Use *Check your site on Google* in the block or the settings box to see if your site is listed. The button doesn't change your rankings for other readers, and it doesn't guarantee a Top Stories spot.
+
 = How does the Print button work? =
 
 The Print button triggers the browser's native print dialog, allowing visitors to print the current page. It's disabled by default and can be enabled in the block settings.
@@ -268,6 +274,8 @@ Floating Buttons is a PRO feature that displays your social sharing icons as a f
 * IMPROVED: Social Icons block — Detect Icon now looks in Socicons first and falls back to the other enabled icon kits (it used to take the last kit with a match, often Font Awesome)
 * NEW: the icon's URL field shows the matching icon as you type
 * NEW: visual style picker for the Social Icons block — each style shows your own icons, so you see the result before choosing. Style names are shorter and easier to tell apart
+* NEW: "Add to Preferred Sources" button for Google — readers who add your site see more of it in Top Stories and AI results. Show it on all posts, pages or other post types from Settings → Google Preferred Sources, or place it with the new Google Preferred Source block or the [wpzoom_preferred_source] shortcode. Light, dark and auto themes; no Google script is loaded
+* IMPROVED: redesigned Settings page — on/off switches, sample icons and icon counts for each icon set, clearer descriptions, and the "Misc." tab is now "Modules"
 * New, clearer icon for the Social Icons block in the block inserter
 * NEW: search in the "Select Icon" dialog covers every enabled icon kit, grouped by kit
 * IMPROVED: "Select Icon" dialog — the URL is no longer rewritten while you type, typing a URL picks its icon from any kit, a custom label or color is kept when you pick another icon, the list no longer jumps while you type, and Search, Delete and Save stay visible on shorter screens
