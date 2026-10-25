@@ -206,6 +206,7 @@ class WPZOOM_Social_Icons_Sets {
 						?>
 					</p>
 				</div>
+				<button type="button" class="button wpzoom-icon-library-open" aria-haspopup="dialog"><?php esc_html_e( 'Browse icons', 'social-icons-widget-by-wpzoom' ); ?></button>
 			</div>
 
 			<?php
@@ -239,6 +240,168 @@ class WPZOOM_Social_Icons_Sets {
 			</details>
 		</div>
 		<?php
+		self::render_library( $default_on );
+	}
+
+	/**
+	 * The icon library: every icon of every set, in a dialog like the one of
+	 * the WordPress Icon block. Icons are fetched one set at a time when shown.
+	 *
+	 * @param bool $default_on See is_on().
+	 */
+	private static function render_library( $default_on ) {
+		$counts = self::icon_counts();
+		$groups = array();
+		foreach ( self::library_groups() as $kit => $title ) {
+			$set              = self::set_of_kit( $kit );
+			$groups[ $kit ] = array(
+				'title' => $title,
+				'count' => isset( $counts[ $kit ] ) ? $counts[ $kit ] : 0,
+				'on'    => ! $set || null === $set['key'] || self::is_on( $set['key'], $default_on ),
+			);
+		}
+
+		?>
+		<dialog class="wpzoom-icon-library" aria-labelledby="wpzoom-icon-library-title">
+			<div class="wpzoom-icon-library__head">
+				<h2 id="wpzoom-icon-library-title"><?php esc_html_e( 'Icon library', 'social-icons-widget-by-wpzoom' ); ?></h2>
+				<button type="button" class="wpzoom-icon-library__close" aria-label="<?php esc_attr_e( 'Close', 'social-icons-widget-by-wpzoom' ); ?>">
+					<svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false"><path d="m13.06 12 6.47-6.47-1.06-1.06L12 10.94 5.53 4.47 4.47 5.53 10.94 12l-6.47 6.47 1.06 1.06L12 13.06l6.47 6.47 1.06-1.06L13.06 12Z" fill="currentColor"/></svg>
+				</button>
+			</div>
+			<div class="wpzoom-icon-library__body">
+				<div class="wpzoom-icon-library__side">
+					<label class="wpzoom-icon-library__search">
+						<span class="screen-reader-text"><?php esc_html_e( 'Search icons', 'social-icons-widget-by-wpzoom' ); ?></span>
+						<svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><path d="M13 5c-3.3 0-6 2.7-6 6 0 1.4.5 2.7 1.3 3.7l-3.8 3.8 1.1 1.1 3.8-3.8c1 .8 2.3 1.3 3.7 1.3 3.3 0 6-2.7 6-6S16.3 5 13 5zm0 10.5c-2.5 0-4.5-2-4.5-4.5s2-4.5 4.5-4.5 4.5 2 4.5 4.5-2 4.5-4.5 4.5z" fill="currentColor"/></svg>
+						<input type="search" placeholder="<?php esc_attr_e( 'Search', 'social-icons-widget-by-wpzoom' ); ?>" autocomplete="off">
+					</label>
+					<nav class="wpzoom-icon-library__sets" aria-label="<?php esc_attr_e( 'Icon sets', 'social-icons-widget-by-wpzoom' ); ?>">
+						<button type="button" data-kit="" aria-pressed="false">
+							<span class="wpzoom-icon-library__name"><?php esc_html_e( 'All', 'social-icons-widget-by-wpzoom' ); ?></span>
+							<span class="wpzoom-icon-library__count"><?php echo esc_html( number_format_i18n( array_sum( wp_list_pluck( $groups, 'count' ) ) ) ); ?></span>
+						</button>
+						<?php foreach ( $groups as $kit => $group ) : ?>
+							<button type="button" data-kit="<?php echo esc_attr( $kit ); ?>" aria-pressed="false">
+								<span class="wpzoom-icon-library__name"><?php echo esc_html( $group['title'] ); ?></span>
+								<?php if ( ! $group['on'] ) : ?>
+									<span class="wpzoom-icon-library__off" title="<?php esc_attr_e( 'Not offered in the icon picker. Switch the set on to use it.', 'social-icons-widget-by-wpzoom' ); ?>"><?php esc_html_e( 'Off', 'social-icons-widget-by-wpzoom' ); ?></span>
+								<?php endif; ?>
+								<span class="wpzoom-icon-library__count"><?php echo esc_html( number_format_i18n( $group['count'] ) ); ?></span>
+							</button>
+						<?php endforeach; ?>
+					</nav>
+					<div class="wpzoom-icon-library__help">
+						<h3><?php esc_html_e( 'How to add an icon', 'social-icons-widget-by-wpzoom' ); ?></h3>
+						<ol>
+							<li><?php esc_html_e( 'In the block editor, add the Social Icons block to a page, post or widget area.', 'social-icons-widget-by-wpzoom' ); ?></li>
+							<li><?php esc_html_e( 'Click an icon in the block, or + to add one, and paste its link.', 'social-icons-widget-by-wpzoom' ); ?></li>
+							<li><?php esc_html_e( 'To pick another icon, search its name from this library in the Select Icon window.', 'social-icons-widget-by-wpzoom' ); ?></li>
+						</ol>
+						<p><?php esc_html_e( 'The classic widget and the Elementor widget use the same icons.', 'social-icons-widget-by-wpzoom' ); ?></p>
+					</div>
+				</div>
+				<div class="wpzoom-icon-library__main" tabindex="-1">
+					<p class="wpzoom-icon-library__status" role="status"></p>
+					<div class="wpzoom-icon-library__grid"></div>
+				</div>
+			</div>
+		</dialog>
+		<?php
+	}
+
+	/**
+	 * The library's script and styles, on the Settings screen.
+	 *
+	 * @param string $hook Admin page hook.
+	 */
+	public static function enqueue_library( $hook ) {
+		if ( 'wpzoom-shortcode_page_wpzoom-social-icons-widget' !== $hook ) {
+			return;
+		}
+		$url = WPZOOM_SOCIAL_ICONS_PLUGIN_URL;
+		$ver = WPZOOM_SOCIAL_ICONS_PLUGIN_VERSION;
+		wp_enqueue_style( 'wpzoom-icon-library', $url . 'assets/css/icon-library.css', array(), $ver );
+		wp_enqueue_script( 'wpzoom-icon-library', $url . 'assets/js/icon-library.js', array(), $ver, true );
+		wp_localize_script(
+			'wpzoom-icon-library',
+			'wpzoomIconLibrary',
+			array(
+				'ajaxUrl' => admin_url( 'admin-ajax.php' ),
+				'nonce'   => wp_create_nonce( 'wpzoom_icon_library' ),
+				'i18n'    => array(
+					'loading' => __( 'Loading icons…', 'social-icons-widget-by-wpzoom' ),
+					'failed'  => __( 'The icons couldn’t be loaded. Please try again.', 'social-icons-widget-by-wpzoom' ),
+					/* translators: %s: search terms */
+					'none'    => __( 'No icons match “%s”.', 'social-icons-widget-by-wpzoom' ),
+				),
+			)
+		);
+	}
+
+	/**
+	 * The library's groups: kit => title, in the order shown. Font Awesome is
+	 * split by style, as the block's picker splits it.
+	 *
+	 * @return array
+	 */
+	private static function library_groups() {
+		return array(
+			'socicon'     => __( 'WPZOOM Icons', 'social-icons-widget-by-wpzoom' ),
+			'fab'         => __( 'Font Awesome Brands', 'social-icons-widget-by-wpzoom' ),
+			'fas'         => __( 'Font Awesome Solid', 'social-icons-widget-by-wpzoom' ),
+			'far'         => __( 'Font Awesome Regular', 'social-icons-widget-by-wpzoom' ),
+			'academicons' => __( 'Academicons', 'social-icons-widget-by-wpzoom' ),
+			'dashicons'   => __( 'Dashicons', 'social-icons-widget-by-wpzoom' ),
+			'genericon'   => __( 'Genericons', 'social-icons-widget-by-wpzoom' ),
+		);
+	}
+
+	/**
+	 * The set a kit belongs to.
+	 *
+	 * @param string $kit Kit.
+	 * @return array|null
+	 */
+	private static function set_of_kit( $kit ) {
+		foreach ( self::sets() as $set ) {
+			if ( in_array( $kit, $set['kits'], true ) ) {
+				return $set;
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * AJAX: one kit's icons for the library, sorted by name, as
+	 * array( array( n => name, s => svg, c => brand color ), … ).
+	 */
+	public static function ajax_library() {
+		check_ajax_referer( 'wpzoom_icon_library', 'nonce' );
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_send_json_error( null, 403 );
+		}
+		$kit    = isset( $_GET['kit'] ) ? sanitize_key( wp_unslash( $_GET['kit'] ) ) : '';
+		$data   = self::icon_data();
+		$groups = self::library_groups();
+		if ( ! isset( $groups[ $kit ], $data[ $kit ] ) || ! class_exists( 'WPZOOM_Social_Icons_Library' ) ) {
+			wp_send_json_error( null, 400 );
+		}
+
+		$icons = array();
+		foreach ( (array) $data[ $kit ] as $item ) {
+			$svg = isset( $item['icon'] ) ? WPZOOM_Social_Icons_Library::inline_svg( $kit, $item['icon'] ) : '';
+			if ( '' === $svg ) {
+				continue;
+			}
+			$icons[ $item['icon'] ] = array(
+				'n' => $item['icon'],
+				's' => $svg,
+				'c' => isset( $item['color'] ) ? $item['color'] : '',
+			);
+		}
+		ksort( $icons, SORT_NATURAL );
+		wp_send_json_success( array_values( $icons ) );
 	}
 
 	/**
@@ -341,3 +504,5 @@ class WPZOOM_Social_Icons_Sets {
 }
 
 add_action( 'plugins_loaded', array( 'WPZOOM_Social_Icons_Sets', 'migrate' ) );
+add_action( 'wp_ajax_wpzoom_icon_library', array( 'WPZOOM_Social_Icons_Sets', 'ajax_library' ) );
+add_action( 'admin_enqueue_scripts', array( 'WPZOOM_Social_Icons_Sets', 'enqueue_library' ) );

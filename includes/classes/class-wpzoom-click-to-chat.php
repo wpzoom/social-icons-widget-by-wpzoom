@@ -494,14 +494,37 @@ class WPZOOM_Click_To_Chat {
 			$tab = $default_tab;
 		}
 		$base_url = admin_url( 'edit.php?post_type=wpzoom-shortcode&page=wpzoom-click-to-chat' );
+		// The dashboard layout (sidebar shared with the Overview), when the
+		// sidebar has an item for every tab.
+		$dashboard = class_exists( 'WPZOOM_Connect_Overview' ) && ! array_diff( array_keys( $tabs ), array( 'ai', 'ctc' ) );
 		?>
-		<div class="wrap wpzoom-ctc-admin-wrap">
-			<h1><?php esc_html_e( 'AI Chat & Click to Chat', 'social-icons-widget-by-wpzoom' ); ?></h1>
+		<div class="wrap wpzoom-ctc-admin-wrap<?php echo $dashboard ? ' wpzc wpzc-chat' : ''; ?>">
+			<h1<?php echo $dashboard ? ' class="screen-reader-text"' : ''; ?>><?php esc_html_e( 'AI Chat & Click to Chat', 'social-icons-widget-by-wpzoom' ); ?></h1>
+
+			<?php if ( $dashboard ) : ?>
+			<div class="wpzc-layout">
+			<?php WPZOOM_Connect_Overview::render_sidebar( $tab ); ?>
+			<div class="wpzc-main">
+				<div class="wpzc-page-head">
+					<h2><?php echo esc_html( $tabs[ $tab ] ); ?></h2>
+					<p>
+						<?php
+						echo esc_html(
+							'ctc' === $tab
+								? __( 'One floating button with one-tap links to WhatsApp, Telegram, Messenger and Viber.', 'social-icons-widget-by-wpzoom' )
+								: __( 'A chat on your site that answers visitors from your own pages.', 'social-icons-widget-by-wpzoom' )
+						);
+						?>
+					</p>
+				</div>
+			<?php else : ?>
 			<p class="wpzoom-ctc-admin-description">
 				<?php esc_html_e( 'One floating button for every way visitors reach you: an AI chat that answers from your pages, or one-tap buttons for WhatsApp, Telegram, Messenger and Viber.', 'social-icons-widget-by-wpzoom' ); ?>
 			</p>
+			<?php endif; ?>
 
-			<nav class="nav-tab-wrapper wpzoom-chat-tabs" aria-label="<?php esc_attr_e( 'Chat settings', 'social-icons-widget-by-wpzoom' ); ?>">
+			<?php // With the dashboard sidebar, its AI Chat and Click to Chat items replace these tabs. ?>
+			<nav class="nav-tab-wrapper wpzoom-chat-tabs" aria-label="<?php esc_attr_e( 'Chat settings', 'social-icons-widget-by-wpzoom' ); ?>"<?php echo $dashboard ? ' hidden' : ''; ?>>
 				<?php foreach ( $tabs as $key => $label ) : ?>
 					<a href="<?php echo esc_url( add_query_arg( 'tab', $key, $base_url ) ); ?>" class="nav-tab <?php echo $tab === $key ? 'nav-tab-active' : ''; ?>">
 						<?php echo esc_html( $label ); ?>
@@ -521,6 +544,10 @@ class WPZOOM_Click_To_Chat {
 				 */
 				do_action( 'wpzoom_chat_admin_tab', $tab );
 				?>
+			<?php if ( $dashboard ) : ?>
+			</div>
+			</div>
+			<?php endif; ?>
 		</div>
 		<?php
 			return;
@@ -937,6 +964,10 @@ class WPZOOM_Click_To_Chat {
 				</div>
 
 			</form>
+			<?php if ( $dashboard ) : ?>
+			</div>
+			</div>
+			<?php endif; ?>
 		</div>
 
 		<script>

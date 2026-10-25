@@ -48,11 +48,17 @@ require_once plugin_dir_path( __FILE__ ) . 'includes/classes/class-wpzoom-social
 
 require_once plugin_dir_path( __FILE__ ) . 'includes/classes/class-wpzoom-social-icons-settings.php';
 
+// Overview screen: the first item under "AI Chat & Icons". Shared with the PRO plugin.
+if ( ! class_exists( 'WPZOOM_Connect_Overview' ) ) {
+	require_once plugin_dir_path( __FILE__ ) . 'includes/classes/class-wpzoom-connect-overview.php';
+}
+
 $wpzoom_social_icons_settings = WPZOOM_Social_Icons_Settings::get_settings();
 
-if ( empty( $wpzoom_social_icons_settings['disable-block'] ) ) {
-	require_once plugin_dir_path( __FILE__ ) . 'block/src/init.php';
-}
+// Always loaded, whatever an old "disable-block" setting says: besides the
+// blocks, this code draws the automatic share buttons, the Preferred Sources
+// button and the styles of icons already placed with the block.
+require_once plugin_dir_path( __FILE__ ) . 'block/src/init.php';
 
 
 require_once plugin_dir_path( __FILE__ ) . 'includes/classes/class-zoom-social-icons-widget.php';
@@ -320,7 +326,7 @@ if ( ! function_exists( 'wpzoom_social_icons_plugin_action_links' ) ) {
 			if ( ! function_exists( 'wpzoom_social_icons_pro' ) ) {
 				$links['go_pro'] = sprintf(
 					'<a href="%1$s" target="_blank" class="wpzoom-social-icons-gopro" style="color:var(--wp-admin-theme-color, #2271b1);font-weight:bold;">UPGRADE &rarr; <span class="wpzoom-premium-badge" style="background-color: #2271b1; color: #fff; margin-left: 5px; font-size: 11px; min-height: 16px; border-radius: 8px; display: inline-block; font-weight: 600; line-height: 1.6; padding: 0 8px;">%2$s</span></a>',
-					'https://www.wpzoom.com/plugins/social-share/?utm_source=wpadmin&utm_medium=plugin&utm_campaign=social-icons-free&utm_content=plugins-page',
+					WPZOOM_Connect_Overview::upgrade_url( 'plugins-page' ),
 					esc_html__( 'PRO', 'social-icons-widget-by-wpzoom' )
 				);
 			}
@@ -395,7 +401,7 @@ if ( ! function_exists( 'wpzoom_social_icons_upgrade_pro_notice' ) ) {
 					?>
 					</p>
 					<p class="wpz-social-icons-notice-actions">
-						<a class="button-primary" href="https://www.wpzoom.com/plugins/social-share/?utm_source=admin-notices&utm_medium=admin-notice-actions&utm_campaign=go_pro" target="_blank"><strong><?php esc_html_e( 'Get WPZOOM Connect Pro &rarr;', 'social-icons-widget-by-wpzoom' ); ?></strong></a>
+						<a class="button-primary" href="<?php echo esc_url( WPZOOM_Connect_Overview::upgrade_url( 'admin-notice' ) ); ?>" target="_blank"><strong><?php esc_html_e( 'Get WPZOOM Connect Pro &rarr;', 'social-icons-widget-by-wpzoom' ); ?></strong></a>
 						<?php
 						// phpcs:disable
 						/*

@@ -178,32 +178,36 @@ class WPZOOM_Social_Icons_Settings {
 		$this->options = self::get_settings();
 
 		?>
-<div class="wrap zoom-social-icons-settings">
-	<h1><?php esc_html_e( 'WPZOOM Connect Settings', 'social-icons-widget-by-wpzoom' ); ?></h1>
+<div class="wrap zoom-social-icons-settings wpzc wpzc-settings">
+	<h1 class="screen-reader-text"><?php esc_html_e( 'WPZOOM Connect Settings', 'social-icons-widget-by-wpzoom' ); ?></h1>
 
+	<div class="wpzc-layout">
+	<?php WPZOOM_Connect_Overview::render_sidebar( 'settings' ); ?>
+
+	<div class="wpzc-main">
+	<?php settings_errors(); ?>
+
+	<?php // The tab list is kept for jQuery UI Tabs; the sidebar's items switch the tabs. ?>
 	<div class="wpzoom-social-icons-settings-inner">
 		<div class="wp-filter">
 			<ul class="filter-links">
 				<li>
-					<a href="#font-styles"><?php esc_html_e( 'Icon Sets', 'social-icons-widget-by-wpzoom' ); ?></a>
+					<a href="#social-icons-tab"><?php esc_html_e( 'Social Icons', 'social-icons-widget-by-wpzoom' ); ?></a>
 				</li>
 				<li>
-					<a href="#custom-icons"><?php esc_html_e( 'Custom Icons', 'social-icons-widget-by-wpzoom' ); ?> <span class="wpzoom-settings-pro-tag"><?php esc_html_e( 'PRO', 'social-icons-widget-by-wpzoom' ); ?></span></a>
+					<a href="#share-buttons-tab"><?php esc_html_e( 'Share Buttons', 'social-icons-widget-by-wpzoom' ); ?></a>
 				</li>
 				<li>
-					<a href="#pinterest"><?php esc_html_e( 'Pinterest', 'social-icons-widget-by-wpzoom' ); ?> <span class="wpzoom-settings-pro-tag"><?php esc_html_e( 'PRO', 'social-icons-widget-by-wpzoom' ); ?></span></a>
+					<a href="#preferred-source-tab"><?php esc_html_e( 'Google Preferred Sources', 'social-icons-widget-by-wpzoom' ); ?></a>
+				</li>
+				<li>
+					<a href="#pinterest-tab"><?php esc_html_e( 'Pinterest', 'social-icons-widget-by-wpzoom' ); ?></a>
 				</li>
 				<?php if ( ! WPZOOM_Social_Icons_SVG::use_svg() ) : ?>
 				<li>
 					<a href="#font-preload"><?php esc_html_e( 'Optimization', 'social-icons-widget-by-wpzoom' ); ?></a>
 				</li>
 				<?php endif; ?>
-				<li>
-					<a href="#general-tab"><?php esc_html_e( 'Modules', 'social-icons-widget-by-wpzoom' ); ?></a>
-				</li>
-				<li>
-					<a href="#<?php echo esc_attr( WPZOOM_Preferred_Source::SETTINGS_TAB ); ?>"><?php esc_html_e( 'Google Preferred Sources', 'social-icons-widget-by-wpzoom' ); ?></a>
-				</li>
 			</ul>
 		</div>
 
@@ -213,34 +217,59 @@ class WPZOOM_Social_Icons_Settings {
 			settings_fields( 'wpzoom-social-icons-widget-settings-group-general' );
 			?>
 
-			<div id="font-styles" class="tab">
-				<?php $this->render_icon_sets_tab(); ?>
+			<?php /* Grouped by module, as on the Overview screen. Section ids keep old links (#font-styles, #preferred-source…) working. */ ?>
+			<div id="social-icons-tab" class="tab">
+				<div class="wpzc-page-head">
+					<h2><?php esc_html_e( 'Social Icons', 'social-icons-widget-by-wpzoom' ); ?></h2>
+					<p><?php esc_html_e( 'Which icon sets the icon picker offers, sets you can reuse with a shortcode, and your own icons.', 'social-icons-widget-by-wpzoom' ); ?></p>
+				</div>
+				<div id="font-styles" class="wpzoom-settings-section">
+					<?php $this->render_icon_sets_tab(); ?>
+				</div>
+				<div id="saved-icon-sets" class="wpzoom-settings-section">
+					<?php WPZOOM_Connect_Overview::render_icon_sets_card(); ?>
+				</div>
+				<div id="custom-icons" class="wpzoom-settings-section">
+					<?php $this->render_custom_icons_tab(); ?>
+				</div>
 			</div>
 
-			<div id="custom-icons" class="tab" data-hide-submit="1">
-				<?php $this->render_custom_icons_tab(); ?>
+			<div id="share-buttons-tab" class="tab">
+				<div class="wpzc-page-head">
+					<h2><?php esc_html_e( 'Share Buttons', 'social-icons-widget-by-wpzoom' ); ?></h2>
+					<p><?php esc_html_e( 'How your share buttons work and where to edit them.', 'social-icons-widget-by-wpzoom' ); ?></p>
+				</div>
+				<div id="share-buttons" class="wpzoom-settings-section">
+					<?php WPZOOM_Connect_Overview::render_share_buttons_card(); ?>
+				</div>
 			</div>
 
-			<div id="pinterest" class="tab" data-hide-submit="1">
-				<?php $this->render_pinterest_tab(); ?>
+			<?php /* One card each; its header is the heading, so no page head. */ ?>
+			<div id="preferred-source-tab" class="tab">
+				<div id="<?php echo esc_attr( WPZOOM_Preferred_Source::SETTINGS_TAB ); ?>" class="wpzoom-settings-section">
+					<?php WPZOOM_Preferred_Source::render_settings_tab(); ?>
+				</div>
+			</div>
+
+			<div id="pinterest-tab" class="tab">
+				<div id="pinterest" class="wpzoom-settings-section">
+					<?php $this->render_pinterest_tab(); ?>
+				</div>
 			</div>
 
 			<?php if ( ! WPZOOM_Social_Icons_SVG::use_svg() ) : ?>
 			<div id="font-preload" class="tab">
+				<div class="wpzc-page-head">
+					<h2><?php esc_html_e( 'Optimization', 'social-icons-widget-by-wpzoom' ); ?></h2>
+				</div>
 				<?php $this->render_optimization_tab(); ?>
 			</div>
 			<?php endif; ?>
 
-			<div id="general-tab" class="tab">
-				<?php $this->render_modules_tab(); ?>
-			</div>
-
-			<div id="<?php echo esc_attr( WPZOOM_Preferred_Source::SETTINGS_TAB ); ?>" class="tab">
-				<?php WPZOOM_Preferred_Source::render_settings_tab(); ?>
-			</div>
-
 			<?php submit_button(); ?>
 		</form>
+	</div>
+	</div>
 	</div>
 </div>
 
@@ -306,7 +335,10 @@ class WPZOOM_Social_Icons_Settings {
 	 * @return array
 	 */
 	public function sanitize( $input ) {
-		$new_input = array();
+		// Start from the saved settings: the blocks and widget switches are saved
+		// from the Overview screen, so this form doesn't post them.
+		$new_input = self::get_settings();
+		$new_input = is_array( $new_input ) ? $new_input : array();
 		if ( isset( $input['disable-widget'] ) ) {
 			$new_input['disable-widget'] = wp_validate_boolean( $input['disable-widget'] );
 		}
@@ -453,7 +485,7 @@ class WPZOOM_Social_Icons_Settings {
 	 * }
 	 */
 	private function render_upsell_card( $args ) {
-		$upgrade_url = 'https://www.wpzoom.com/plugins/social-share/?utm_source=wpadmin&utm_medium=plugin&utm_campaign=social-icons-free&utm_content=' . rawurlencode( $args['utm_content'] );
+		$upgrade_url = WPZOOM_Connect_Overview::upgrade_url( $args['utm_content'] );
 		?>
 		<div class="wpzoom-settings-card wpzoom-settings-upsell">
 			<?php $this->render_card_header( $args['icon'], $args['title'], $args['description'] ); ?>
@@ -575,34 +607,6 @@ class WPZOOM_Social_Icons_Settings {
 		<?php
 	}
 
-	/**
-	 * Modules tab.
-	 */
-	private function render_modules_tab() {
-		?>
-		<div class="wpzoom-settings-card">
-			<?php
-			$this->render_card_header(
-				'screenoptions',
-				__( 'Modules', 'social-icons-widget-by-wpzoom' ),
-				__( 'Turn off the parts of the plugin you don’t use.', 'social-icons-widget-by-wpzoom' )
-			);
-			$this->render_switch_row(
-				'disable-block',
-				__( 'Blocks', 'social-icons-widget-by-wpzoom' ),
-				__( 'The Social Icons, Social Sharing Buttons and Google Preferred Source blocks in the block editor.', 'social-icons-widget-by-wpzoom' ),
-				true
-			);
-			$this->render_switch_row(
-				'disable-widget',
-				__( 'Social Icons widget', 'social-icons-widget-by-wpzoom' ),
-				__( 'The classic widget for widget areas and the Customizer.', 'social-icons-widget-by-wpzoom' ),
-				true
-			);
-			?>
-		</div>
-		<?php
-	}
 }
 
 if ( is_admin() ) {

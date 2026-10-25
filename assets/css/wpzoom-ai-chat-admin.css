@@ -381,6 +381,96 @@
 	font-size: 12px;
 }
 
+/* Launch video: a CSS poster until play is pressed */
+.wpzoom-ai-chat-video {
+	margin-top: 28px;
+	padding-top: 22px;
+	border-top: 1px solid #dcdcde;
+}
+.wpzoom-ai-chat-video h3 {
+	margin: 0 0 14px;
+	font-size: 15px;
+}
+.wpzoom-ai-chat-video-poster,
+.wpzoom-ai-chat-video iframe {
+	display: block;
+	width: 100%;
+	max-width: 720px;
+	aspect-ratio: 16 / 9;
+	border: 0;
+	border-radius: 12px;
+}
+.wpzoom-ai-chat-video-poster {
+	position: relative;
+	padding: 0;
+	overflow: hidden;
+	cursor: pointer;
+	color: #fff;
+	font: inherit;
+	text-align: left;
+	background:
+		radial-gradient( circle at 78% 22%, rgba( 254, 85, 27, 0.55 ), transparent 45% ),
+		radial-gradient( circle at 15% 90%, rgba( 102, 92, 238, 0.45 ), transparent 50% ),
+		#16181c;
+}
+.wpzoom-ai-chat-video-brand {
+	position: absolute;
+	top: 18px;
+	left: 20px;
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	font-size: 15px;
+	font-weight: 600;
+}
+.wpzoom-ai-chat-video-brand svg {
+	color: #fe551b;
+}
+.wpzoom-ai-chat-video-play {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	width: 68px;
+	height: 68px;
+	margin: -34px 0 0 -34px;
+	border-radius: 50%;
+	background: #fff;
+	box-shadow: 0 8px 24px rgba( 0, 0, 0, 0.3 );
+	transition: transform 0.15s ease;
+}
+.wpzoom-ai-chat-video-play::after {
+	content: "";
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	margin: -11px 0 0 -7px;
+	border-style: solid;
+	border-width: 11px 0 11px 18px;
+	border-color: transparent transparent transparent #16181c;
+}
+.wpzoom-ai-chat-video-poster:hover .wpzoom-ai-chat-video-play,
+.wpzoom-ai-chat-video-poster:focus-visible .wpzoom-ai-chat-video-play {
+	transform: scale( 1.08 );
+}
+.wpzoom-ai-chat-video-poster:focus-visible {
+	outline: 2px solid #2271b1;
+	outline-offset: 2px;
+}
+.wpzoom-ai-chat-video-caption {
+	position: absolute;
+	right: 20px;
+	bottom: 18px;
+	left: 20px;
+	font-size: 18px;
+	font-weight: 600;
+	line-height: 1.3;
+}
+.wpzoom-ai-chat-video-note {
+	margin: 8px 0 0;
+	color: #646970;
+	font-size: 12px;
+}
+
 /* Why Yamidoo */
 .wpzoom-ai-chat-why {
 	margin-top: 28px;
