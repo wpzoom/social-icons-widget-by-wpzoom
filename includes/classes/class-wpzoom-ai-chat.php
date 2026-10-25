@@ -31,9 +31,7 @@ class WPZOOM_AI_Chat {
 	const HANDLE           = 'yamidoo-widget';
 	const PAGE_SLUG        = 'wpzoom-click-to-chat';
 	/** wp-cron event that tells Yamidoo about a WPZOOM Connect Pro license. */
-	const PRO_SYNC_EVENT   = 'wpzoom_ai_chat_sync_pro_license';
 	/** Set for a day after each sync, so it runs at most daily. */
-	const PRO_SYNC_TRANSIENT = 'wpzoom_ai_chat_pro_synced';
 
 	private static $instance = null;
 
@@ -51,8 +49,6 @@ class WPZOOM_AI_Chat {
 		'lookup_secret'      => '',
 		/** Serve orders/licenses/subscriptions for the visitor's email to Yamidoo. */
 		'share_customer_data' => true,
-		/** Until when Yamidoo keeps the founding offer open for this site's Pro license (unix time; 0 = no). */
-		'pro_offer_until'    => 0,
 	);
 
 	public static function get_instance() {
@@ -78,11 +74,6 @@ class WPZOOM_AI_Chat {
 		add_action( 'admin_init', array( $this, 'canonical_redirect' ) );
 		add_action( 'admin_init', array( $this, 'privacy_policy_content' ) );
 		add_filter( 'wpzoom_notice_center_notices', array( $this, 'register_notice_center' ) );
-
-		// WPZOOM Connect Pro: 50% off Yamidoo plans with no deadline while the
-		// license is active. Checked in the background, at most once a day.
-		add_action( 'admin_init', array( $this, 'maybe_schedule_pro_sync' ) );
-		add_action( self::PRO_SYNC_EVENT, array( $this, 'sync_pro_license' ) );
 
 		// The Click to Chat launcher steps aside while AI Chat is on.
 		add_filter( 'wpzoom_ctc_should_render', array( $this, 'filter_ctc_render' ) );
@@ -383,66 +374,9 @@ class WPZOOM_AI_Chat {
 		// The one-time notice has done its job.
 		update_option( self::NOTICE_DISMISSED, 1 );
 		// A new connect token: tell Yamidoo about a Pro license now, not tomorrow.
-		delete_transient( self::PRO_SYNC_TRANSIENT );
 
 		wp_safe_redirect( add_query_arg( 'ai_chat', 'connected', $clean ) );
 		exit;
-	}
-
-	// -------------------------------------------------------------------------
-	// WPZOOM Connect Pro license → Yamidoo founding offer
-	// -------------------------------------------------------------------------
-
-	/**
-	 * The Pro license key, from WPZOOM Connect Pro (empty without it). Yamidoo
-	 * checks the key with wpzoom.com for this site's URL, so it decides what counts.
-	 */
-	private static function pro_license_key() {
-		return trim( (string) apply_filters( 'wpzoom_connect_pro_license_key', '' ) );
-	}
-
-	/** Queue the sync for wp-cron when connected, Pro is present and the last sync is over a day old. */
-	public function maybe_schedule_pro_sync() {
-		if ( ! self::is_connected() || '' === self::pro_license_key() || get_transient( self::PRO_SYNC_TRANSIENT ) ) {
-			return;
-		}
-		if ( ! wp_next_scheduled( self::PRO_SYNC_EVENT ) ) {
-			wp_schedule_single_event( time(), self::PRO_SYNC_EVENT );
-		}
-	}
-
-	/** Send the license key to Yamidoo with the site's connect token; remember until when the offer stays open. */
-	public function sync_pro_license() {
-		$s       = self::get_settings();
-		$license = self::pro_license_key();
-		if ( empty( $s['site_id'] ) || empty( $s['token'] ) || '' === $license ) {
-			return;
-		}
-
-		$response = wp_remote_post(
-			self::app_url() . '/api/wordpress/license',
-			array(
-				'timeout' => 20,
-				'headers' => array(
-					'Authorization' => 'Bearer ' . $s['token'],
-					'Content-Type'  => 'application/json',
-				),
-				'body'    => wp_json_encode( array( 'license' => $license ) ),
-			)
-		);
-		$code = is_wp_error( $response ) ? 0 : (int) wp_remote_retrieve_response_code( $response );
-
-		// Unreachable or rate-limited: try again in an hour, keep what we knew.
-		if ( 200 !== $code ) {
-			set_transient( self::PRO_SYNC_TRANSIENT, 1, HOUR_IN_SECONDS );
-			return;
-		}
-
-		$data                 = json_decode( wp_remote_retrieve_body( $response ), true );
-		$until                = ! empty( $data['pro'] ) && ! empty( $data['until'] ) ? strtotime( $data['until'] ) : 0;
-		$s['pro_offer_until'] = $until ? $until : 0;
-		self::save_settings( $s );
-		set_transient( self::PRO_SYNC_TRANSIENT, 1, DAY_IN_SECONDS );
 	}
 
 	/** Suggested text for the site's privacy policy (Settings → Privacy → Guide). */
@@ -608,12 +542,9 @@ class WPZOOM_AI_Chat {
 					</div>
 				</div>
 				<div id="wpzoom-ai-chat-scan-result" class="wpzoom-ai-chat-scan" hidden></div>
-				<p class="wpzoom-ai-chat-offer">
-					<span class="dashicons dashicons-tag"></span>
-					<span>
-						<?php esc_html_e( 'WordPress founding offer: 50% off any Yamidoo plan for your first year if you upgrade within 14 days of connecting, or at any time while you have a WPZOOM Connect Pro license. Applied automatically at checkout, no code needed. The free plan needs no card.', 'social-icons-widget-by-wpzoom' ); ?>
-						<a href="<?php echo esc_url( self::site_link( 'ai-chat-offer' ) ); ?>" target="_blank" rel="noopener"><?php esc_html_e( 'See how Yamidoo works and what it costs ↗', 'social-icons-widget-by-wpzoom' ); ?></a>
-					</span>
+				<p class="wpzoom-ai-chat-note">
+					<?php esc_html_e( 'The free plan needs no card.', 'social-icons-widget-by-wpzoom' ); ?>
+					<a href="<?php echo esc_url( self::site_link( 'ai-chat-pricing' ) ); ?>" target="_blank" rel="noopener"><?php esc_html_e( 'See how Yamidoo works and what it costs ↗', 'social-icons-widget-by-wpzoom' ); ?></a>
 				</p>
 
 				<?php $this->render_video(); ?>
@@ -681,15 +612,6 @@ class WPZOOM_AI_Chat {
 						</span>
 					</div>
 				</form>
-				<?php if ( ! empty( $s['pro_offer_until'] ) && $s['pro_offer_until'] > time() ) : ?>
-					<p class="wpzoom-ai-chat-offer">
-						<span class="dashicons dashicons-tag"></span>
-						<span>
-							<?php esc_html_e( 'Your WPZOOM Connect Pro license keeps the founding offer open: 50% off any Yamidoo plan for your first year, applied at checkout while your license is active.', 'social-icons-widget-by-wpzoom' ); ?>
-							<a href="<?php echo esc_url( self::app_url() . '/dashboard/billing' ); ?>" target="_blank" rel="noopener"><?php esc_html_e( 'See plans in Yamidoo ↗', 'social-icons-widget-by-wpzoom' ); ?></a>
-						</span>
-					</p>
-				<?php endif; ?>
 				<div class="wpzoom-ai-chat-foot">
 					<p class="wpzoom-ai-chat-note">
 						<?php esc_html_e( 'Colors, welcome message, suggested questions, human handoff and everything else are set in the Yamidoo dashboard — changes go live without touching WordPress.', 'social-icons-widget-by-wpzoom' ); ?>
@@ -920,7 +842,7 @@ class WPZOOM_AI_Chat {
 			'heading'        => __( 'Your chat button can now answer questions itself', 'social-icons-widget-by-wpzoom' ),
 			'content'        => '<p>' . sprintf(
 				/* translators: %s: link to yamidoo.ai */
-				esc_html__( 'AI Chat answers visitors from your own pages in seconds and hands off to you when needed — powered by %s, a WPZOOM product. Scan your site first to see what it would say, then turn it on with one click. Free plan, plus 50%% off your first year on any paid plan if you upgrade within 14 days of connecting.', 'social-icons-widget-by-wpzoom' ),
+				esc_html__( 'AI Chat answers visitors from your own pages in seconds and hands off to you when needed — powered by %s, a WPZOOM product. Scan your site first to see what it would say, then turn it on with one click. There’s a free plan.', 'social-icons-widget-by-wpzoom' ),
 				'<a href="' . esc_url( self::site_link( 'notice-center' ) ) . '" target="_blank" rel="noopener">Yamidoo.ai</a>'
 			) . '</p>',
 			'icon'           => array(

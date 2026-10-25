@@ -25,6 +25,11 @@
     }
   }
 
+  // An icon left without a URL is saved as a span, not a link.
+  .social-icon-nolink {
+    cursor: default;
+  }
+
   .social-icon.socicon, .social-icon-svg, .social-icon.dashicons, .social-icon.genericon, .social-icon.academicons, .social-icon.fas, .social-icon.fab, .social-icon.far {
     color: white;
     padding: 10px;

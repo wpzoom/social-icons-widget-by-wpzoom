@@ -98,25 +98,6 @@
 .wpzoom-ai-chat-inline-form {
 	display: inline;
 }
-.wpzoom-ai-chat-offer {
-	margin: 14px 0 0;
-	padding: 12px 14px;
-	border-radius: 6px;
-	background: #e6f7ee;
-	color: #0f6e43;
-	font-weight: 500;
-	display: flex;
-	gap: 8px;
-	align-items: flex-start;
-	line-height: 1.5;
-}
-.wpzoom-ai-chat-offer .dashicons {
-	margin-top: 1px;
-}
-.wpzoom-ai-chat-offer a {
-	color: #0f6e43;
-	font-weight: 600;
-}
 .wpzoom-ai-chat-title a {
 	color: #1d2327;
 	font-weight: 600;

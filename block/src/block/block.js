@@ -16,7 +16,9 @@ import './style.scss';
 import blockIcon from './blockIcon';
 import previewImage from './previewImage';
 import Edit from './components/Edit';
-import Save from './components/Save';
+import Save, { createSave } from './components/Save';
+import iconVariation from './icon-variation';
+import proDeprecations from './pro-deprecations';
 import TransformToBlock from './legacy-widget-transform/transform-to-block';
 import widgetAttributesTransform from './legacy-widget-transform/widget-attributes-transform';
 
@@ -142,6 +144,154 @@ addFilter(
 // }
 
 /**
+ * Block attributes, shared with the deprecated versions.
+ */
+const attributes = {
+	wasStyled: {
+		type: 'boolean',
+		default: false,
+	},
+	canvasType: {
+		type: 'string',
+		default: 'with-canvas',
+	},
+	showIconsLabel: {
+		type: 'boolean',
+		default: false,
+	},
+	showModal: {
+		type: 'boolean',
+		default: false,
+	},
+	openLinkInNewTab: {
+		type: 'boolean',
+		default: false,
+	},
+	nofollow: {
+		type: 'boolean',
+		default: false,
+	},
+	noreferrer: {
+		type: 'boolean',
+		default: false,
+	},
+	noopener: {
+		type: 'boolean',
+		default: false,
+	},
+	relme: {
+		type: 'boolean',
+		default: false,
+	},
+	iconsAlignment: {
+		type: 'string',
+		default: 'left',
+	},
+	iconsColor: {
+		type: 'string',
+		default: '#f1f1f1',
+	},
+	iconsLabelColor: {
+		type: 'string',
+		default: 'inherit',
+	},
+	iconsHoverColor: {
+		type: 'string',
+		default: '#f1f1f1',
+	},
+	iconsLabelHoverColor: {
+		type: 'string',
+		default: '#f1f1f1',
+	},
+	iconsFontSize: {
+		type: 'number',
+		default: 20,
+	},
+	iconsLabelFontSize: {
+		type: 'number',
+		default: 20,
+	},
+	iconsPaddingVertical: {
+		type: 'number',
+		default: 10,
+	},
+	iconsPaddingHorizontal: {
+		type: 'number',
+		default: 10,
+	},
+	iconsMarginVertical: {
+		type: 'number',
+		default: 5,
+	},
+	iconsMarginHorizontal: {
+		type: 'number',
+		default: 5,
+	},
+	iconsBorderRadius: {
+		type: 'number',
+		default: 0,
+	},
+	iconsBackgroundStyle: {
+		type: 'string',
+		default: 'round',
+	},
+	iconsHasBorder: {
+		type: 'boolean',
+		default: false,
+	},
+	activeIconIndex: {
+		type: 'integer',
+		default: 0,
+	},
+	defaultIcon: {
+		type: 'object',
+		default: {
+			icon: 'facebook',
+			color: '#f89406',
+			hoverColor: '#f89406',
+		},
+	},
+	selectedIcons: {
+		type: 'array',
+		default: [
+			{
+				url: 'https://facebook.com',
+				icon: 'facebook',
+				iconKit: 'socicon',
+				color: '#0866FF',
+				hoverColor: '#0866FF',
+				label: 'Facebook',
+				showPopover: false,
+				isActive: false,
+				customSvg: null,
+			},
+			{
+				url: 'https://x.com',
+				icon: 'x',
+				iconKit: 'socicon',
+				color: '#000000',
+				hoverColor: '#000000',
+				label: 'X',
+				showPopover: false,
+				isActive: false,
+				customSvg: null,
+			},
+			{
+				url: 'https://instagram.com',
+				icon: 'instagram',
+				iconKit: 'socicon',
+				color: '#E4405F',
+				hoverColor: '#E4405F',
+				label: 'Instagram',
+				showPopover: false,
+				isActive: false,
+				customSvg: null,
+			},
+		],
+	},
+};
+
+/**
  * Register: WPZOOM Social Icons Block.
  *
  * Registers a new block provided a unique name and an object defining its
@@ -181,150 +331,7 @@ registerBlockType( 'wpzoom-blocks/social-icons', {
         __( 'sharing', 'social-icons-widget-by-wpzoom' ),
 		__( 'Fontawesome', 'social-icons-widget-by-wpzoom' ),
 	],
-	attributes: {
-		wasStyled: {
-			type: 'boolean',
-			default: false,
-		},
-		canvasType: {
-			type: 'string',
-			default: 'with-canvas',
-		},
-		showIconsLabel: {
-			type: 'boolean',
-			default: false,
-		},
-		showModal: {
-			type: 'boolean',
-			default: false,
-		},
-		openLinkInNewTab: {
-			type: 'boolean',
-			default: false,
-		},
-		nofollow: {
-			type: 'boolean',
-			default: false,
-		},
-		noreferrer: {
-			type: 'boolean',
-			default: false,
-		},
-		noopener: {
-			type: 'boolean',
-			default: false,
-		},
-		relme: {
-			type: 'boolean',
-			default: false,
-		},
-		iconsAlignment: {
-			type: 'string',
-			default: 'left',
-		},
-		iconsColor: {
-			type: 'string',
-			default: '#f1f1f1',
-		},
-		iconsLabelColor: {
-			type: 'string',
-			default: 'inherit',
-		},
-		iconsHoverColor: {
-			type: 'string',
-			default: '#f1f1f1',
-		},
-		iconsLabelHoverColor: {
-			type: 'string',
-			default: '#f1f1f1',
-		},
-		iconsFontSize: {
-			type: 'number',
-			default: 20,
-		},
-		iconsLabelFontSize: {
-			type: 'number',
-			default: 20,
-		},
-		iconsPaddingVertical: {
-			type: 'number',
-			default: 10,
-		},
-		iconsPaddingHorizontal: {
-			type: 'number',
-			default: 10,
-		},
-		iconsMarginVertical: {
-			type: 'number',
-			default: 5,
-		},
-		iconsMarginHorizontal: {
-			type: 'number',
-			default: 5,
-		},
-		iconsBorderRadius: {
-			type: 'number',
-			default: 0,
-		},
-		iconsBackgroundStyle: {
-			type: 'string',
-			default: 'round',
-		},
-		iconsHasBorder: {
-			type: 'boolean',
-			default: false,
-		},
-		activeIconIndex: {
-			type: 'integer',
-			default: 0,
-		},
-		defaultIcon: {
-			type: 'object',
-			default: {
-				icon: 'facebook',
-				color: '#f89406',
-				hoverColor: '#f89406',
-			},
-		},
-		selectedIcons: {
-			type: 'array',
-			default: [
-				{
-					url: 'https://facebook.com',
-					icon: 'facebook',
-					iconKit: 'socicon',
-					color: '#0866FF',
-					hoverColor: '#0866FF',
-					label: 'Facebook',
-					showPopover: false,
-					isActive: false,
-					customSvg: null,
-				},
-				{
-					url: 'https://x.com',
-					icon: 'x',
-					iconKit: 'socicon',
-					color: '#000000',
-					hoverColor: '#000000',
-					label: 'X',
-					showPopover: false,
-					isActive: false,
-					customSvg: null,
-				},
-				{
-					url: 'https://instagram.com',
-					icon: 'instagram',
-					iconKit: 'socicon',
-					color: '#E4405F',
-					hoverColor: '#E4405F',
-					label: 'Instagram',
-					showPopover: false,
-					isActive: false,
-					customSvg: null,
-				},
-			],
-		},
-	},
+	attributes,
 	styles: [
 		{
 			name: 'with-canvas-round',
@@ -411,4 +418,19 @@ registerBlockType( 'wpzoom-blocks/social-icons', {
 	 * @return {Mixed} JSX Frontend HTML.
 	 */
 	save: Save,
+
+	variations: [ iconVariation ],
+
+	deprecated: [
+		/**
+		 * Before icons could be left without a link: an icon with an empty URL
+		 * was saved as a link (`<a href="">`). Same attributes; re-saved as a
+		 * plain icon.
+		 */
+		{
+			attributes,
+			save: createSave( { linkless: false } ),
+		},
+		...proDeprecations( attributes ),
+	],
 } );

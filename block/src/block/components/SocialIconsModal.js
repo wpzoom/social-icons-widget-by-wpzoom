@@ -267,6 +267,7 @@ class SocialIconsModal extends Component {
 								value={ this.state.modalUrl }
 								onChange={ this.urlTextControlHandler }
 								placeholder={ __( 'https://example.com', 'social-icons-widget-by-wpzoom' ) }
+								help={ __( 'Leave empty for an icon without a link.', 'social-icons-widget-by-wpzoom' ) }
 							/>
 						</div>
 					</div>

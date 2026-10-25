@@ -331,7 +331,7 @@ class WPZOOM_Connect_Overview {
 	 * @param int    $size Width and height.
 	 * @return string SVG markup.
 	 */
-	private static function icon( $name, $size = 20 ) {
+	public static function icon( $name, $size = 20 ) {
 		$paths = array(
 			'social-icons'  => '<rect x="3.5" y="3.5" width="7" height="7" rx="2"/><rect x="13.5" y="3.5" width="7" height="7" rx="2"/><rect x="3.5" y="13.5" width="7" height="7" rx="2"/><rect x="13.5" y="13.5" width="7" height="7" rx="3.5"/>',
 			'share-buttons' => '<circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.6 13.5 6.8 4M15.4 6.5l-6.8 4"/>',
@@ -549,7 +549,8 @@ class WPZOOM_Connect_Overview {
 	 * tabs (data-wpzc-tab); assets/js/social-icons-settings-page.js switches
 	 * them and marks the current one.
 	 *
-	 * @param string $current overview, settings, ai or ctc (the chat screen's tabs).
+	 * @param string $current overview, settings, ai or ctc (the chat screen's tabs),
+	 *                        or license (PRO's License page).
 	 */
 	public static function render_sidebar( $current = 'overview' ) {
 		$pro      = self::is_pro();
@@ -577,7 +578,7 @@ class WPZOOM_Connect_Overview {
 		}
 		if ( $pro ) {
 			$nav[] = array( 'chart', __( 'Share Analytics', 'social-icons-widget-by-wpzoom' ), admin_url( self::PARENT . '&page=wpzoom-share-analytics' ), false, '', '', false );
-			$nav[] = array( 'key', __( 'License', 'social-icons-widget-by-wpzoom' ), admin_url( self::PARENT . '&page=wpzoom-social-icons-license' ), false, '', '', false );
+			$nav[] = array( 'key', __( 'License', 'social-icons-widget-by-wpzoom' ), admin_url( self::PARENT . '&page=wpzoom-social-icons-license' ), 'license' === $current, '', '', false );
 		}
 		?>
 		<aside class="wpzc-sidebar">
@@ -898,7 +899,7 @@ class WPZOOM_Connect_Overview {
 										<span class="wpzc-promo__chart"><i style="height:38%"></i><i style="height:55%"></i><i style="height:46%"></i><i style="height:72%"></i><i style="height:64%"></i><i style="height:92%"></i></span>
 									</div>
 									<h2><?php esc_html_e( 'Get more shares with Pro', 'social-icons-widget-by-wpzoom' ); ?></h2>
-									<p><?php esc_html_e( 'A floating share bar, share counts and analytics, and a better deal on AI Chat.', 'social-icons-widget-by-wpzoom' ); ?></p>
+									<p><?php esc_html_e( 'A floating share bar, share counts and analytics, and Pinterest Save buttons on your images.', 'social-icons-widget-by-wpzoom' ); ?></p>
 									<a class="wpzc-button is-block" href="<?php echo esc_url( self::upgrade_url( 'overview-sidebar' ) ); ?>" target="_blank" rel="noopener"><?php esc_html_e( 'Upgrade to Pro', 'social-icons-widget-by-wpzoom' ); ?></a>
 									<ul class="wpzc-checks">
 										<li><?php echo self::icon( 'check', 18 ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static SVG. ?><?php esc_html_e( 'Floating share bar', 'social-icons-widget-by-wpzoom' ); ?></li>
@@ -906,13 +907,12 @@ class WPZOOM_Connect_Overview {
 										<li><?php echo self::icon( 'check', 18 ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static SVG. ?><?php esc_html_e( 'Share analytics', 'social-icons-widget-by-wpzoom' ); ?></li>
 										<li><?php echo self::icon( 'check', 18 ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static SVG. ?><?php esc_html_e( 'Pinterest Save button on images', 'social-icons-widget-by-wpzoom' ); ?></li>
 										<li><?php echo self::icon( 'check', 18 ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static SVG. ?><?php esc_html_e( 'Your own SVG icons', 'social-icons-widget-by-wpzoom' ); ?></li>
-										<li><?php echo self::icon( 'check', 18 ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static SVG. ?><?php esc_html_e( '50% off Yamidoo AI Chat for a year', 'social-icons-widget-by-wpzoom' ); ?></li>
 									</ul>
 								</section>
 								<?php elseif ( ! $s['ai_connected'] ) : ?>
 								<section class="wpzc-card wpzc-promo">
-									<h2><?php esc_html_e( 'Included with Pro: 50% off AI Chat', 'social-icons-widget-by-wpzoom' ); ?></h2>
-									<p><?php esc_html_e( 'Connect AI Chat and any Yamidoo plan is half price for your first year, whenever you upgrade, while your license is active.', 'social-icons-widget-by-wpzoom' ); ?></p>
+									<h2><?php esc_html_e( 'Answer visitors with AI Chat', 'social-icons-widget-by-wpzoom' ); ?></h2>
+									<p><?php esc_html_e( 'Your chat button answers questions from your own pages, day and night, and hands off to you when needed. The free plan needs no card.', 'social-icons-widget-by-wpzoom' ); ?></p>
 									<a class="wpzc-button is-block" href="<?php echo esc_url( self::chat_url( 'ai' ) ); ?>"><?php esc_html_e( 'Set up AI Chat', 'social-icons-widget-by-wpzoom' ); ?></a>
 								</section>
 								<?php endif; ?>

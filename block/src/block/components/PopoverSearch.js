@@ -17,6 +17,8 @@ import { TextControl, Button, Icon } from '@wordpress/components';
  * @param {Function} props.preview Optional: ( typedUrl ) => { node, color } | null.
  *                                 While the field holds an unsaved URL, its match is
  *                                 shown live, so the icon appears as you type.
+ * @param {string}   props.button     Button label; "Detect Icon" by default.
+ * @param {string}   props.buttonIcon Button dashicon.
  */
 export default function PopoverSearch( {
 	value,
@@ -24,6 +26,8 @@ export default function PopoverSearch( {
 	icon = null,
 	color = '',
 	preview = null,
+	button = __( 'Detect Icon', 'social-icons-widget-by-wpzoom' ),
+	buttonIcon = 'update',
 } ) {
 	const [ search, setSearch ] = useState( value );
 
@@ -75,16 +79,20 @@ export default function PopoverSearch( {
 					onChange={ setSearch }
 					onKeyDown={ onKeyDownHandler }
 					onFocus={ ( e ) => e.target.select() }
+					// The popover focuses this field when it opens; without this the
+					// browser drops its saved form entries over the popover.
+					autoComplete="off"
+					spellCheck={ false }
 					placeholder={ __( 'https://example.com', 'social-icons-widget-by-wpzoom' ) }
 				/>
 			</div>
 			<Button
-				icon="update"
+				icon={ buttonIcon }
 				isPrimary
 				onClick={ onClickHandler }
 				className="url-apply-button"
 			>
-				{ __( 'Detect Icon', 'social-icons-widget-by-wpzoom' ) }
+				{ button }
 			</Button>
 		</Fragment>
 	);

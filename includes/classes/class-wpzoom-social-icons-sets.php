@@ -294,8 +294,8 @@ class WPZOOM_Social_Icons_Sets {
 					<div class="wpzoom-icon-library__help">
 						<h3><?php esc_html_e( 'How to add an icon', 'social-icons-widget-by-wpzoom' ); ?></h3>
 						<ol>
-							<li><?php esc_html_e( 'In the block editor, add the Social Icons block to a page, post or widget area.', 'social-icons-widget-by-wpzoom' ); ?></li>
-							<li><?php esc_html_e( 'Click an icon in the block, or + to add one, and paste its link.', 'social-icons-widget-by-wpzoom' ); ?></li>
+							<li><?php esc_html_e( 'In the block editor, add the Social Icons block, or Icon by WPZOOM for a single icon.', 'social-icons-widget-by-wpzoom' ); ?></li>
+							<li><?php esc_html_e( 'Click an icon in the block, or + to add one. Paste its link, or leave the link empty for an icon that isn’t a link.', 'social-icons-widget-by-wpzoom' ); ?></li>
 							<li><?php esc_html_e( 'To pick another icon, search its name from this library in the Select Icon window.', 'social-icons-widget-by-wpzoom' ); ?></li>
 						</ol>
 						<p><?php esc_html_e( 'The classic widget and the Elementor widget use the same icons.', 'social-icons-widget-by-wpzoom' ); ?></p>

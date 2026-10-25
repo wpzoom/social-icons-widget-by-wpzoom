@@ -160,12 +160,18 @@ class WPZOOM_Social_Icons_Settings {
 	 * Get option name by passed parameter $key
 	 *
 	 * @param string $key The option key to receive options for.
-	 * @return array|string
+	 * @return array|string|bool|int|null Null for a key this plugin doesn't define.
 	 */
 	public static function get_option_key( $key ) {
 		$options = self::get_settings();
 
-		return array_key_exists( $key, $options ) ? $options[ $key ] : self::$option_defaults[ $key ];
+		if ( array_key_exists( $key, $options ) ) {
+			return $options[ $key ];
+		}
+		// A key this plugin doesn't define: while both plugins are active (for
+		// one request, until PRO deactivates free) the other plugin's code may
+		// ask this class for its own settings, e.g. PRO's Pinterest ones.
+		return array_key_exists( $key, self::$option_defaults ) ? self::$option_defaults[ $key ] : null;
 	}
 
 	/**

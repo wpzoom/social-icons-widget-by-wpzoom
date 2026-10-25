@@ -65,7 +65,7 @@ class WPZOOM_Social_Icons_SVG {
 	 * Hook everything up.
 	 */
 	public static function init() {
-		add_filter( 'render_block_wpzoom-blocks/social-icons', array( __CLASS__, 'render_block' ) );
+		add_filter( 'render_block_wpzoom-blocks/social-icons', array( __CLASS__, 'render_block' ), 10, 2 );
 		add_action( 'rest_api_init', array( __CLASS__, 'register_rest_route' ) );
 	}
 
@@ -273,10 +273,57 @@ class WPZOOM_Social_Icons_SVG {
 	 * Social Icons block: icon spans get their SVG.
 	 *
 	 * @param string $content Rendered block.
+	 * @param array  $block   Parsed block.
 	 * @return string
 	 */
-	public static function render_block( $content ) {
-		return self::enabled() ? self::fill_spans( $content ) : $content;
+	public static function render_block( $content, $block = array() ) {
+		if ( ! self::enabled() ) {
+			return $content;
+		}
+		return self::fill_spans( self::from_pro( $content, $block ) );
+	}
+
+	/**
+	 * Blocks saved by WPZOOM Connect Pro, on a site back on the free plugin:
+	 * PRO writes each icon as `social-icon socicon socicon-<name>` (whatever
+	 * its kit) with its own SVG inside, which free's styles don't size. Each
+	 * such span is turned back into the empty span free saves, with the kit
+	 * from the block's attributes (icons are in the same order), and is then
+	 * drawn like any other. The editor migrates these blocks the same way
+	 * (block/src/block/pro-deprecations.js); this covers pages not re-saved.
+	 *
+	 * @param string $content Rendered block.
+	 * @param array  $block   Parsed block.
+	 * @return string
+	 */
+	private static function from_pro( $content, $block ) {
+		$icons = isset( $block['attrs']['selectedIcons'] ) && is_array( $block['attrs']['selectedIcons'] ) ? array_values( $block['attrs']['selectedIcons'] ) : array();
+		if ( ! $icons || false === strpos( $content, '<svg' ) ) {
+			return $content;
+		}
+
+		$index = 0;
+		return preg_replace_callback(
+			// Icon spans only: the class list starts with "social-icon" as a
+			// whole word (not "social-icon-link"). SVGs hold no spans.
+			'#<span\s+class="(social-icon(?:\s[^"]*)?)"([^>]*)>(.*?)</span>#s',
+			function ( $m ) use ( $icons, &$index ) {
+				$icon = isset( $icons[ $index ] ) ? $icons[ $index ] : null;
+				++$index;
+				if (
+					! is_array( $icon ) || empty( $icon['icon'] ) || empty( $icon['iconKit'] ) || 'svg' === $icon['iconKit']
+					|| false === strpos( $m[3], '<svg' )
+					|| ! preg_match( '/(^|\s)socicon-' . preg_quote( $icon['icon'], '/' ) . '(\s|$)/', $m[1] )
+				) {
+					return $m[0];
+				}
+				$kit  = sanitize_html_class( $icon['iconKit'] );
+				$name = sanitize_html_class( $icon['icon'] );
+				$fa   = in_array( $kit, array( 'fab', 'far', 'fas' ), true );
+				return '<span class="social-icon ' . $kit . ' ' . ( $fa ? 'fa-' : $kit . '-' ) . $name . '"' . $m[2] . '></span>';
+			},
+			$content
+		);
 	}
 }
 
