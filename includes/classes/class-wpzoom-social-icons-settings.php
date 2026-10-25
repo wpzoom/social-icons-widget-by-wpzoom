@@ -76,16 +76,7 @@ class WPZOOM_Social_Icons_Settings {
 	 * @return array
 	 */
 	public static function get_settings_for_icons_kits() {
-		return array(
-			'socicon'     => self::get_option_key( 'disable-css-loading-for-socicons' ),
-			'dashicons'   => self::get_option_key( 'disable-css-loading-for-dashicons' ),
-			'genericon'   => self::get_option_key( 'disable-css-loading-for-genericons' ),
-			'academicons' => self::get_option_key( 'disable-css-loading-for-academicons' ),
-			'fab'         => self::get_option_key( 'disable-css-loading-for-font-awesome-5' ),
-			'far'         => self::get_option_key( 'disable-css-loading-for-font-awesome-5' ),
-			'fas'         => self::get_option_key( 'disable-css-loading-for-font-awesome-5' ),
-			'fa'          => self::get_option_key( 'disable-css-loading-for-font-awesome-3' ),
-		);
+		return WPZOOM_Social_Icons_Sets::enabled_kits( false );
 	}
 
 	/**
@@ -356,7 +347,7 @@ class WPZOOM_Social_Icons_Settings {
 			$new_input['categories-sync'] = wp_validate_boolean( $input['categories-sync'] );
 		}
 
-		return $new_input;
+		return WPZOOM_Social_Icons_Sets::sanitize( $input, $new_input );
 	}
 
 	/**
@@ -372,53 +363,6 @@ class WPZOOM_Social_Icons_Settings {
 			'dashicons'                         => '',
 			'wpzoom-social-icons-genericons'    => 'genericons.css',
 			'wpzoom-social-icons-academicons'   => 'academicons.min.css',
-		);
-	}
-
-	/**
-	 * The icon sets shown on the Icon Sets tab, keyed by their setting.
-	 *
-	 * @return array
-	 */
-	private static function icon_sets() {
-		return array(
-			'disable-css-loading-for-socicons'       => array(
-				'title'       => __( 'WPZOOM Icons', 'social-icons-widget-by-wpzoom' ),
-				'badge'       => __( 'Main set', 'social-icons-widget-by-wpzoom' ),
-				'description' => __( 'Brand icons for social networks and apps, based on the Socicon font. Used by default in the block and the widget.', 'social-icons-widget-by-wpzoom' ),
-				'kits'        => array( 'socicon' ),
-				'samples'     => array( 'social-icon socicon socicon-facebook', 'social-icon socicon socicon-x', 'social-icon socicon socicon-instagram', 'social-icon socicon socicon-youtube', 'social-icon socicon socicon-linkedin', 'social-icon socicon socicon-tiktok' ),
-			),
-			'disable-css-loading-for-font-awesome-5' => array(
-				'title'       => __( 'Font Awesome 5', 'social-icons-widget-by-wpzoom' ),
-				'description' => __( 'Brand, solid and regular icons. Available in the Social Icons block.', 'social-icons-widget-by-wpzoom' ),
-				'kits'        => array( 'fab', 'far', 'fas' ),
-				'samples'     => array( 'fab fa-facebook', 'fab fa-twitter', 'fab fa-instagram', 'fab fa-youtube', 'fab fa-github', 'fas fa-envelope' ),
-			),
-			'disable-css-loading-for-font-awesome-3' => array(
-				'title'       => __( 'Font Awesome 4', 'social-icons-widget-by-wpzoom' ),
-				'description' => __( 'The older Font Awesome set. Available only in the Social Icons widget.', 'social-icons-widget-by-wpzoom' ),
-				'kits'        => array( 'fa' ),
-				'samples'     => array( 'fa fa-facebook', 'fa fa-twitter', 'fa fa-instagram', 'fa fa-youtube', 'fa fa-github', 'fa fa-envelope' ),
-			),
-			'disable-css-loading-for-dashicons'      => array(
-				'title'       => __( 'Dashicons', 'social-icons-widget-by-wpzoom' ),
-				'description' => __( 'The WordPress icon font, with a few social and general icons.', 'social-icons-widget-by-wpzoom' ),
-				'kits'        => array( 'dashicons' ),
-				'samples'     => array( 'dashicons dashicons-facebook', 'dashicons dashicons-twitter', 'dashicons dashicons-instagram', 'dashicons dashicons-email', 'dashicons dashicons-wordpress', 'dashicons dashicons-rss' ),
-			),
-			'disable-css-loading-for-genericons'     => array(
-				'title'       => __( 'Genericons', 'social-icons-widget-by-wpzoom' ),
-				'description' => __( 'Simple generic icons, such as mail, phone, RSS and location.', 'social-icons-widget-by-wpzoom' ),
-				'kits'        => array( 'genericon' ),
-				'samples'     => array( 'genericon genericon-facebook', 'genericon genericon-twitter', 'genericon genericon-instagram', 'genericon genericon-mail', 'genericon genericon-github', 'genericon genericon-youtube' ),
-			),
-			'disable-css-loading-for-academicons'    => array(
-				'title'       => __( 'Academicons', 'social-icons-widget-by-wpzoom' ),
-				'description' => __( 'Icons for academic profiles: Google Scholar, ORCID, ResearchGate, arXiv and more.', 'social-icons-widget-by-wpzoom' ),
-				'kits'        => array( 'academicons' ),
-				'samples'     => array( 'academicons academicons-google-scholar', 'academicons academicons-orcid', 'academicons academicons-researchgate', 'academicons academicons-arxiv', 'academicons academicons-academia', 'academicons academicons-pubmed' ),
-			),
 		);
 	}
 
@@ -492,84 +436,7 @@ class WPZOOM_Social_Icons_Settings {
 	 * Icon Sets tab.
 	 */
 	private function render_icon_sets_tab() {
-		$icons = include WPZOOM_SOCIAL_ICONS_PLUGIN_PATH . 'includes/icons-data.php';
-		?>
-		<div class="wpzoom-settings-card">
-			<?php
-			$this->render_card_header(
-				'share',
-				__( 'Icon Sets', 'social-icons-widget-by-wpzoom' ),
-				WPZOOM_Social_Icons_SVG::use_svg()
-					? __( 'Choose the icon sets the block and widget pickers offer. Icons are drawn as SVG, so a page loads only the icons it shows, whichever sets are on.', 'social-icons-widget-by-wpzoom' )
-					: __( 'Choose the icon fonts your site loads. Each set adds a stylesheet and a font file to your pages, so turn on only the sets you use.', 'social-icons-widget-by-wpzoom' )
-			);
-			?>
-
-			<?php foreach ( self::icon_sets() as $key => $set ) : ?>
-				<?php
-				$id    = 'wpzoom-setting-' . $key;
-				$count = 0;
-				foreach ( $set['kits'] as $kit ) {
-					$count += isset( $icons[ $kit ] ) ? count( $icons[ $kit ] ) : 0;
-				}
-				?>
-				<div class="wpzoom-settings-row wpzoom-settings-kit">
-					<div class="wpzoom-settings-kit__samples" aria-hidden="true">
-						<?php foreach ( $set['samples'] as $class ) : ?>
-							<?php
-							$sample = WPZOOM_Social_Icons_SVG::use_svg() ? WPZOOM_Social_Icons_SVG::parse_classes( $class ) : null;
-							$sample_svg = $sample ? WPZOOM_Social_Icons_Library::inline_svg( $sample[0], $sample[1] ) : '';
-							?>
-							<?php if ( '' !== $sample_svg ) : ?>
-								<?php // No font classes: another plugin's icon font would draw over the SVG. ?>
-								<?php
-								// Socicons in their brand colors, as the font stylesheet showed them.
-								$sample_color = '';
-								if ( 'socicon' === $sample[0] ) {
-									$brand        = wp_list_pluck( $icons['socicon'], 'color', 'icon' );
-									$sample_color = isset( $brand[ $sample[1] ] ) ? $brand[ $sample[1] ] : '';
-								}
-								?>
-								<i<?php echo $sample_color ? ' style="color:' . esc_attr( $sample_color ) . '"' : ''; ?>><?php echo $sample_svg; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- SVG from the plugin's own icon library. ?></i>
-							<?php else : ?>
-								<i class="<?php echo esc_attr( $class ); ?>"></i>
-							<?php endif; ?>
-						<?php endforeach; ?>
-					</div>
-					<div class="wpzoom-settings-row__main">
-						<div class="wpzoom-settings-row__title" id="<?php echo esc_attr( $id ); ?>">
-							<?php echo esc_html( $set['title'] ); ?>
-							<?php if ( ! empty( $set['badge'] ) ) : ?>
-								<span class="wpzoom-settings-badge"><?php echo esc_html( $set['badge'] ); ?></span>
-							<?php endif; ?>
-						</div>
-						<p class="wpzoom-settings-row__description">
-							<?php echo esc_html( $set['description'] ); ?>
-							<span class="wpzoom-settings-row__meta">
-								<?php
-								/* translators: %s: number of icons */
-								echo esc_html( sprintf( _n( '%s icon', '%s icons', $count, 'social-icons-widget-by-wpzoom' ), number_format_i18n( $count ) ) );
-								?>
-							</span>
-						</p>
-					</div>
-					<div class="wpzoom-settings-row__control">
-						<?php $this->render_switch( $key, $id ); ?>
-					</div>
-				</div>
-			<?php endforeach; ?>
-		</div>
-
-		<div class="wpzoom-settings-card">
-			<?php
-			$this->render_switch_row(
-				'categories-sync',
-				__( 'Show only enabled sets in the icon picker', 'social-icons-widget-by-wpzoom' ),
-				__( 'The block and widget icon pickers list just the sets turned on above. Turn off to list every set.', 'social-icons-widget-by-wpzoom' )
-			);
-			?>
-		</div>
-		<?php
+		WPZOOM_Social_Icons_Sets::render( false );
 	}
 
 	/**

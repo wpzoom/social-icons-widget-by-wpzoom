@@ -35,6 +35,10 @@ if ( ! class_exists( 'WPZOOM_Social_Icons_Library' ) ) {
 	require_once plugin_dir_path( __FILE__ ) . 'includes/classes/class-wpzoom-social-icons-library.php';
 }
 require_once plugin_dir_path( __FILE__ ) . 'includes/classes/class-wpzoom-social-icons-svg.php';
+// Which icon sets the pickers offer. Shared with the PRO plugin.
+if ( ! class_exists( 'WPZOOM_Social_Icons_Sets' ) ) {
+	require_once plugin_dir_path( __FILE__ ) . 'includes/classes/class-wpzoom-social-icons-sets.php';
+}
 
 // Shared with the PRO plugin; both can be loaded for a moment while PRO activates.
 if ( ! class_exists( 'WPZOOM_Preferred_Source' ) ) {

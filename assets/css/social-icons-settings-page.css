@@ -435,6 +435,73 @@
 	color: var(--wp-admin-theme-color, #2271b1);
 }
 
+/* Icon Sets: the main set's label and the collapsed older sets */
+.wpzoom-settings-always {
+	color: #50575e;
+	font-size: 13px;
+	font-weight: 500;
+	white-space: nowrap;
+}
+
+.wpzoom-settings-older {
+	border-top: 1px solid #f0f0f1;
+}
+
+.wpzoom-settings-older summary {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	gap: 4px 10px;
+	padding: 16px 20px;
+	cursor: pointer;
+	list-style: none;
+}
+
+.wpzoom-settings-older summary::-webkit-details-marker {
+	display: none;
+}
+
+.wpzoom-settings-older summary::before {
+	content: "";
+	align-self: center;
+	width: 0;
+	height: 0;
+	border-top: 5px solid transparent;
+	border-bottom: 5px solid transparent;
+	border-left: 7px solid #50575e;
+	transition: transform .15s ease;
+}
+
+.wpzoom-settings-older[open] summary::before {
+	transform: rotate(90deg);
+}
+
+.wpzoom-settings-older summary:focus-visible {
+	outline: 2px solid var(--wp-admin-theme-color, #2271b1);
+	outline-offset: -2px;
+}
+
+.wpzoom-settings-older__title {
+	color: #1d2327;
+	font-size: 14px;
+	font-weight: 600;
+}
+
+.wpzoom-settings-older__meta {
+	color: #8c8f94;
+	font-size: 13px;
+}
+
+.wpzoom-settings-older__note {
+	max-width: 620px;
+	margin: -6px 20px 4px 37px;
+	color: #50575e;
+}
+
+.wpzoom-settings-older .wpzoom-settings-row {
+	border-top: 1px solid #f0f0f1;
+}
+
 /* Icon set samples */
 .wpzoom-settings-kit__samples {
 	flex: none;
