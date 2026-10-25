@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "connect-preview",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": ["-m", "http.server", "8765", "--directory", "/private/tmp/claude-501/-Users-pavel-Sites-htdocs-wp-wp-content-plugins-social-icons-widget-by-wpzoom/84c0e5fd-ba6a-47a2-b9a1-53397e5fb965/scratchpad/preview"],
+      "port": 8765
+    }
+  ]
+}

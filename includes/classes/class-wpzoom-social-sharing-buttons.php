@@ -75,13 +75,13 @@ class WPZOOM_Social_Sharing_Buttons {
 	 */
 	public function register_post_type() {
 		$args = array(
-			'label'               => __( 'Sharing Buttons', 'social-icons-widget-by-wpzoom' ),
+			'label'               => __( 'Share Buttons', 'social-icons-widget-by-wpzoom' ),
 			'description'         => __( 'Configure sharing buttons that appear automatically', 'social-icons-widget-by-wpzoom' ),
 			'labels'              => array(
 				'name'          => _x( 'Sharing Buttons', 'Post Type General Name', 'social-icons-widget-by-wpzoom' ),
 				'singular_name' => _x( 'Sharing Buttons', 'Post Type Singular Name', 'social-icons-widget-by-wpzoom' ),
-				'menu_name'     => __( 'Sharing Buttons', 'social-icons-widget-by-wpzoom' ),
-				'all_items'     => __( 'Sharing Buttons', 'social-icons-widget-by-wpzoom' ),
+				'menu_name'     => __( 'Share Buttons', 'social-icons-widget-by-wpzoom' ),
+				'all_items'     => __( 'Share Buttons', 'social-icons-widget-by-wpzoom' ),
 				'add_new'       => __( 'Add New', 'social-icons-widget-by-wpzoom' ),
 				'add_new_item'  => __( 'Add New Sharing Configuration', 'social-icons-widget-by-wpzoom' ),
 				'edit_item'     => __( 'Edit Sharing Configuration', 'social-icons-widget-by-wpzoom' ),
@@ -122,8 +122,8 @@ class WPZOOM_Social_Sharing_Buttons {
 			$edit_url = admin_url( 'post.php?post=' . $existing_config->ID . '&action=edit' );
 			add_submenu_page(
 				$parent_slug,
-				__( 'Sharing Buttons', 'social-icons-widget-by-wpzoom' ),
-				__( 'Sharing Buttons', 'social-icons-widget-by-wpzoom' ),
+				__( 'Share Buttons', 'social-icons-widget-by-wpzoom' ),
+				__( 'Share Buttons', 'social-icons-widget-by-wpzoom' ),
 				'manage_options',
 				$edit_url,
 				'',
@@ -155,8 +155,8 @@ class WPZOOM_Social_Sharing_Buttons {
 				$edit_url = admin_url( 'post.php?post=' . $new_config_id . '&action=edit' );
 				add_submenu_page(
 					$parent_slug,
-					__( 'Sharing Buttons', 'social-icons-widget-by-wpzoom' ),
-					__( 'Sharing Buttons', 'social-icons-widget-by-wpzoom' ),
+					__( 'Share Buttons', 'social-icons-widget-by-wpzoom' ),
+					__( 'Share Buttons', 'social-icons-widget-by-wpzoom' ),
 					'manage_options',
 					$edit_url,
 					'',

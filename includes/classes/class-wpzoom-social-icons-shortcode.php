@@ -24,7 +24,7 @@ class WPZOOM_Social_Icons_Free_Shortcode {
 	 * @since 1.1.0
 	 * @var string
 	 */
-	public static $post_type_name = 'AI Chat';
+	public static $post_type_name = 'AI Chat & Icons';
 
 	/**
 	 * Constructor
@@ -52,7 +52,7 @@ class WPZOOM_Social_Icons_Free_Shortcode {
 			'add_new_item'       => __( 'Add New Shortcode', 'social-icons-widget-by-wpzoom' ),
 			'edit_item'          => __( 'Edit Social Icon Shortcode', 'social-icons-widget-by-wpzoom' ),
 			'new_item'           => __( 'New Social Icon Shortcodes Memeber', 'social-icons-widget-by-wpzoom' ),
-			'all_items'          => __( 'Icon Sets', 'social-icons-widget-by-wpzoom' ),
+			'all_items'          => __( 'Social Icons', 'social-icons-widget-by-wpzoom' ),
 			'view_item'          => __( 'View Shortcodes', 'social-icons-widget-by-wpzoom' ),
 			'search_items'       => __( 'Search Social Icon Shortcodes', 'social-icons-widget-by-wpzoom' ),
 			'not_found'          => __( 'No shortcode found', 'social-icons-widget-by-wpzoom' ),

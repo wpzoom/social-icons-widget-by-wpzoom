@@ -377,7 +377,7 @@ if ( ! function_exists( 'wpzoom_social_icons_upgrade_pro_notice' ) ) {
 			</a>
 			<div class="wpz-social-icons-notice-wrap-content">
 				<div class="wpz-social-icons-notice-aside">
-					<img src="<?php echo esc_url( WPZOOM_SOCIAL_ICONS_PLUGIN_URL . '/assets/images/social-icons-pro-avatar.png' ); ?>" width="100" height="100" alt="Social Icons PRO"/>
+					<img src="<?php echo esc_url( WPZOOM_SOCIAL_ICONS_PLUGIN_URL . '/assets/images/social-icons-pro-avatar.png' ); ?>" width="100" height="100" alt="WPZOOM Connect Pro"/>
 				</div>
 				<div class="wpz-social-icons-notice-content">
 					<?php
@@ -391,7 +391,7 @@ if ( ! function_exists( 'wpzoom_social_icons_upgrade_pro_notice' ) ) {
 					?>
 					</p>
 					<p class="wpz-social-icons-notice-actions">
-						<a class="button-primary" href="https://www.wpzoom.com/plugins/social-share/?utm_source=admin-notices&utm_medium=admin-notice-actions&utm_campaign=go_pro" target="_blank"><strong><?php esc_html_e( 'Get Social Icons Widget PRO &rarr;', 'social-icons-widget-by-wpzoom' ); ?></strong></a>
+						<a class="button-primary" href="https://www.wpzoom.com/plugins/social-share/?utm_source=admin-notices&utm_medium=admin-notice-actions&utm_campaign=go_pro" target="_blank"><strong><?php esc_html_e( 'Get WPZOOM Connect Pro &rarr;', 'social-icons-widget-by-wpzoom' ); ?></strong></a>
 						<?php
 						// phpcs:disable
 						/*

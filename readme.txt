@@ -101,7 +101,7 @@ You can view the plugin live in all our themes at [WPZOOM](https://www.wpzoom.co
 
 = PRO Features =
 
-Upgrade to [Social Icons Widget PRO](https://www.wpzoom.com/plugins/social-share/) to unlock powerful features:
+Upgrade to [WPZOOM Connect Pro](https://www.wpzoom.com/plugins/social-share/) to unlock powerful features:
 
 * **Floating Buttons** - Display social sharing icons as a fixed floating bar on the side of your website (NEW!)
 * **Share Analytics Dashboard** - Track how visitors share your content with detailed analytics
@@ -247,7 +247,7 @@ Yes! Social Icons & Sharing Buttons does not collect any information from your v
 
 = What features are available in the PRO version? =
 
-[Social Icons Widget PRO](https://www.wpzoom.com/plugins/social-share/) includes these additional features:
+[WPZOOM Connect Pro](https://www.wpzoom.com/plugins/social-share/) includes these additional features:
 
 * **Floating Buttons** - Display sharing icons as a fixed floating bar on the side of your website
 * **Share Analytics** - Track shares across all platforms with a beautiful analytics dashboard
@@ -304,6 +304,8 @@ Floating Buttons is a PRO feature that displays your social sharing icons as a f
 * Settings: the Optimization tab is gone (icons are SVG, so there are no fonts to preload; it comes back if a site turns SVG off). New Custom Icons and Pinterest tabs show what PRO adds: your own SVG icons, and a Pinterest Save button on images
 * NEW: 41 more networks in WPZOOM Icons: Twitch, Kick, Rumble, Linktree, Buy Me a Coffee, Cash App, Signal, Threema, KakaoTalk, Weibo, Quora, Farcaster, BeReal, Pixelfed, Zoom, Calendly, Notion, Product Hunt, Upwork, GitLab, Bitbucket, DEV, Hashnode, Apple Music, YouTube Music, Audiomack, Pandora, Audible, Google Play, itch.io, Epic Games, Claude and more, plus a Website icon. Pasting one of their links picks the icon
 * NEW: 148 brand icons from Font Awesome 7 in the Font Awesome Brands set, including X, Threads, Bluesky, TikTok, Signal, Linktree and Substack
+* The Pro upgrade is now called WPZOOM Connect Pro
+* Admin menu renamed to “AI Chat & Icons” (it was “AI Chat”), with “Social Icons” and “Share Buttons” as its submenus, so the icon and sharing settings are easy to find again
 * The Socicons set is now called WPZOOM Icons: the same icons, maintained by WPZOOM. Licenses for all bundled icon sets are listed in the readme and in includes/icon-library/LICENSES.md
 * Added Mixcloud and six general icons (home, mobile, heart, plane, recipes, user) to the Social Icons block
 * SECURITY: the AI Chat identity signature printed for logged-in users is now domain-separated from the signature that authenticates customer-data lookups. Before, an account registered with a crafted email address could reuse its own signature to read another customer's orders and licenses through the lookup endpoint. Reported by Wordfence.
