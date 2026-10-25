@@ -304,6 +304,7 @@ Floating Buttons is a PRO feature that displays your social sharing icons as a f
 * Settings: the Optimization tab is gone (icons are SVG, so there are no fonts to preload; it comes back if a site turns SVG off). New Custom Icons and Pinterest tabs show what PRO adds: your own SVG icons, and a Pinterest Save button on images
 * NEW: 41 more networks in WPZOOM Icons: Twitch, Kick, Rumble, Linktree, Buy Me a Coffee, Cash App, Signal, Threema, KakaoTalk, Weibo, Quora, Farcaster, BeReal, Pixelfed, Zoom, Calendly, Notion, Product Hunt, Upwork, GitLab, Bitbucket, DEV, Hashnode, Apple Music, YouTube Music, Audiomack, Pandora, Audible, Google Play, itch.io, Epic Games, Claude and more, plus a Website icon. Pasting one of their links picks the icon
 * NEW: 148 brand icons from Font Awesome 7 in the Font Awesome Brands set, including X, Threads, Bluesky, TikTok, Signal, Linktree and Substack
+* NEW: with a WPZOOM Connect Pro license, the Yamidoo founding offer (50% off any plan for your first year) has no 14-day deadline: it stays open while the license is active. The plugin confirms the license with Yamidoo once a day, in the background
 * The Pro upgrade is now called WPZOOM Connect Pro
 * Admin menu renamed to “AI Chat & Icons” (it was “AI Chat”), with “Social Icons” and “Share Buttons” as its submenus, so the icon and sharing settings are easy to find again
 * The Socicons set is now called WPZOOM Icons: the same icons, maintained by WPZOOM. Licenses for all bundled icon sets are listed in the readme and in includes/icon-library/LICENSES.md
