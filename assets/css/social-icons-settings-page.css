@@ -600,6 +600,22 @@
 	margin-left: auto;
 }
 
+/* License needs attention: amber with no key, red when expired or not valid */
+.wpzc-menu-dot {
+	flex: none;
+	width: 8px;
+	height: 8px;
+	margin-left: -4px;
+	border-radius: 50%;
+	background: #d63638;
+	box-shadow: 0 0 0 3px rgba(214, 54, 56, .15);
+}
+
+.wpzc-menu-dot.is-warning {
+	background: #dba617;
+	box-shadow: 0 0 0 3px rgba(219, 166, 23, .18);
+}
+
 .wpzc-sidebar__pro {
 	display: flex;
 	align-items: center;

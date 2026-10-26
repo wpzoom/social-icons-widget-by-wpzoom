@@ -433,7 +433,7 @@ return array(
 			'category' => array(
 				'search-engines',
 			),
-			'color'    => '#d93e2d',
+			'color'    => '#4285F4',
 		),
 		array(
 			'icon'     => 'google-calendar',

@@ -621,7 +621,13 @@ class WPZOOM_Connect_Overview {
 		}
 		if ( $pro ) {
 			$nav[] = array( 'chart', __( 'Share Analytics', 'social-icons-widget-by-wpzoom' ), admin_url( self::PARENT . '&page=wpzoom-share-analytics' ), false, '', '', false );
-			$nav[] = array( 'key', __( 'License', 'social-icons-widget-by-wpzoom' ), admin_url( self::PARENT . '&page=wpzoom-social-icons-license' ), 'license' === $current, '', '', false );
+			/**
+			 * The license state, for a dot next to License: '' when active,
+			 * 'missing' (no key yet), 'inactive' (not activated on this site),
+			 * 'expired' or 'invalid'. PRO's License class answers it.
+			 */
+			$license = (string) apply_filters( 'wpzoom_connect_license_state', '' );
+			$nav[]   = array( 'key', __( 'License', 'social-icons-widget-by-wpzoom' ), admin_url( self::PARENT . '&page=wpzoom-social-icons-license' ), 'license' === $current, '', '', false, $license );
 		}
 		?>
 		<aside class="wpzc-sidebar">
@@ -643,6 +649,19 @@ class WPZOOM_Connect_Overview {
 						<span><?php echo esc_html( $item[1] ); ?></span>
 						<?php if ( $item[6] ) : ?>
 							<span class="wpzc-badge"><?php esc_html_e( 'Pro', 'social-icons-widget-by-wpzoom' ); ?></span>
+						<?php endif; ?>
+						<?php if ( ! empty( $item[7] ) ) : ?>
+							<?php
+							$dot_labels = array(
+								'missing'  => __( 'No license key entered', 'social-icons-widget-by-wpzoom' ),
+								'inactive' => __( 'License not activated on this site', 'social-icons-widget-by-wpzoom' ),
+								'expired'  => __( 'License expired', 'social-icons-widget-by-wpzoom' ),
+							);
+							$dot_label  = isset( $dot_labels[ $item[7] ] ) ? $dot_labels[ $item[7] ] : __( 'License key not valid', 'social-icons-widget-by-wpzoom' );
+							// Amber: still to do. Red: a key that stopped working.
+							$dot_class = in_array( $item[7], array( 'missing', 'inactive' ), true ) ? 'is-warning' : 'is-error';
+							?>
+							<span class="wpzc-menu-dot <?php echo esc_attr( $dot_class ); ?>" title="<?php echo esc_attr( $dot_label ); ?>"><span class="screen-reader-text"><?php echo esc_html( $dot_label ); ?></span></span>
 						<?php endif; ?>
 					</a>
 				<?php endforeach; ?>

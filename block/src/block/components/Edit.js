@@ -12,7 +12,7 @@ import classnames from 'classnames';
 import { __ } from '@wordpress/i18n';
 import { useState, useEffect, useRef, Fragment } from '@wordpress/element';
 import { useSelect } from '@wordpress/data';
-import { Icon, Button, Popover, Modal, TextareaControl } from '@wordpress/components';
+import { Icon, Button, Popover, Modal, TextareaControl, TextControl } from '@wordpress/components';
 import { AlignmentControl, BlockControls, useBlockProps } from '@wordpress/block-editor';
 // SVG icons for controls drawn inside the editor canvas (an iframe that only has
 // the Dashicons font when that icon kit is enabled); Dashicon names there can
@@ -23,7 +23,7 @@ import { plus, check, info, code, trash, link } from '@wordpress/icons';
  * Internal dependencies
  */
 import Helper from '../utils/helper';
-import SocialIconsModal from './SocialIconsModal';
+import IconLibrary from './IconLibrary';
 import Inspector from './Inspector';
 import PopoverSearch from './PopoverSearch';
 import SortableArrows from './SortableArrows';
@@ -154,24 +154,42 @@ export default function Edit( props ) {
 	const setAlignment = ( alignment ) =>
 		setAttributes( { iconsAlignment: alignment } );
 
-	const saveModalHandler = ( iconObject ) => {
-		const selectedIconsClone = JSON.parse(
-			JSON.stringify( attributes.selectedIcons )
-		);
-		const currentIcon = selectedIconsClone[ attributes.activeIconIndex ];
-		selectedIconsClone[ attributes.activeIconIndex ] = {
-			...currentIcon,
-			url: iconObject.modalUrl,
-			label: iconObject.modalLabel,
-			icon: iconObject.modalIcon,
-			iconKit: iconObject.modalIconKit,
-			color: iconObject.modalColor,
-			hoverColor: iconObject.modalHoverColor,
-			// A hand-picked icon is the icon for this URL now, so the URL field
-			// should show it even if an earlier Detect Icon found no match.
-			iconDetected: undefined,
-		};
-		setAttributes( { selectedIcons: selectedIconsClone, showModal: false } );
+	/**
+	 * Applies the icon chosen in the icon library to the active icon: its
+	 * brand color comes with it, and the label follows it unless it was
+	 * changed by hand.
+	 *
+	 * @param {string} iconKit Kit.
+	 * @param {string} icon    Icon name.
+	 */
+	const selectLibraryIcon = ( iconKit, icon ) => {
+		const index = attributes.activeIconIndex;
+		const current = attributes.selectedIcons[ index ];
+		const autoLabel = current.icon ? Helper.humanizeIconLabel( current.icon ) : '';
+		// The new icon's brand color. Without one, a color that only came with
+		// the previous icon goes back to neutral; a color picked by hand stays.
+		const oldBrand = current.icon ? Helper.brandColor( current.iconKit, current.icon ) : null;
+		const brand =
+			Helper.brandColor( iconKit, icon ) ||
+			( oldBrand && current.color === oldBrand ? '#444140' : null );
+		setAttributes( {
+			selectedIcons: attributes.selectedIcons.map( ( item, i ) =>
+				i === index
+					? {
+						...item,
+						iconKit,
+						icon,
+						label: ! item.label || item.label === autoLabel ? Helper.humanizeIconLabel( icon ) : item.label,
+						...( brand ? { color: brand, hoverColor: brand } : {} ),
+						// A hand-picked icon is the icon for this URL now.
+						iconDetected: undefined,
+						showPopover: true,
+						isActive: true,
+					  }
+					: item
+			),
+			showModal: false,
+		} );
 	};
 
 	const insertIcon = ( e ) => {
@@ -181,12 +199,9 @@ export default function Edit( props ) {
 			return;
 		}
 
-		const styleVariation = getStyleVariations(
-			Helper.getBlockStyle( blockProps.className ),
-			activeStyleName
-		);
-
-		// Blank until a link is typed or an icon chosen (Helper.isBlankIcon).
+		// Blank until a link is typed or an icon chosen (Helper.isBlankIcon), in
+		// a neutral color: the icon's brand color comes with the icon. (It used to
+		// take the style's default-icon color, Facebook blue.)
 		const defaultIcon = {
 			url: '',
 			icon: '',
@@ -199,12 +214,6 @@ export default function Edit( props ) {
 			customSvg: null,
 		};
 
-		if ( styleVariation && ! isEmpty( styleVariation.defaultIcon.color ) ) {
-			defaultIcon.color = styleVariation.defaultIcon.color;
-		}
-		if ( styleVariation && ! isEmpty( styleVariation.defaultIcon.hoverColor ) ) {
-			defaultIcon.hoverColor = styleVariation.defaultIcon.hoverColor;
-		}
 
 		const selectedIconsClone = JSON.parse(
 			JSON.stringify( attributes.selectedIcons )
@@ -234,17 +243,6 @@ export default function Edit( props ) {
 		setAttributes( { selectedIcons: selectedIconsClone } );
 	};
 
-	const deleteIconHandler = () => {
-		const selectedIconsClone = JSON.parse(
-			JSON.stringify( attributes.selectedIcons )
-		);
-		selectedIconsClone.splice( attributes.activeIconIndex, 1 );
-		setAttributes( {
-			selectedIcons: selectedIconsClone,
-			showModal: false,
-			activeIconIndex: 0,
-		} );
-	};
 
 	const popoverDeleteIconHandler = ( e, key ) => {
 		e.stopPropagation();
@@ -579,6 +577,28 @@ export default function Edit( props ) {
 									) }
 								</div>
 
+								{ ! isBlank && (
+									<div className="wpzoom-icon-popover__section wpzoom-icon-popover__label-field">
+										<TextControl
+											__nextHasNoMarginBottom
+											label={ __( 'Label', 'social-icons-widget-by-wpzoom' ) }
+											help={
+												attributes.showIconsLabel
+													? undefined
+													: __( 'Shown on hover and to screen readers.', 'social-icons-widget-by-wpzoom' )
+											}
+											value={ list.label || '' }
+											onChange={ ( label ) =>
+												setAttributes( {
+													selectedIcons: attributes.selectedIcons.map( ( item, i ) =>
+														i === key ? { ...item, label } : item
+													),
+												} )
+											}
+										/>
+									</div>
+								) }
+
 								<div className="wpzoom-icon-popover__section wpzoom-icon-popover__colors">
 									<span className="wpzoom-icon-popover__label">
 										{ __( 'Color', 'social-icons-widget-by-wpzoom' ) }
@@ -700,41 +720,12 @@ export default function Edit( props ) {
 						<Icon icon={ plus } size={ 24 } />
 					</Button>
 				) }
-				{ attributes.selectedIcons[ attributes.activeIconIndex ] && (
-					<SocialIconsModal
-						className={ classnames(
-							Helper.getBlockStyle( className )
-						) }
-						showIconsLabel={ attributes.showIconsLabel }
-						iconsBorderRadius={ attributes.iconsBorderRadius }
-						show={ attributes.showModal }
-						url={
-							attributes.selectedIcons[ attributes.activeIconIndex ]
-								.url
-						}
-						label={
-							attributes.selectedIcons[ attributes.activeIconIndex ]
-								.label
-						}
-						icon={
-							attributes.selectedIcons[ attributes.activeIconIndex ]
-								.icon
-						}
-						iconKit={
-							attributes.selectedIcons[ attributes.activeIconIndex ]
-								.iconKit
-						}
-						color={
-							attributes.selectedIcons[ attributes.activeIconIndex ]
-								.color
-						}
-						hoverColor={
-							attributes.selectedIcons[ attributes.activeIconIndex ]
-								.hoverColor
-						}
-						save={ saveModalHandler }
-						delete={ deleteIconHandler }
-						showDeleteBtn={ attributes.selectedIcons.length > 1 }
+				{ attributes.showModal && attributes.selectedIcons[ attributes.activeIconIndex ] && (
+					<IconLibrary
+						icon={ attributes.selectedIcons[ attributes.activeIconIndex ].icon }
+						iconKit={ attributes.selectedIcons[ attributes.activeIconIndex ].iconKit }
+						renderGlyph={ ( kit, name ) => <IconGlyph iconKit={ kit } icon={ name } /> }
+						onSelect={ selectLibraryIcon }
 						onClose={ closeModal }
 					/>
 				) }
