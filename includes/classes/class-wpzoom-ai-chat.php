@@ -834,7 +834,8 @@ class WPZOOM_AI_Chat {
 		if ( ! is_array( $notices ) ) {
 			$notices = array();
 		}
-		if ( self::is_connected() || self::standalone_plugin_active() ) {
+		// The 5.0 / Pro 3.0 notice mentions AI Chat; one notice at a time.
+		if ( self::is_connected() || self::standalone_plugin_active() || ( class_exists( 'WPZOOM_Connect_Whats_New' ) && WPZOOM_Connect_Whats_New::active() ) ) {
 			return $notices;
 		}
 		$notices[] = array(
@@ -874,7 +875,7 @@ class WPZOOM_AI_Chat {
 		if ( ! current_user_can( 'manage_options' ) || self::is_connected() || self::standalone_plugin_active() ) {
 			return false;
 		}
-		if ( class_exists( 'WPZOOM_Notice_Center' ) ) {
+		if ( class_exists( 'WPZOOM_Notice_Center' ) || ( class_exists( 'WPZOOM_Connect_Whats_New' ) && WPZOOM_Connect_Whats_New::active() ) ) {
 			return false;
 		}
 		return ! get_option( self::NOTICE_DISMISSED );

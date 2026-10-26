@@ -532,7 +532,7 @@ class WPZOOM_Connect_Overview {
 		$links = array(
 			array( 'book', __( 'Documentation', 'social-icons-widget-by-wpzoom' ), self::DOCS_URL ),
 			array( 'lifebuoy', $pro ? __( 'Priority support', 'social-icons-widget-by-wpzoom' ) : __( 'Support forum', 'social-icons-widget-by-wpzoom' ), $pro ? 'https://www.wpzoom.com/support/' : 'https://wordpress.org/support/plugin/social-icons-widget-by-wpzoom/' ),
-			array( 'news', __( 'What’s new', 'social-icons-widget-by-wpzoom' ), 'https://wordpress.org/plugins/social-icons-widget-by-wpzoom/#developers' ),
+			array( 'news', __( 'What’s new', 'social-icons-widget-by-wpzoom' ), add_query_arg( 'whats-new', '1', self::url( 'whats-new' ) ) ),
 		);
 		if ( ! $pro ) {
 			$links[] = array( 'heart', __( 'Rate us on WordPress.org', 'social-icons-widget-by-wpzoom' ), 'https://wordpress.org/support/plugin/social-icons-widget-by-wpzoom/reviews/#new-post' );
@@ -608,7 +608,7 @@ class WPZOOM_Connect_Overview {
 			<p class="wpzc-sidebar__label"><?php esc_html_e( 'Help', 'social-icons-widget-by-wpzoom' ); ?></p>
 			<nav class="wpzc-menu" aria-label="<?php esc_attr_e( 'Help', 'social-icons-widget-by-wpzoom' ); ?>">
 				<?php foreach ( self::help_links( $pro ) as $link ) : ?>
-					<a href="<?php echo esc_url( $link[2] ); ?>" target="_blank" rel="noopener">
+					<a href="<?php echo esc_url( $link[2] ); ?>"<?php echo 0 === strpos( $link[2], admin_url() ) ? '' : ' target="_blank" rel="noopener"'; ?>>
 						<?php echo self::icon( $link[0], 18 ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static SVG. ?>
 						<span><?php echo esc_html( $link[1] ); ?></span>
 					</a>
@@ -850,6 +850,12 @@ class WPZOOM_Connect_Overview {
 							</div>
 							<?php self::render_welcome_visual(); ?>
 						</section>
+
+						<?php
+						if ( class_exists( 'WPZOOM_Connect_Whats_New' ) ) {
+							WPZOOM_Connect_Whats_New::render_card();
+						}
+						?>
 
 						<section class="wpzc-card">
 							<div class="wpzc-card__head">

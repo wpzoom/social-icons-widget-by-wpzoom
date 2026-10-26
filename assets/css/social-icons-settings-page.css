@@ -1709,3 +1709,98 @@ a.wpzoom-settings-row__title:focus {
 		width: auto;
 	}
 }
+
+/* What's new (5.0 / Pro 3.0): Overview card, for sites that updated */
+.wpzc-whats-new {
+	border: 1px solid var(--wpzc-line);
+}
+
+.wpzc-whats-new .wpzc-card__head {
+	align-items: flex-start;
+}
+
+.wpzc-whats-new__eyebrow {
+	margin: 0 0 4px !important;
+	color: var(--wpzc-muted);
+	font-size: 12px;
+	font-weight: 600;
+	letter-spacing: .04em;
+	text-transform: uppercase;
+}
+
+.wpzc-whats-new__close {
+	flex-shrink: 0;
+	padding: 6px 14px;
+	border: 1px solid var(--wpzc-line);
+	border-radius: 6px;
+	color: var(--wpzc-ink);
+	font-weight: 600;
+	text-decoration: none;
+}
+
+.wpzc-whats-new__close:hover,
+.wpzc-whats-new__close:focus {
+	background: var(--wpzc-soft);
+	color: var(--wpzc-ink);
+}
+
+.wpzc-whats-new__list {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+	gap: 20px 28px;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.wpzc-whats-new__list li {
+	display: flex;
+	gap: 12px;
+	margin: 0;
+}
+
+.wpzc-whats-new__icon {
+	display: grid;
+	flex: 0 0 auto;
+	place-items: center;
+	width: 36px;
+	height: 36px;
+	border-radius: 9px;
+	background: var(--wpzc-brand-soft);
+	color: var(--wpzc-brand);
+}
+
+.wpzc-whats-new__list h3 {
+	margin: 2px 0 4px !important;
+	font-size: 14px;
+	font-weight: 600;
+}
+
+.wpzc-whats-new__list p {
+	margin: 0 0 6px !important;
+	color: var(--wpzc-text);
+	line-height: 1.5;
+}
+
+.wpzc-whats-new__checks {
+	margin-top: 22px;
+	padding-top: 16px;
+	border-top: 1px solid var(--wpzc-line);
+}
+
+.wpzc-whats-new__checks summary {
+	color: var(--wpzc-ink);
+	font-weight: 600;
+	cursor: pointer;
+}
+
+.wpzc-whats-new__checks ul {
+	margin: 10px 0 0 18px;
+	list-style: disc;
+	color: var(--wpzc-text);
+}
+
+.wpzc-whats-new__checks li {
+	margin: 0 0 6px;
+	line-height: 1.5;
+}

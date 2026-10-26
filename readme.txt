@@ -5,7 +5,7 @@ Tags: ai chatbot, live chat, click to chat, whatsapp, social icons
 Requires at least: 6.5
 Requires PHP: 7.4
 Tested up to: 7.1
-Stable tag: 4.7.4
+Stable tag: 5.0.0
 License: GNU General Public License v2.0 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -277,7 +277,8 @@ Floating Buttons is a PRO feature that displays your social sharing icons as a f
 
 == Changelog ==
 
-= 4.7.4 =
+= 5.0.0 =
+* MAJOR: Social Icons Widget is now WPZOOM Connect 5.0: a new dashboard under “AI Chat & Icons”, icons drawn as SVG instead of icon fonts, 2,400+ icons with an icon library to browse, icons without links and an “Icon by WPZOOM” block, and the Google Preferred Sources button. Sites that update get a short “What’s new” tour on the Overview
 * IMPROVED: Social Icons block — Detect Icon now looks in Socicons first and falls back to the other enabled icon kits (it used to take the last kit with a match, often Font Awesome)
 * NEW: the icon's URL field shows the matching icon as you type
 * NEW: visual style picker for the Social Icons block — each style shows your own icons, so you see the result before choosing. Style names are shorter and easier to tell apart
@@ -427,3 +428,8 @@ Floating Buttons is a PRO feature that displays your social sharing icons as a f
 * New icons: Threads, Venmo, Wise, Revolut, Gutenberg, Gravatar, OpenAI, Midjourney, WeChat, Roblox, OnlyFans, Figma, Elementor, Shopify, Woo, Gumroad, Artgram, Cubebrush, Aristree, OpenSea
 
 [See changelog for all versions](https://plugins.svn.wordpress.org/social-icons-widget-by-wpzoom/trunk/changelog.txt).
+
+== Upgrade Notice ==
+
+= 5.0.0 =
+Big update: the plugin is now WPZOOM Connect, with a new dashboard under “AI Chat & Icons”. Icons are drawn as SVG instead of icon fonts; if you styled icons with custom CSS that targets the icon font, check them after updating.
