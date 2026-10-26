@@ -53,3 +53,7 @@ yarn.lock
 /block/.eslintrc.js
 /block/.dev
 /block/.babelrc
+
+# The old SVG version of the Socicons font: no stylesheet asks for it (browsers
+# dropped SVG fonts). The WOFF2 fonts stay while sites can still turn SVG icons off.
+/assets/font/socicon.svg
