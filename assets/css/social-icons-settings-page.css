@@ -1804,3 +1804,45 @@ a.wpzoom-settings-row__title:focus {
 	margin: 0 0 6px;
 	line-height: 1.5;
 }
+
+/* More from WPZOOM: the products the site doesn't have yet, with their own marks */
+.wpzc-mosaic {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+	gap: 12px;
+}
+
+.wpzc-mosaic__card {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	padding: 20px 18px 18px;
+	border: 1px solid var(--wpzc-line);
+	border-radius: 10px;
+	background: #fff;
+}
+
+.wpzc-mosaic__icon {
+	width: 40px;
+	height: 40px;
+	margin-bottom: 6px;
+}
+
+.wpzc-mosaic__card h3 {
+	font-size: 15px;
+	font-weight: 600;
+	line-height: 1.3;
+}
+
+.wpzc-mosaic__card p {
+	flex: 1;
+	color: var(--wpzc-text);
+	line-height: 1.5;
+}
+
+.wpzc-mosaic__button {
+	align-self: flex-start;
+	margin-top: 8px;
+	min-height: 34px;
+	padding: 6px 14px;
+}

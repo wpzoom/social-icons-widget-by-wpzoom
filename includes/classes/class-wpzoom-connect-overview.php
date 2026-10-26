@@ -24,6 +24,8 @@ class WPZOOM_Connect_Overview {
 
 	const PAGE_SLUG   = 'wpzoom-connect';
 	const SETTINGS    = 'wpzoom-social-icons-widget';
+	/** The "Icon Sets" menu item: Settings, Social Icons tab (the list of saved sets is linked from the Overview). */
+	const ICON_SETS   = 'edit.php?post_type=wpzoom-shortcode&page=wpzoom-social-icons-widget#social-icons-tab';
 	const PARENT      = 'edit.php?post_type=wpzoom-shortcode';
 	const OPTION      = 'wpzoom-social-icons-widget-settings';
 	const UPGRADE_URL = 'https://www.wpzoom.com/plugins/social-share/upgrade/';
@@ -42,6 +44,7 @@ class WPZOOM_Connect_Overview {
 		add_action( 'admin_menu', array( $this, 'add_menu_item' ), 5 );
 		// After AI Chat moves itself to the top (priority 99).
 		add_action( 'admin_menu', array( $this, 'reorder_submenu' ), 100 );
+		add_action( 'admin_head', array( $this, 'hide_settings_item' ) );
 		add_filter( 'submenu_file', array( $this, 'settings_submenu_file' ) );
 		add_action( 'load-wpzoom-shortcode_page_' . self::SETTINGS, array( $this, 'settings_title' ) );
 		add_action( 'admin_init', array( $this, 'canonical_redirect' ) );
@@ -90,9 +93,10 @@ class WPZOOM_Connect_Overview {
 	}
 
 	/**
-	 * Overview first, so the "Social Icons" menu opens it, and no Settings
-	 * item: the Overview's sidebar opens each of its tabs. The page stays
-	 * registered, so links to it keep working.
+	 * Overview first, so the "Social Icons" menu opens it, and the post type's
+	 * own entry ("Icon Sets") pointed at Settings. The Settings entry stays in
+	 * place here: WordPress resolves the page's parent from it when checking
+	 * access; hide_settings_item() drops it just before the menu is drawn.
 	 */
 	public function reorder_submenu() {
 		global $submenu;
@@ -108,14 +112,31 @@ class WPZOOM_Connect_Overview {
 			if ( self::PAGE_SLUG === $item[2] ) {
 				$overview = $item;
 				unset( $items[ $key ] );
-			} elseif ( self::SETTINGS === $item[2] ) {
-				unset( $items[ $key ] );
+			} elseif ( self::PARENT === $item[2] ) {
+				// The post type's own "all items" entry, named Icon Sets.
+				$items[ $key ][2] = self::ICON_SETS;
 			}
 		}
 		if ( $overview ) {
 			array_unshift( $items, $overview );
 		}
 		$submenu[ self::PARENT ] = array_values( $items ); // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited -- intentional menu reorder.
+	}
+
+	/**
+	 * No Settings item in the menu: the Overview's sidebar opens each of its
+	 * tabs. Removed on admin_head, after the access check that needs it.
+	 */
+	public function hide_settings_item() {
+		global $submenu;
+		if ( empty( $submenu[ self::PARENT ] ) || ! is_array( $submenu[ self::PARENT ] ) ) {
+			return;
+		}
+		foreach ( $submenu[ self::PARENT ] as $key => $item ) {
+			if ( isset( $item[2] ) && self::SETTINGS === $item[2] ) {
+				unset( $submenu[ self::PARENT ][ $key ] ); // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited -- intentional menu edit.
+			}
+		}
 	}
 
 	/** WordPress takes the browser title from the menu item, which is gone. */
@@ -125,14 +146,21 @@ class WPZOOM_Connect_Overview {
 	}
 
 	/**
-	 * With Settings out of the menu, keep Overview highlighted on its screen.
+	 * With Settings out of the menu, highlight Icon Sets (which opens Settings)
+	 * on that screen, and Overview on the saved-sets list it replaced.
 	 *
 	 * @param string|null $submenu_file The submenu item WordPress marks current.
 	 * @return string|null
 	 */
 	public function settings_submenu_file( $submenu_file ) {
 		$screen = get_current_screen();
-		if ( $screen && 'wpzoom-shortcode_page_' . self::SETTINGS === $screen->id ) {
+		if ( ! $screen ) {
+			return $submenu_file;
+		}
+		if ( 'wpzoom-shortcode_page_' . self::SETTINGS === $screen->id ) {
+			return self::ICON_SETS;
+		}
+		if ( 'edit-wpzoom-shortcode' === $screen->id ) {
 			return self::PAGE_SLUG;
 		}
 		return $submenu_file;
@@ -688,7 +716,158 @@ class WPZOOM_Connect_Overview {
 	// Screen
 	// -------------------------------------------------------------------------
 
+	/**
+	 * The product marks used on wpzoom.com's menu, as self-contained SVGs.
+	 *
+	 * @param string $key inspiro, instagram, forms or wpbruiser.
+	 * @return string
+	 */
+	private static function product_icon( $key ) {
+		$icons = array(
+			'inspiro' => '<svg viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 24C18.6274 24 24 18.6274 24 12C24 5.37258 18.6274 0 12 0C5.37258 0 0 5.37258 0 12C0 18.6274 5.37258 24 12 24ZM10.1236 5.38182C10.1236 4.3375 10.9702 3.49091 12.0145 3.49091H13.7164C13.8208 3.49091 13.9055 3.57557 13.9055 3.68V7.04477C13.9055 7.10713 13.8722 7.16476 13.8182 7.19594L10.3855 9.17782C10.2691 9.245 10.1236 9.16103 10.1236 9.02666V5.38182ZM10.2109 12.5537L13.6436 10.5719C13.76 10.5047 13.9055 10.5887 13.9055 10.723V18.6182C13.9055 19.6625 13.0589 20.5091 12.0145 20.5091H10.3127C10.2083 20.5091 10.1236 20.4244 10.1236 20.32V12.7049C10.1236 12.6425 10.1569 12.5849 10.2109 12.5537Z" fill="#242628"/></svg>',
+			'instagram' => '<svg viewBox="0 0 49 55"><defs><linearGradient id="wpzc-ig-g" x1="0" y1="54.9297" x2="48.231" y2="0" gradientUnits="userSpaceOnUse"><stop stop-color="#F9493B"/><stop offset="1" stop-color="#DD337D"/></linearGradient></defs><path d="M43.7646 0C46.231 0 48.2305 1.99942 48.2305 4.46582V43.7646C48.2305 46.231 46.231 48.2305 43.7646 48.2305H31.6953L25.4844 54.4414C24.7868 55.139 23.6556 55.139 22.958 54.4414L16.7471 48.2305H4.46582C1.99942 48.2305 0 46.231 0 43.7646V4.46582C0 1.99942 1.99942 0 4.46582 0H43.7646ZM24.1152 12.9512C17.3326 12.9512 11.834 18.4498 11.834 25.2324C11.8341 32.0149 17.3327 37.5127 24.1152 37.5127C30.8976 37.5126 36.3954 32.0148 36.3955 25.2324C36.3955 18.4499 30.8977 12.9513 24.1152 12.9512ZM24.1152 16.3008C29.0479 16.3009 33.0469 20.2997 33.0469 25.2324C33.0467 30.165 29.0478 34.1639 24.1152 34.1641C19.1825 34.1641 15.1837 30.1651 15.1836 25.2324C15.1836 20.2996 19.1824 16.3008 24.1152 16.3008ZM24.1143 18.5332C20.415 18.5335 17.4163 21.5322 17.416 25.2314C17.416 28.9309 20.4149 31.9304 24.1143 31.9307C27.8139 31.9307 30.8135 28.931 30.8135 25.2314C30.8132 21.5321 27.8137 18.5332 24.1143 18.5332ZM39.5215 7.14551C38.2885 7.14577 37.2891 8.14587 37.2891 9.37891C37.2893 10.6117 38.2887 11.6111 39.5215 11.6113C40.7545 11.6113 41.7546 10.6119 41.7549 9.37891C41.7549 8.14571 40.7547 7.14551 39.5215 7.14551Z" fill="url(#wpzc-ig-g)"/></svg>',
+			'forms' => '<svg viewBox="0 0 43 52"><path d="M42.6865 51.2236H0V8.53711H8.53711V0H42.6865V51.2236Z" fill="#083EA7"/><rect x="17.0742" y="8.53516" width="17.0744" height="8.53731" fill="#1FDE91"/><rect x="8.54102" y="17.0762" width="8.53722" height="25.6119" fill="#1FDE91"/><rect x="17.0742" y="25.6113" width="8.53722" height="8.53731" fill="#1FDE91"/></svg>',
+			'wpbruiser' => '<svg viewBox="0 0 256 256"><defs><linearGradient id="wpzc-wpb-g" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#54509F" stop-opacity="0.965"/><stop offset="1" stop-color="#5B2A83" stop-opacity="0.93"/></linearGradient></defs><rect width="256" height="256" rx="52" fill="url(#wpzc-wpb-g)"/><path fill="#8823B6" d="M116.7 10.7Q128-.6 139.3 10.7L243.3 114.7Q254.6 126 243.3 137.3L139.3 241.3Q128 252.6 116.7 241.3L12.7 137.3Q1.4 126 12.7 114.7Z"/><ellipse cx="128" cy="126" rx="70" ry="70.5" fill="#000" stroke="#551775" stroke-width="1.5"/><path fill="#666A6B" d="M129 63C98 64 73 85 68 113L75 109C82 85 100 69 129 63Z"/><path fill="#666A6B" d="M68 145C74 171 96 187 129 189C100 183 82 169 76 148Z"/><path fill="#FFFFFF" d="M65 117C82 108 102 103 125 102C150 101 173 108 191 118C192 124 192 133 190 140C172 150 151 154 128 154C104 154 83 150 66 141C63 134 63 125 65 117Z"/><path fill="#000" d="M76 120C89 125 102 130 118 134C106 139 95 140 86 136C81 133 78 127 76 120Z"/><path fill="#000" d="M179 120C166 125 153 130 138 134C150 139 161 140 170 136C175 133 177 127 179 120Z"/></svg>',
+		);
+		return isset( $icons[ $key ] ) ? str_replace( '<svg ', '<svg class="wpzc-mosaic__icon" aria-hidden="true" focusable="false" ', $icons[ $key ] ) : '';
+	}
+
+	/**
+	 * Other WPZOOM products for the Overview, each only while the site doesn't
+	 * have it: no theme card on a WPZOOM theme, no plugin whose free or Pro
+	 * version is installed. Free installed but inactive offers Activate; free
+	 * active offers the Pro upgrade; otherwise Install.
+	 *
+	 * @return array Items: name, blurb, action, url, external, icon (SVG).
+	 */
+	public static function more_products() {
+		if ( ! function_exists( 'is_plugin_active' ) ) {
+			require_once ABSPATH . 'wp-admin/includes/plugin.php';
+		}
+		$items = array();
+		$utm   = array(
+			'utm_source'   => 'wpadmin',
+			'utm_medium'   => 'plugin',
+			'utm_campaign' => self::is_pro() ? 'social-icons-pro' : 'social-icons-free',
+			'utm_content'  => 'overview-more',
+		);
+		$link  = function ( $url ) use ( $utm ) {
+			return add_query_arg( $utm, $url );
+		};
+		$item  = function ( $name, $blurb, $action, $url, $external, $icon ) {
+			return compact( 'name', 'blurb', 'action', 'url', 'external', 'icon' );
+		};
+
+		// Themes: only for sites not on a WPZOOM theme (child themes count via their parent).
+		$theme     = wp_get_theme();
+		$on_wpzoom = false;
+		foreach ( array( $theme, $theme->parent() ) as $t ) {
+			if ( $t && false !== stripos( (string) $t->get( 'Author' ), 'wpzoom' ) ) {
+				$on_wpzoom = true;
+			}
+		}
+		if ( ! $on_wpzoom ) {
+			$inspiro = self::inspiro_themes();
+			$icon    = self::product_icon( 'inspiro' );
+			$blurb   = __( 'A theme for video, photo and business sites, with a full-screen video hero.', 'social-icons-widget-by-wpzoom' );
+			if ( $inspiro['premium'] ) {
+				$items[] = $item( $inspiro['premium']->get( 'Name' ), $blurb, __( 'Activate', 'social-icons-widget-by-wpzoom' ), admin_url( 'themes.php?theme=' . rawurlencode( $inspiro['premium']->get_stylesheet() ) ), false, $icon );
+			} else {
+				if ( $inspiro['lite'] ) {
+					$items[] = $item( __( 'Inspiro', 'social-icons-widget-by-wpzoom' ), $blurb, __( 'Activate', 'social-icons-widget-by-wpzoom' ), admin_url( 'themes.php?theme=' . rawurlencode( $inspiro['lite']->get_stylesheet() ) ), false, $icon );
+				} elseif ( current_user_can( 'install_themes' ) ) {
+					$items[] = $item( __( 'Inspiro', 'social-icons-widget-by-wpzoom' ), $blurb, __( 'Install free theme', 'social-icons-widget-by-wpzoom' ), wp_nonce_url( self_admin_url( 'update.php?action=install-theme&theme=inspiro' ), 'install-theme_inspiro' ), false, $icon );
+				} else {
+					$items[] = $item( __( 'Inspiro', 'social-icons-widget-by-wpzoom' ), $blurb, __( 'View theme', 'social-icons-widget-by-wpzoom' ), 'https://wordpress.org/themes/inspiro/', true, $icon );
+				}
+				$items[] = $item( __( 'Inspiro Premium', 'social-icons-widget-by-wpzoom' ), __( 'The full theme: more layouts, one-click demos, WooCommerce and premium support.', 'social-icons-widget-by-wpzoom' ), __( 'Learn more', 'social-icons-widget-by-wpzoom' ), $link( 'https://www.wpzoom.com/themes/inspiro/' ), true, $icon );
+			}
+		}
+
+		// Plugins: free file, Pro directory, wp.org slug, name, blurb, icon, Pro page.
+		$plugins = array(
+			array( 'instagram-widget-by-wpzoom/instagram-widget-by-wpzoom.php', 'instagram-pro-by-wpzoom', 'instagram-widget-by-wpzoom', __( 'Instagram Widget', 'social-icons-widget-by-wpzoom' ), __( 'Instagram feeds in your own colors, as a block or widget.', 'social-icons-widget-by-wpzoom' ), self::product_icon( 'instagram' ), 'https://www.wpzoom.com/plugins/instagram-widget/' ),
+			array( 'wpzoom-forms/wpzoom-forms.php', 'wpzoom-forms-pro', 'wpzoom-forms', __( 'WPZOOM Forms', 'social-icons-widget-by-wpzoom' ), __( 'Contact forms built in the block editor, with spam protection.', 'social-icons-widget-by-wpzoom' ), self::product_icon( 'forms' ), 'https://www.wpzoom.com/plugins/wpzoom-forms/' ),
+			array( 'goodbye-captcha/goodbye-captcha.php', 'wpbruiser-pro', 'goodbye-captcha', __( 'WPBruiser', 'social-icons-widget-by-wpzoom' ), __( 'Anti-spam and login protection, with no CAPTCHA for your visitors.', 'social-icons-widget-by-wpzoom' ), self::product_icon( 'wpbruiser' ), 'https://www.wpzoom.com/plugins/wpbruiser/' ),
+		);
+		foreach ( $plugins as $plugin ) {
+			list( $free, $pro_dir, $slug, $name, $blurb, $icon, $pro_page ) = $plugin;
+			if ( is_dir( WP_PLUGIN_DIR . '/' . $pro_dir ) ) {
+				continue;
+			}
+			if ( file_exists( WP_PLUGIN_DIR . '/' . $free ) ) {
+				if ( is_plugin_active( $free ) ) {
+					$items[] = $item( $name, $blurb, __( 'Upgrade to Pro', 'social-icons-widget-by-wpzoom' ), $link( $pro_page ), true, $icon );
+				} elseif ( current_user_can( 'activate_plugins' ) ) {
+					$items[] = $item( $name, $blurb, __( 'Activate', 'social-icons-widget-by-wpzoom' ), wp_nonce_url( self_admin_url( 'plugins.php?action=activate&plugin=' . rawurlencode( $free ) ), 'activate-plugin_' . $free ), false, $icon );
+				}
+			} elseif ( current_user_can( 'install_plugins' ) ) {
+				$items[] = $item( $name, $blurb, __( 'Install free', 'social-icons-widget-by-wpzoom' ), wp_nonce_url( self_admin_url( 'update.php?action=install-plugin&plugin=' . $slug ), 'install-plugin_' . $slug ), false, $icon );
+			} else {
+				$items[] = $item( $name, $blurb, __( 'View', 'social-icons-widget-by-wpzoom' ), 'https://wordpress.org/plugins/' . $slug . '/', true, $icon );
+			}
+		}
+
+		/**
+		 * The "More from WPZOOM" cards on the Overview.
+		 *
+		 * @param array $items Each: name, blurb, action, url, external, icon (SVG).
+		 */
+		return apply_filters( 'wpzoom_connect_more_products', $items );
+	}
+
+	/** The "More from WPZOOM" cards. Prints nothing when there is nothing to offer. */
+	private static function render_more( $items ) {
+		if ( ! $items ) {
+			return;
+		}
+		?>
+		<section class="wpzc-card wpzc-more">
+			<div class="wpzc-card__head">
+				<h2><?php esc_html_e( 'More from WPZOOM', 'social-icons-widget-by-wpzoom' ); ?></h2>
+				<a class="wpzc-link" href="<?php echo esc_url( add_query_arg( array( 'utm_source' => 'wpadmin', 'utm_medium' => 'plugin', 'utm_content' => 'overview-more' ), 'https://www.wpzoom.com/plugins/' ) ); ?>" target="_blank" rel="noopener"><?php esc_html_e( 'All plugins', 'social-icons-widget-by-wpzoom' ); ?> <?php echo self::icon( 'chevron', 14 ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static SVG. ?></a>
+			</div>
+			<div class="wpzc-mosaic">
+				<?php foreach ( $items as $it ) : ?>
+					<article class="wpzc-mosaic__card">
+						<?php echo $it['icon']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static SVG. ?>
+						<h3><?php echo esc_html( $it['name'] ); ?></h3>
+						<p><?php echo esc_html( $it['blurb'] ); ?></p>
+						<?php // Install / Activate act on this site: dark button. Links to wpzoom.com: soft button. ?>
+						<a class="wpzc-button wpzc-mosaic__button<?php echo ! empty( $it['external'] ) ? ' is-soft' : ''; ?>" href="<?php echo esc_url( $it['url'] ); ?>"<?php echo ! empty( $it['external'] ) ? ' target="_blank" rel="noopener"' : ''; ?>><?php echo esc_html( $it['action'] ); ?></a>
+					</article>
+				<?php endforeach; ?>
+			</div>
+		</section>
+		<?php
+	}
+
+	/**
+	 * Installed Inspiro themes, by edition. Only Inspiro is offered here: the
+	 * free one from wordpress.org (named "Inspiro") and the premium one
+	 * ("Inspiro Premium" or "Inspiro PRO"). Other WPZOOM themes and Inspiro
+	 * Blocks are left alone.
+	 *
+	 * @return array lite => WP_Theme|null, premium => WP_Theme|null.
+	 */
+	private static function inspiro_themes() {
+		$found = array( 'lite' => null, 'premium' => null );
+		foreach ( wp_get_themes() as $theme ) {
+			$name = (string) $theme->get( 'Name' );
+			if ( false === stripos( (string) $theme->get( 'Author' ), 'wpzoom' ) || 0 !== stripos( $name, 'Inspiro' ) || false !== stripos( $name, 'Blocks' ) ) {
+				continue;
+			}
+			if ( preg_match( '/premium|\bpro\b/i', $name ) ) {
+				$found['premium'] = $found['premium'] ? $found['premium'] : $theme;
+			} elseif ( preg_match( '/^Inspiro( Lite)?$/i', trim( $name ) ) ) {
+				$found['lite'] = $theme;
+			}
+		}
+		return $found;
+	}
+
 	public function render() {
+		$more = self::more_products();
 		$s    = self::state();
 		$pro  = $s['pro'];
 		$user = wp_get_current_user();
@@ -922,10 +1101,10 @@ class WPZOOM_Connect_Overview {
 									<a class="wpzc-button is-block" href="<?php echo esc_url( self::chat_url( 'ai' ) ); ?>"><?php esc_html_e( 'Set up AI Chat', 'social-icons-widget-by-wpzoom' ); ?></a>
 								</section>
 								<?php endif; ?>
-
-
 							</div>
 						</div>
+
+						<?php self::render_more( $more ); ?>
 
 				</div>
 			</div>
