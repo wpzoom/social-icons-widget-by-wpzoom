@@ -627,29 +627,15 @@ class WPZOOM_AI_Chat {
 		<?php
 	}
 
-	/**
-	 * The 50-second launch video. A poster drawn in CSS stands in for it, so
-	 * nothing loads from YouTube until the admin presses play.
-	 */
+	/** The 50-second launch video, embedded so YouTube's own poster shows. */
 	private function render_video() {
 		$id = 'AmrVHXW-daw';
 		?>
 		<div class="wpzoom-ai-chat-video">
 			<h3><?php esc_html_e( 'See it in 50 seconds', 'social-icons-widget-by-wpzoom' ); ?></h3>
-			<button type="button" class="wpzoom-ai-chat-video-poster" data-video="<?php echo esc_attr( $id ); ?>" data-title="<?php esc_attr_e( 'Yamidoo AI launch video', 'social-icons-widget-by-wpzoom' ); ?>">
-				<span class="wpzoom-ai-chat-video-brand"><?php echo self::logo_svg( 20 ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static SVG. ?> Yamidoo</span>
-				<span class="wpzoom-ai-chat-video-play" aria-hidden="true"></span>
-				<span class="wpzoom-ai-chat-video-caption"><?php esc_html_e( 'Never miss a customer, even while you’re away.', 'social-icons-widget-by-wpzoom' ); ?></span>
-				<span class="screen-reader-text"><?php esc_html_e( 'Play the video', 'social-icons-widget-by-wpzoom' ); ?></span>
-			</button>
+			<iframe src="<?php echo esc_url( 'https://www.youtube-nocookie.com/embed/' . $id . '?rel=0' ); ?>" title="<?php esc_attr_e( 'Yamidoo AI launch video', 'social-icons-widget-by-wpzoom' ); ?>" loading="lazy" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe>
 			<p class="wpzoom-ai-chat-video-note">
-				<?php
-				printf(
-					/* translators: %s: link to the video on YouTube */
-					esc_html__( 'Plays from YouTube when you press play. %s', 'social-icons-widget-by-wpzoom' ),
-					'<a href="' . esc_url( 'https://www.youtube.com/watch?v=' . $id ) . '" target="_blank" rel="noopener">' . esc_html__( 'Watch on YouTube ↗', 'social-icons-widget-by-wpzoom' ) . '</a>'
-				);
-				?>
+				<a href="<?php echo esc_url( 'https://www.youtube.com/watch?v=' . $id ); ?>" target="_blank" rel="noopener"><?php esc_html_e( 'Watch on YouTube ↗', 'social-icons-widget-by-wpzoom' ); ?></a>
 			</p>
 		</div>
 		<?php

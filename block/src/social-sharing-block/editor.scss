@@ -56,12 +56,15 @@
                     z-index: 1;
                     
                     &::after {
-                        content: "\f464"; // WordPress dashicon pencil
-                        font-family: dashicons;
+                        content: ""; // Pencil as SVG: the editor iframe may not load Dashicons.
+                        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23fff' d='m19 7-3-3-8.5 8.5-1 4 4-1L19 7Zm-7 11.5H5V20h7v-1.5Z'/%3E%3C/svg%3E");
+                        background-repeat: no-repeat;
+                        background-position: center;
+                        background-size: 12px 12px;
                         position: absolute;
                         top: -8px;
                         right: -8px;
-                        background: var(--wp-admin-theme-color, #007cba);
+                        background-color: var(--wp-admin-theme-color, #007cba);
                         color: white;
                         border-radius: 50%;
                         width: 16px;

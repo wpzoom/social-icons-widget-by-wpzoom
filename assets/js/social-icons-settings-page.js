@@ -39,6 +39,11 @@ jQuery(function ($) {
         }
         $sideTabs.removeClass("is-current").removeAttr("aria-current");
         $match.addClass("is-current").attr("aria-current", "page");
+        // Icon Sets and Share Buttons in the admin menu both open this page.
+        var $menu = $("#adminmenu").find('a[href$="#social-icons-tab"], a[href$="#share-buttons"]');
+        var $menuMatch = $menu.filter(id === "share-buttons-tab" ? '[href$="#share-buttons"]' : '[href$="#social-icons-tab"]');
+        $menu.removeClass("current").removeAttr("aria-current").parent().removeClass("current");
+        $menuMatch.addClass("current").attr("aria-current", "page").parent().addClass("current");
         // Panels that only explain or upsell have nothing to save.
         $inner.find("form > .submit").toggle($panels.eq($inner.tabs("option", "active")).find(":input[name]").length > 0);
     };

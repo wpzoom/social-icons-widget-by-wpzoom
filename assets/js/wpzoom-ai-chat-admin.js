@@ -184,24 +184,3 @@
 	} );
 } )();
 
-/**
- * Launch video: swap the CSS poster for the YouTube player on click, so the
- * page makes no request to YouTube until then.
- */
-( function () {
-	'use strict';
-
-	var poster = document.querySelector( '.wpzoom-ai-chat-video-poster' );
-	if ( ! poster ) {
-		return;
-	}
-	poster.addEventListener( 'click', function () {
-		var frame = document.createElement( 'iframe' );
-		frame.src = 'https://www.youtube-nocookie.com/embed/' + encodeURIComponent( poster.getAttribute( 'data-video' ) ) + '?autoplay=1&rel=0';
-		frame.title = poster.getAttribute( 'data-title' ) || '';
-		frame.allow = 'autoplay; encrypted-media; picture-in-picture; fullscreen';
-		frame.allowFullscreen = true;
-		poster.replaceWith( frame );
-		frame.focus();
-	} );
-} )();

@@ -15,12 +15,169 @@ import './style.scss';
 import blockIcon from './blockIcon';
 import Edit from './components/Edit';
 import Save from './components/Save';
+import savedMarkupDeprecation from './saved-markup-deprecation';
 
 /**
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
 import { registerBlockType } from '@wordpress/blocks';
+
+const attributes = {
+	align: {
+		type: 'string',
+		default: 'none',
+	},
+	showLabels: {
+		type: 'boolean',
+		default: true,
+	},
+	iconColor: {
+		type: 'string',
+		default: '#ffffff',
+	},
+	iconHoverColor: {
+		type: 'string',
+		default: '#ffffff',
+	},
+	labelColor: {
+		type: 'string',
+		default: 'inherit',
+	},
+	labelHoverColor: {
+		type: 'string',
+		default: '#ffffff',
+	},
+	iconSize: {
+		type: 'number',
+		default: 20,
+	},
+	labelSize: {
+		type: 'number',
+		default: 16,
+	},
+	paddingVertical: {
+		type: 'number',
+		default: 5,
+	},
+	paddingHorizontal: {
+		type: 'number',
+		default: 15,
+	},
+	marginVertical: {
+		type: 'number',
+		default: 5,
+	},
+	marginHorizontal: {
+		type: 'number',
+		default: 5,
+	},
+	borderRadius: {
+		type: 'number',
+		default: 50,
+	},
+	backgroundStyle: {
+		type: 'string',
+		default: 'brand',
+	},
+	hasBorder: {
+		type: 'boolean',
+		default: false,
+	},
+	borderWidth: {
+		type: 'number',
+		default: 1,
+	},
+	borderColor: {
+		type: 'string',
+		default: '',
+	},
+	oneToneColor: {
+		type: 'string',
+		default: '#000000',
+	},
+	xUsername: {
+		type: 'string',
+		default: '',
+	},
+	platforms: {
+		type: 'array',
+		default: [
+			{
+				id: 'facebook',
+				name: 'Facebook',
+				enabled: true,
+				color: '#0866FF'
+			},
+			{
+				id: 'x',
+				name: 'X',
+				enabled: true,
+				color: '#000000'
+			},
+			{
+				id: 'threads',
+				name: 'Threads',
+				enabled: true,
+				color: '#000000'
+			},
+			{
+				id: 'linkedin',
+				name: 'LinkedIn',
+				enabled: true,
+				color: '#0966c2'
+			},
+			{
+				id: 'pinterest',
+				name: 'Pinterest',
+				enabled: false,
+				color: '#E60023'
+			},
+			{
+				id: 'reddit',
+				name: 'Reddit',
+				enabled: true,
+				color: '#FF4500'
+			},
+			{
+				id: 'telegram',
+				name: 'Telegram',
+				enabled: false,
+				color: '#0088cc'
+			},
+			{
+				id: 'whatsapp',
+				name: 'WhatsApp',
+				enabled: true,
+				color: '#25D366'
+			},
+			{
+				id: 'bluesky',
+				name: 'Bluesky',
+				enabled: false,
+				color: '#1DA1F2'
+			},
+			{
+				id: 'email',
+				name: 'Email',
+				enabled: true,
+				color: '#333333'
+			},
+			{
+				id: 'copy-link',
+				name: 'Copy Link',
+				enabled: true,
+				color: '#333333'
+			},
+			{
+				id: 'print',
+				name: 'Print',
+				enabled: false,
+				color: '#333333'
+			}
+		],
+	},
+};
 
 /**
  * Register: WPZOOM Social Sharing Block.
@@ -54,161 +211,7 @@ registerBlockType( 'wpzoom-blocks/social-sharing', {
 		__( 'Buttons', 'social-icons-widget-by-wpzoom' ),
 		__( 'Social Media', 'social-icons-widget-by-wpzoom' ),
 	],
-	attributes: {
-		align: {
-			type: 'string',
-			default: 'none',
-		},
-		showLabels: {
-			type: 'boolean',
-			default: true,
-		},
-		iconColor: {
-			type: 'string',
-			default: '#ffffff',
-		},
-		iconHoverColor: {
-			type: 'string',
-			default: '#ffffff',
-		},
-		labelColor: {
-			type: 'string',
-			default: 'inherit',
-		},
-		labelHoverColor: {
-			type: 'string',
-			default: '#ffffff',
-		},
-		iconSize: {
-			type: 'number',
-			default: 20,
-		},
-		labelSize: {
-			type: 'number',
-			default: 16,
-		},
-		paddingVertical: {
-			type: 'number',
-			default: 5,
-		},
-		paddingHorizontal: {
-			type: 'number',
-			default: 15,
-		},
-		marginVertical: {
-			type: 'number',
-			default: 5,
-		},
-		marginHorizontal: {
-			type: 'number',
-			default: 5,
-		},
-		borderRadius: {
-			type: 'number',
-			default: 50,
-		},
-		backgroundStyle: {
-			type: 'string',
-			default: 'brand',
-		},
-		hasBorder: {
-			type: 'boolean',
-			default: false,
-		},
-		borderWidth: {
-			type: 'number',
-			default: 1,
-		},
-		borderColor: {
-			type: 'string',
-			default: '',
-		},
-		oneToneColor: {
-			type: 'string',
-			default: '#000000',
-		},
-		xUsername: {
-			type: 'string',
-			default: '',
-		},
-		platforms: {
-			type: 'array',
-			default: [
-				{
-					id: 'facebook',
-					name: 'Facebook',
-					enabled: true,
-					color: '#0866FF'
-				},
-				{
-					id: 'x',
-					name: 'X',
-					enabled: true,
-					color: '#000000'
-				},
-				{
-					id: 'threads',
-					name: 'Threads',
-					enabled: true,
-					color: '#000000'
-				},
-				{
-					id: 'linkedin',
-					name: 'LinkedIn',
-					enabled: true,
-					color: '#0966c2'
-				},
-				{
-					id: 'pinterest',
-					name: 'Pinterest',
-					enabled: false,
-					color: '#E60023'
-				},
-				{
-					id: 'reddit',
-					name: 'Reddit',
-					enabled: true,
-					color: '#FF4500'
-				},
-				{
-					id: 'telegram',
-					name: 'Telegram',
-					enabled: false,
-					color: '#0088cc'
-				},
-				{
-					id: 'whatsapp',
-					name: 'WhatsApp',
-					enabled: true,
-					color: '#25D366'
-				},
-				{
-					id: 'bluesky',
-					name: 'Bluesky',
-					enabled: false,
-					color: '#1DA1F2'
-				},
-				{
-					id: 'email',
-					name: 'Email',
-					enabled: true,
-					color: '#333333'
-				},
-				{
-					id: 'copy-link',
-					name: 'Copy Link',
-					enabled: true,
-					color: '#333333'
-				},
-				{
-					id: 'print',
-					name: 'Print',
-					enabled: false,
-					color: '#333333'
-				}
-			],
-		},
-	},
+	attributes,
 	styles: [
 		{
 			name: 'default',
@@ -275,4 +278,6 @@ registerBlockType( 'wpzoom-blocks/social-sharing', {
 	 * @return {Mixed} JSX Frontend HTML.
 	 */
 	save: Save,
+
+	deprecated: [ savedMarkupDeprecation( attributes ) ],
 } ); 
