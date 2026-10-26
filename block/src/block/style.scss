@@ -328,3 +328,11 @@
   width: var(--wpz-social-icons-block-item-font-size);
   height: var(--wpz-social-icons-block-item-font-size);
 }
+
+// An icon without a link is plain content: no hover colors. The hover
+// variables are set inline on the icon, so they're pointed back at the normal
+// ones on everything inside it, where the hover rules read them.
+.wp-block-wpzoom-blocks-social-icons .social-icon-nolink * {
+	--wpz-social-icons-block-item-color-hover: var(--wpz-social-icons-block-item-color);
+	--wpz-social-icons-block-label-color-hover: var(--wpz-social-icons-block-label-color);
+}
