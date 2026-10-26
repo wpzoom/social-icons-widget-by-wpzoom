@@ -1167,6 +1167,22 @@
 	display: none;
 }
 
+/* No panel around the cards: the older tabbed screen drew one */
+.zoom-social-icons-settings.wpzc-settings .wpzoom-social-icons-settings-inner {
+	border: 0;
+	background: none;
+	box-shadow: none;
+}
+
+.zoom-social-icons-settings.wpzc-settings .wpzoom-social-icons-settings-inner .tab {
+	padding: 0;
+}
+
+.zoom-social-icons-settings.wpzc-settings .wpzoom-social-icons-settings-inner form > .submit {
+	margin: 24px 0 0;
+	padding: 0;
+}
+
 .wpzc-settings .wpzc-main > .notice,
 .wpzc-settings .wpzc-main > .error,
 .wpzc-settings .wpzc-main > .updated {
@@ -1270,6 +1286,41 @@
 	border: 0;
 	border-radius: 8px;
 	box-shadow: 0 1px 2px rgba(0, 0, 0, .1);
+}
+
+/* Click to Chat: the first card carries the screen's heading */
+.wpzc-chat .wpzoom-ctc-card-head {
+	display: flex;
+	align-items: flex-start;
+	gap: 16px;
+	margin: -24px -26px 20px;
+	padding: 24px 26px 22px;
+	border-bottom: 1px solid var(--wpzc-line);
+}
+
+.wpzc-chat .wpzoom-ctc-card-head__icon {
+	flex: none;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 44px;
+	height: 44px;
+	border-radius: 10px;
+	background: var(--wpzc-brand-soft);
+	color: var(--wpzc-brand);
+}
+
+.wpzc-chat .wpzoom-ctc-card-head h2 {
+	margin: 2px 0 4px;
+	font-size: 17px;
+	font-weight: 600;
+	line-height: 1.3;
+}
+
+.wpzc-chat .wpzoom-ctc-card-head p {
+	margin: 0;
+	color: var(--wpzc-text);
+	font-size: 13px;
 }
 
 .wpzc-chat .wpzoom-ctc-card-title {
@@ -1845,4 +1896,336 @@ a.wpzoom-settings-row__title:focus {
 	margin-top: 8px;
 	min-height: 34px;
 	padding: 6px 14px;
+}
+
+/* Pinterest tab (free): a preview to try, and what PRO adds */
+.wpzoom-pin-upsell__hero {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+	gap: 36px;
+	align-items: center;
+	padding: 28px 26px;
+}
+
+.wpzoom-pin-upsell__demo {
+	padding: 22px 22px 18px;
+	border-radius: 12px;
+	background:
+		radial-gradient(circle at 85% 0, rgba(230, 0, 35, .09), transparent 55%),
+		#f6f7f7;
+}
+
+.wpzoom-pin-demo {
+	position: relative;
+}
+
+.wpzoom-pin-demo__post {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	padding: 16px;
+	border-radius: 10px;
+	background: #fff;
+	box-shadow: 0 1px 2px rgba(0, 0, 0, .06), 0 8px 24px rgba(0, 0, 0, .06);
+}
+
+.wpzoom-pin-demo__line {
+	display: block;
+	width: 100%;
+	height: 7px;
+	border-radius: 4px;
+	background: #e6e8ea;
+}
+
+.wpzoom-pin-demo__line.is-title {
+	width: 70%;
+	height: 11px;
+	background: #c9ccd0;
+}
+
+.wpzoom-pin-demo__line.is-meta {
+	width: 35%;
+	margin-bottom: 4px;
+}
+
+.wpzoom-pin-demo__line.is-short {
+	width: 55%;
+}
+
+.wpzoom-pin-demo__image {
+	position: relative;
+	margin: 4px 0;
+	aspect-ratio: 16 / 10;
+	border-radius: 6px;
+	background:
+		radial-gradient(circle at 72% 30%, #ffe2a8 0 11%, transparent 12%),
+		linear-gradient(160deg, transparent 55%, #6b8f71 56%),
+		linear-gradient(200deg, transparent 60%, #4f7358 61%),
+		linear-gradient(180deg, #9cc7e6, #d9ecf7);
+	overflow: hidden;
+}
+
+.wpzoom-pin-demo__button {
+	position: absolute;
+	top: 10px;
+	left: 10px;
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	padding: 7px 12px;
+	border-radius: 4px;
+	background: #e60023;
+	color: #fff;
+	font-size: 13px;
+	font-weight: 600;
+	line-height: 1;
+	box-shadow: 0 1px 4px rgba(0, 0, 0, .15);
+	transition: border-radius .2s ease;
+}
+
+.wpzoom-pin-demo__button svg {
+	width: 14px !important;
+	height: 14px !important;
+	fill: currentColor;
+	vertical-align: 0 !important;
+}
+
+.wpzoom-pin-demo[data-position$="right"] .wpzoom-pin-demo__button {
+	right: 10px;
+	left: auto;
+}
+
+.wpzoom-pin-demo[data-position^="bottom"] .wpzoom-pin-demo__button {
+	top: auto;
+	bottom: 10px;
+}
+
+.wpzoom-pin-demo[data-shape="rectangular"] .wpzoom-pin-demo__button {
+	border-radius: 0;
+}
+
+.wpzoom-pin-demo[data-shape="circular"] .wpzoom-pin-demo__button {
+	border-radius: 50px;
+}
+
+.wpzoom-pin-demo[data-label="0"] .wpzoom-pin-demo__button {
+	padding: 8px;
+}
+
+.wpzoom-pin-demo[data-label="0"] .wpzoom-pin-demo__label {
+	display: none;
+}
+
+/* The cursor rests on the button, wherever it is */
+.wpzoom-pin-demo__cursor {
+	position: absolute;
+	top: 30px;
+	left: 46px;
+	filter: drop-shadow(0 1px 1px rgba(0, 0, 0, .25));
+	transition: top .25s ease, left .25s ease, right .25s ease, bottom .25s ease;
+}
+
+.wpzoom-pin-demo[data-position$="right"] .wpzoom-pin-demo__cursor {
+	right: 22px;
+	left: auto;
+}
+
+.wpzoom-pin-demo[data-position^="bottom"] .wpzoom-pin-demo__cursor {
+	top: auto;
+	bottom: 2px;
+}
+
+.wpzoom-pin-demo__toast {
+	position: absolute;
+	right: -10px;
+	bottom: 34px;
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	padding: 8px 12px 8px 8px;
+	border-radius: 999px;
+	background: #1d2327;
+	color: #fff;
+	font-size: 12px;
+	font-weight: 500;
+	box-shadow: 0 6px 18px rgba(0, 0, 0, .18);
+}
+
+.wpzoom-pin-demo[data-position$="right"] .wpzoom-pin-demo__toast {
+	right: auto;
+	left: -10px;
+}
+
+.wpzoom-pin-demo__toast-icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 20px;
+	height: 20px;
+	border-radius: 50%;
+	background: #e60023;
+}
+
+.wpzoom-pin-demo__toast-icon svg {
+	width: 12px !important;
+	height: 12px !important;
+	fill: #fff;
+	vertical-align: 0 !important;
+}
+
+.wpzoom-pin-try {
+	margin-top: 18px;
+}
+
+.wpzoom-pin-try__title {
+	margin-bottom: 8px;
+	color: var(--wpzc-muted, #787c82);
+	font-size: 11px;
+	font-weight: 600;
+	letter-spacing: .06em;
+	text-transform: uppercase;
+}
+
+.wpzoom-pin-try__group {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 6px;
+}
+
+.wpzoom-pin-try__group + .wpzoom-pin-try__group {
+	margin-top: 6px;
+}
+
+.wpzoom-pin-try__option {
+	padding: 5px 10px;
+	border: 1px solid #dcdcde;
+	border-radius: 999px;
+	background: #fff;
+	color: #3c434a;
+	font-size: 12px;
+	line-height: 1.4;
+	cursor: pointer;
+}
+
+.wpzoom-pin-try__option:hover {
+	border-color: #a7aaad;
+}
+
+.wpzoom-pin-try__option[aria-pressed="true"] {
+	border-color: #1d2327;
+	background: #1d2327;
+	color: #fff;
+}
+
+.wpzoom-pin-try__option:focus-visible {
+	outline: 2px solid #2271b1;
+	outline-offset: 2px;
+}
+
+.wpzoom-pin-upsell__badge {
+	display: inline-block;
+	margin-bottom: 10px;
+	padding: 2px 8px;
+	border-radius: 4px;
+	background: #1d2327;
+	color: #fff;
+	font-size: 11px;
+	font-weight: 700;
+	letter-spacing: .06em;
+}
+
+.wpzoom-pin-upsell__info h3 {
+	margin: 0 0 8px;
+	font-size: 20px;
+	line-height: 1.3;
+}
+
+.wpzoom-pin-upsell__info > p {
+	margin: 0 0 16px;
+	color: var(--wpzc-text, #50575e);
+	font-size: 14px;
+	line-height: 1.6;
+}
+
+.wpzoom-pin-upsell__info ul {
+	margin: 0 0 22px;
+}
+
+.wpzoom-pin-upsell__info li {
+	display: flex;
+	gap: 8px;
+	margin-bottom: 10px;
+	font-size: 14px;
+	line-height: 1.5;
+}
+
+.wpzoom-pin-upsell__info li .dashicons {
+	flex: none;
+	color: #3858e9;
+}
+
+.wpzoom-pin-upsell__features {
+	display: grid;
+	grid-template-columns: repeat(4, minmax(0, 1fr));
+	border-top: 1px solid var(--wpzc-line, #dcdcde);
+}
+
+.wpzoom-pin-upsell__feature {
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+	padding: 20px 22px;
+	font-size: 13px;
+	line-height: 1.5;
+}
+
+.wpzoom-pin-upsell__feature + .wpzoom-pin-upsell__feature {
+	border-left: 1px solid var(--wpzc-line, #dcdcde);
+}
+
+.wpzoom-pin-upsell__feature span {
+	color: var(--wpzc-text, #50575e);
+}
+
+.wpzoom-pin-upsell__free {
+	margin: 0;
+	padding: 14px 26px;
+	border-top: 1px solid var(--wpzc-line, #dcdcde);
+	border-radius: 0 0 8px 8px;
+	background: #f6f7f7;
+	color: var(--wpzc-text, #50575e);
+	font-size: 13px;
+}
+
+@media (max-width: 1100px) {
+	.wpzoom-pin-upsell__hero {
+		grid-template-columns: minmax(0, 1fr);
+	}
+
+	.wpzoom-pin-upsell__features {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+
+	.wpzoom-pin-upsell__feature:nth-child(3) {
+		border-left: 0;
+	}
+
+	.wpzoom-pin-upsell__feature:nth-child(n+3) {
+		border-top: 1px solid var(--wpzc-line, #dcdcde);
+	}
+}
+
+@media (max-width: 600px) {
+	.wpzoom-pin-upsell__features {
+		grid-template-columns: minmax(0, 1fr);
+	}
+
+	.wpzoom-pin-upsell__feature + .wpzoom-pin-upsell__feature {
+		border-top: 1px solid var(--wpzc-line, #dcdcde);
+		border-left: 0;
+	}
+
+	.wpzoom-pin-demo__toast {
+		right: 0;
+	}
 }

@@ -223,12 +223,8 @@ class WPZOOM_Social_Icons_Settings {
 			settings_fields( 'wpzoom-social-icons-widget-settings-group-general' );
 			?>
 
-			<?php /* Grouped by module, as on the Overview screen. Section ids keep old links (#font-styles, #preferred-source…) working. */ ?>
+			<?php /* Grouped by module, as on the Overview screen. Each card's header is its heading. Section ids keep old links (#font-styles, #preferred-source…) working. */ ?>
 			<div id="social-icons-tab" class="tab">
-				<div class="wpzc-page-head">
-					<h2><?php esc_html_e( 'Social Icons', 'social-icons-widget-by-wpzoom' ); ?></h2>
-					<p><?php esc_html_e( 'Which icon sets the icon picker offers, sets you can reuse with a shortcode, and your own icons.', 'social-icons-widget-by-wpzoom' ); ?></p>
-				</div>
 				<div id="font-styles" class="wpzoom-settings-section">
 					<?php $this->render_icon_sets_tab(); ?>
 				</div>
@@ -241,17 +237,12 @@ class WPZOOM_Social_Icons_Settings {
 			</div>
 
 			<div id="share-buttons-tab" class="tab">
-				<div class="wpzc-page-head">
-					<h2><?php esc_html_e( 'Share Buttons', 'social-icons-widget-by-wpzoom' ); ?></h2>
-					<p><?php esc_html_e( 'How your share buttons work and where to edit them.', 'social-icons-widget-by-wpzoom' ); ?></p>
-				</div>
 				<div id="share-buttons" class="wpzoom-settings-section">
 					<?php WPZOOM_Connect_Overview::render_share_buttons_card(); ?>
 				</div>
 			</div>
 
-			<?php /* One card each; its header is the heading, so no page head. */ ?>
-			<div id="preferred-source-tab" class="tab">
+						<div id="preferred-source-tab" class="tab">
 				<div id="<?php echo esc_attr( WPZOOM_Preferred_Source::SETTINGS_TAB ); ?>" class="wpzoom-settings-section">
 					<?php WPZOOM_Preferred_Source::render_settings_tab(); ?>
 				</div>
@@ -265,9 +256,6 @@ class WPZOOM_Social_Icons_Settings {
 
 			<?php if ( ! WPZOOM_Social_Icons_SVG::use_svg() ) : ?>
 			<div id="font-preload" class="tab">
-				<div class="wpzc-page-head">
-					<h2><?php esc_html_e( 'Optimization', 'social-icons-widget-by-wpzoom' ); ?></h2>
-				</div>
 				<?php $this->render_optimization_tab(); ?>
 			</div>
 			<?php endif; ?>
@@ -561,33 +549,125 @@ class WPZOOM_Social_Icons_Settings {
 	}
 
 	/**
-	 * Pinterest tab: the Save button PRO adds to images on hover.
+	 * Pinterest tab: the Save button PRO adds to images on hover, with a
+	 * preview the admin can try (corner, shape, label) before upgrading.
 	 */
 	private function render_pinterest_tab() {
-		$this->render_upsell_card(
-			array(
-				'icon'        => 'pinterest',
-				'title'       => __( 'Pinterest', 'social-icons-widget-by-wpzoom' ),
-				'description' => __( 'Show a Pinterest "Save" button when visitors hover over the images in your content.', 'social-icons-widget-by-wpzoom' ),
-				'preview'     => function () {
-					?>
-					<div class="wpzoom-settings-upsell__image">
-						<span class="wpzoom-settings-upsell__pin">
-							<?php echo WPZOOM_Social_Icons_Library::inline_svg( 'fab', 'pinterest' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Markup from the plugin's own icon library. ?>
-							<?php esc_html_e( 'Save', 'social-icons-widget-by-wpzoom' ); ?>
-						</span>
-					</div>
-					<?php
-				},
-				'points'      => array(
-					__( 'Visitors pin your images to their Pinterest boards straight from your posts, sending traffic back to you.', 'social-icons-widget-by-wpzoom' ),
-					__( 'Choose the post types, the corner, the shape and an optional label for the button.', 'social-icons-widget-by-wpzoom' ),
-					__( 'Skip small images or images with certain CSS classes, and decide whether the button shows on phones.', 'social-icons-widget-by-wpzoom' ),
-				),
-				'button'      => __( 'Get Pinterest pins with PRO', 'social-icons-widget-by-wpzoom' ),
-				'utm_content' => 'settings-pinterest',
-			)
+		$upgrade_url = WPZOOM_Connect_Overview::upgrade_url( 'settings-pinterest' );
+		$pin_icon    = WPZOOM_Social_Icons_Library::inline_svg( 'fab', 'pinterest' );
+
+		$positions = array(
+			'top-left'     => __( 'Top left', 'social-icons-widget-by-wpzoom' ),
+			'top-right'    => __( 'Top right', 'social-icons-widget-by-wpzoom' ),
+			'bottom-left'  => __( 'Bottom left', 'social-icons-widget-by-wpzoom' ),
+			'bottom-right' => __( 'Bottom right', 'social-icons-widget-by-wpzoom' ),
 		);
+		$shapes    = array(
+			'rectangular' => __( 'Rectangular', 'social-icons-widget-by-wpzoom' ),
+			'rounded'     => __( 'Rounded', 'social-icons-widget-by-wpzoom' ),
+			'circular'    => __( 'Circular', 'social-icons-widget-by-wpzoom' ),
+		);
+		$features  = array(
+			array(
+				'title' => __( 'Only where you want it', 'social-icons-widget-by-wpzoom' ),
+				'text'  => __( 'Pick the post types: posts, pages, products or any custom type.', 'social-icons-widget-by-wpzoom' ),
+			),
+			array(
+				'title' => __( 'Skips the small stuff', 'social-icons-widget-by-wpzoom' ),
+				'text'  => __( 'Set a minimum width and height, so logos and avatars don’t get a button.', 'social-icons-widget-by-wpzoom' ),
+			),
+			array(
+				'title' => __( 'Leave images out', 'social-icons-widget-by-wpzoom' ),
+				'text'  => __( 'Skip images by CSS class. Images marked nopin="nopin" are always skipped.', 'social-icons-widget-by-wpzoom' ),
+			),
+			array(
+				'title' => __( 'Phones too, if you like', 'social-icons-widget-by-wpzoom' ),
+				'text'  => __( 'Phones can’t hover, so the button can stay visible on small screens.', 'social-icons-widget-by-wpzoom' ),
+			),
+		);
+		?>
+		<div class="wpzoom-settings-card wpzoom-pin-upsell">
+			<?php
+			$this->render_card_header(
+				'pinterest',
+				__( 'Pinterest', 'social-icons-widget-by-wpzoom' ),
+				__( 'Show a Pinterest "Save" button when visitors hover over the images in your content.', 'social-icons-widget-by-wpzoom' )
+			);
+			?>
+			<div class="wpzoom-pin-upsell__hero">
+				<div class="wpzoom-pin-upsell__demo">
+					<div class="wpzoom-pin-demo" data-position="top-left" data-shape="rounded" data-label="1" aria-hidden="true">
+						<div class="wpzoom-pin-demo__post">
+							<span class="wpzoom-pin-demo__line is-title"></span>
+							<span class="wpzoom-pin-demo__line is-meta"></span>
+							<div class="wpzoom-pin-demo__image">
+								<span class="wpzoom-pin-demo__button">
+									<?php echo $pin_icon; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Markup from the plugin's own icon library. ?>
+									<span class="wpzoom-pin-demo__label"><?php esc_html_e( 'Save', 'social-icons-widget-by-wpzoom' ); ?></span>
+								</span>
+								<svg class="wpzoom-pin-demo__cursor" viewBox="0 0 24 24" width="22" height="22"><path d="M5 3l14 8.5-6.2 1.3 3.7 6.4-2.6 1.5-3.7-6.4L5.6 19z" fill="#fff" stroke="#1d2327" stroke-width="1.5" stroke-linejoin="round"/></svg>
+							</div>
+							<span class="wpzoom-pin-demo__line"></span>
+							<span class="wpzoom-pin-demo__line is-short"></span>
+						</div>
+						<div class="wpzoom-pin-demo__toast">
+							<span class="wpzoom-pin-demo__toast-icon"><?php echo $pin_icon; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Markup from the plugin's own icon library. ?></span>
+							<?php esc_html_e( 'Saved to “Weekend ideas”', 'social-icons-widget-by-wpzoom' ); ?>
+						</div>
+					</div>
+
+					<div class="wpzoom-pin-try">
+						<div class="wpzoom-pin-try__title"><?php esc_html_e( 'Try it', 'social-icons-widget-by-wpzoom' ); ?></div>
+						<div class="wpzoom-pin-try__group" role="group" aria-label="<?php esc_attr_e( 'Button position', 'social-icons-widget-by-wpzoom' ); ?>">
+							<?php foreach ( $positions as $value => $label ) : ?>
+								<button type="button" class="wpzoom-pin-try__option" data-pin-set="position" data-value="<?php echo esc_attr( $value ); ?>" aria-pressed="<?php echo 'top-left' === $value ? 'true' : 'false'; ?>"><?php echo esc_html( $label ); ?></button>
+							<?php endforeach; ?>
+						</div>
+						<div class="wpzoom-pin-try__group" role="group" aria-label="<?php esc_attr_e( 'Button shape', 'social-icons-widget-by-wpzoom' ); ?>">
+							<?php foreach ( $shapes as $value => $label ) : ?>
+								<button type="button" class="wpzoom-pin-try__option" data-pin-set="shape" data-value="<?php echo esc_attr( $value ); ?>" aria-pressed="<?php echo 'rounded' === $value ? 'true' : 'false'; ?>"><?php echo esc_html( $label ); ?></button>
+							<?php endforeach; ?>
+							<button type="button" class="wpzoom-pin-try__option" data-pin-set="label" aria-pressed="true"><?php esc_html_e( 'Label', 'social-icons-widget-by-wpzoom' ); ?></button>
+						</div>
+					</div>
+				</div>
+
+				<div class="wpzoom-pin-upsell__info">
+					<span class="wpzoom-pin-upsell__badge"><?php esc_html_e( 'PRO', 'social-icons-widget-by-wpzoom' ); ?></span>
+					<h3><?php esc_html_e( 'Turn every image into a way back to your site', 'social-icons-widget-by-wpzoom' ); ?></h3>
+					<p><?php esc_html_e( 'Pinterest is a search engine for ideas: a pin keeps sending visitors long after the post is published. The Save button makes pinning one click, right on the image.', 'social-icons-widget-by-wpzoom' ); ?></p>
+					<ul>
+						<li><span class="dashicons dashicons-yes" aria-hidden="true"></span><?php esc_html_e( 'Appears on hover over the images in your posts, without editing them.', 'social-icons-widget-by-wpzoom' ); ?></li>
+						<li><span class="dashicons dashicons-yes" aria-hidden="true"></span><?php esc_html_e( 'Pins link back to the post the image came from, described by the image’s alt text or the post title.', 'social-icons-widget-by-wpzoom' ); ?></li>
+						<li><span class="dashicons dashicons-yes" aria-hidden="true"></span><?php esc_html_e( 'Your corner, shape and label, with no Pinterest script on the page.', 'social-icons-widget-by-wpzoom' ); ?></li>
+					</ul>
+					<a class="button button-primary" href="<?php echo esc_url( $upgrade_url ); ?>" target="_blank" rel="noopener noreferrer">
+						<?php esc_html_e( 'Get Pinterest pins with PRO', 'social-icons-widget-by-wpzoom' ); ?>
+						<span class="screen-reader-text"><?php esc_html_e( '(opens in a new tab)', 'social-icons-widget-by-wpzoom' ); ?></span>
+					</a>
+				</div>
+			</div>
+
+			<div class="wpzoom-pin-upsell__features">
+				<?php foreach ( $features as $feature ) : ?>
+					<div class="wpzoom-pin-upsell__feature">
+						<strong><?php echo esc_html( $feature['title'] ); ?></strong>
+						<span><?php echo esc_html( $feature['text'] ); ?></span>
+					</div>
+				<?php endforeach; ?>
+			</div>
+
+			<p class="wpzoom-pin-upsell__free">
+				<?php
+				printf(
+					/* translators: %s: link to the Share Buttons settings */
+					esc_html__( 'A Pinterest share button is free: turn it on in %s.', 'social-icons-widget-by-wpzoom' ),
+					'<a href="#share-buttons">' . esc_html__( 'Share Buttons', 'social-icons-widget-by-wpzoom' ) . '</a>'
+				);
+				?>
+			</p>
+		</div>
+		<?php
 	}
 
 	/**

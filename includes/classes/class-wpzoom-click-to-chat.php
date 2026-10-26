@@ -505,18 +505,6 @@ class WPZOOM_Click_To_Chat {
 			<div class="wpzc-layout">
 			<?php WPZOOM_Connect_Overview::render_sidebar( $tab ); ?>
 			<div class="wpzc-main">
-				<div class="wpzc-page-head">
-					<h2><?php echo esc_html( $tabs[ $tab ] ); ?></h2>
-					<p>
-						<?php
-						echo esc_html(
-							'ctc' === $tab
-								? __( 'One floating button with one-tap links to WhatsApp, Telegram, Messenger and Viber.', 'social-icons-widget-by-wpzoom' )
-								: __( 'A chat on your site that answers visitors from your own pages.', 'social-icons-widget-by-wpzoom' )
-						);
-						?>
-					</p>
-				</div>
 			<?php else : ?>
 			<p class="wpzoom-ctc-admin-description">
 				<?php esc_html_e( 'One floating button for every way visitors reach you: an AI chat that answers from your pages, or one-tap buttons for WhatsApp, Telegram, Messenger and Viber.', 'social-icons-widget-by-wpzoom' ); ?>
@@ -561,6 +549,15 @@ class WPZOOM_Click_To_Chat {
 
 				<!-- Enable toggle -->
 				<div class="wpzoom-ctc-card wpzoom-ctc-card--top">
+					<?php if ( $dashboard ) : ?>
+					<div class="wpzoom-ctc-card-head">
+						<span class="wpzoom-ctc-card-head__icon" aria-hidden="true"><?php echo WPZOOM_Connect_Overview::icon( 'chat', 22 ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static SVG. ?></span>
+						<div>
+							<h2><?php esc_html_e( 'Click to Chat', 'social-icons-widget-by-wpzoom' ); ?></h2>
+							<p><?php esc_html_e( 'One floating button with one-tap links to WhatsApp, Telegram, Messenger and Viber.', 'social-icons-widget-by-wpzoom' ); ?></p>
+						</div>
+					</div>
+					<?php endif; ?>
 					<label class="wpzoom-ctc-toggle-row">
 						<span class="wpzoom-ctc-toggle-label"><?php esc_html_e( 'Enable Click to Chat', 'social-icons-widget-by-wpzoom' ); ?></span>
 						<span class="wpzoom-ctc-toggle-switch">

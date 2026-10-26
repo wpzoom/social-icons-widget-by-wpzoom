@@ -378,6 +378,7 @@ class WPZOOM_Connect_Overview {
 			'message'       => '<path d="M4 5.5h16a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1h-9l-5 3.5v-3.5H4a1 1 0 0 1-1-1v-10a1 1 0 0 1 1-1z"/>',
 			'sidebar'       => '<rect x="3" y="3.5" width="18" height="17" rx="2.5"/><path d="M16.5 7.5v9"/>',
 			'pin'           => '<path d="M12 21v-5"/><path d="M8.5 3.5h7l-1 6 3 3v1.5h-11V12.5l3-3-1-6z"/>',
+			'pinterest'     => '<circle cx="12" cy="12" r="9"/><path d="m10.6 20.8 1.6-7.4"/><path d="M8.9 12.9a3.7 3.7 0 0 1-.6-2.1c0-2.4 1.8-4.4 4.6-4.4 2.4 0 4 1.6 4 3.8 0 2.5-1.3 4.3-3.2 4.3-1 0-1.6-.6-1.5-1.5"/>',
 			'chart'         => '<path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/>',
 			'book'          => '<path d="M4 4.5A1.5 1.5 0 0 1 5.5 3H20v15H5.5A1.5 1.5 0 0 0 4 19.5v-15z"/><path d="M4 19.5A1.5 1.5 0 0 0 5.5 21H20v-3"/>',
 			'lifebuoy'      => '<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3.5"/><path d="m5.6 5.6 3.9 3.9M14.5 14.5l3.9 3.9M18.4 5.6l-3.9 3.9M9.5 14.5l-3.9 3.9"/>',
@@ -557,6 +558,13 @@ class WPZOOM_Connect_Overview {
 
 			<div class="wpzoom-settings-row wpzc-card-actions">
 				<a class="wpzc-button" href="<?php echo esc_url( $edit ); ?>"><?php esc_html_e( 'Edit share buttons', 'social-icons-widget-by-wpzoom' ); ?></a>
+				<?php
+				// PRO's floating share bar has its own configuration post.
+				$floating = self::config_post( 'wpzoom-floating' );
+				if ( $floating ) :
+					?>
+					<a class="wpzc-button is-soft" href="<?php echo esc_url( get_edit_post_link( $floating->ID, 'raw' ) ); ?>"><?php esc_html_e( 'Edit floating buttons', 'social-icons-widget-by-wpzoom' ); ?></a>
+				<?php endif; ?>
 			</div>
 		</div>
 		<?php
@@ -605,7 +613,7 @@ class WPZOOM_Connect_Overview {
 			array( 'layout', __( 'Share Buttons', 'social-icons-widget-by-wpzoom' ), $settings ? '#share-buttons' : self::settings_url( 'share-buttons' ), false, 'share-buttons-tab', 'share-buttons', false ),
 			array( 'google', __( 'Google Preferred Sources', 'social-icons-widget-by-wpzoom' ), $settings ? '#preferred-source' : self::settings_url( 'preferred-source' ), false, 'preferred-source-tab', 'preferred-source', false ),
 			// In free the Pinterest tab holds the Pro upsell card; the badge says so.
-			array( 'pin', __( 'Pinterest', 'social-icons-widget-by-wpzoom' ), $settings ? '#pinterest' : self::settings_url( 'pinterest' ), false, 'pinterest-tab', 'pinterest', ! $pro ),
+			array( 'pinterest', __( 'Pinterest', 'social-icons-widget-by-wpzoom' ), $settings ? '#pinterest' : self::settings_url( 'pinterest' ), false, 'pinterest-tab', 'pinterest', ! $pro ),
 		);
 		if ( ! $pro && class_exists( 'WPZOOM_Social_Icons_SVG' ) && ! WPZOOM_Social_Icons_SVG::use_svg() ) {
 			// Only on sites that turned SVG icons off and load icon fonts again.
@@ -976,7 +984,7 @@ class WPZOOM_Connect_Overview {
 				'state' => $s['float_types'] ? 'on' : 'off',
 			);
 			$tiles[] = array(
-				'icon'  => 'pin',
+				'icon'  => 'pinterest',
 				'title' => __( 'Pinterest Save', 'social-icons-widget-by-wpzoom' ),
 				'value' => $s['pinterest'] ? __( 'On images', 'social-icons-widget-by-wpzoom' ) : $off,
 				'url'   => self::settings_url( 'pinterest' ),
@@ -1001,7 +1009,7 @@ class WPZOOM_Connect_Overview {
 				'state' => 'pro',
 			);
 			$tiles[] = array(
-				'icon'  => 'pin',
+				'icon'  => 'pinterest',
 				'title' => __( 'Pinterest Save', 'social-icons-widget-by-wpzoom' ),
 				'value' => '',
 				'url'   => self::upgrade_url( 'overview-pinterest' ),

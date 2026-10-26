@@ -102,6 +102,22 @@ jQuery(function ($) {
         openHash(location.hash);
     });
 
+    // Pinterest tab (free): the preview follows the corner, shape and label picked.
+    $(document).on("click", ".wpzoom-pin-try__option", function () {
+        var $option = $(this);
+        var $demo = $option.closest(".wpzoom-pin-upsell").find(".wpzoom-pin-demo");
+        var key = $option.data("pin-set");
+        if (key === "label") {
+            var on = $option.attr("aria-pressed") !== "true";
+            $option.attr("aria-pressed", on ? "true" : "false");
+            $demo.attr("data-label", on ? "1" : "0");
+            return;
+        }
+        $option.closest(".wpzoom-pin-try__group").find('[data-pin-set="' + key + '"]').attr("aria-pressed", "false");
+        $option.attr("aria-pressed", "true");
+        $demo.attr("data-" + key, $option.data("value"));
+    });
+
     // Copy a shortcode (Saved icon sets).
     $(document).on("click", ".wpzc-copy", function () {
         var $button = $(this);
