@@ -17,7 +17,7 @@ import { AlignmentControl, BlockControls, useBlockProps } from '@wordpress/block
 // SVG icons for controls drawn inside the editor canvas (an iframe that only has
 // the Dashicons font when that icon kit is enabled); Dashicon names there can
 // render as empty boxes.
-import { plus } from '@wordpress/icons';
+import { plus, check, info, code, trash, link } from '@wordpress/icons';
 
 /**
  * Internal dependencies
@@ -186,13 +186,14 @@ export default function Edit( props ) {
 			activeStyleName
 		);
 
+		// Blank until a link is typed or an icon chosen (Helper.isBlankIcon).
 		const defaultIcon = {
 			url: '',
-			icon: 'wordpress',
-			iconKit: 'socicon',
+			icon: '',
+			iconKit: '',
 			color: '#444140',
 			hoverColor: '#444140',
-			label: 'WordPress',
+			label: '',
 			showPopover: true,
 			isActive: true,
 			customSvg: null,
@@ -261,6 +262,35 @@ export default function Edit( props ) {
 		);
 		selectedIconsClone[ key ].showPopover = false;
 		setAttributes( { showModal: true, selectedIcons: selectedIconsClone } );
+	};
+
+	/**
+	 * While a URL is typed in the popover, switches the icon to the one it
+	 * belongs to (the URL itself is saved on Enter or when leaving the field).
+	 *
+	 * @param {number} key   Icon index.
+	 * @param {string} typed URL as typed so far.
+	 */
+	const popoverTypeHandler = ( key, typed ) => {
+		const match = Helper.detectIcon( typed );
+		const icons = latestAttributesRef.current.selectedIcons;
+		const current = icons[ key ];
+		if ( ! match || ! current || ( current.iconKit === match.iconKit && current.icon === match.icon ) ) {
+			return;
+		}
+		setAttributes( {
+			selectedIcons: icons.map( ( item, i ) =>
+				i === key
+					? {
+						...item,
+						iconKit: match.iconKit,
+						icon: match.icon,
+						label: match.label,
+						...( match.color ? { color: match.color, hoverColor: match.color } : {} ),
+					  }
+					: item
+			),
+		} );
 	};
 
 	/**
@@ -411,8 +441,16 @@ export default function Edit( props ) {
 			''
 		);
 
+		const isBlank = Helper.isBlankIcon( list );
+
 		let iconContent;
-		if ( list.iconKit === 'svg' && list.customSvg ) {
+		if ( isBlank ) {
+			iconContent = (
+				<span className="social-icon social-icon-placeholder">
+					<Icon icon={ link } />
+				</span>
+			);
+		} else if ( list.iconKit === 'svg' && list.customSvg ) {
 			iconContent = (
 				<span
 					className={ classnames( 'social-icon', 'social-icon-svg' ) }
@@ -430,6 +468,7 @@ export default function Edit( props ) {
 					href={ list.url }
 					className={ classnames( 'social-icon-link', {
 						selected: list.isActive,
+						'is-placeholder': isBlank,
 					} ) }
 					style={ {
 						'--wpz-social-icons-block-item-color': list.color,
@@ -446,288 +485,151 @@ export default function Edit( props ) {
 							// Keep it inside the viewport: next to the screen edge it
 							// used to open partly off-screen (WordPress 6.1+).
 							shift
+							// The URL field focuses itself (PopoverSearch).
+							focusOnMount={ false }
 							onClose={ () => popoverCloseHandler( key ) }
 						>
-							<div className={ classnames( 'popover-content' ) }>
-								<div className="popover-header">
-									<span className="popover-title">
-										{ singleIcon
-											? __( 'Icon Settings', 'social-icons-widget-by-wpzoom' )
-											: __( 'Social Icon Settings', 'social-icons-widget-by-wpzoom' ) }
+							<div className="wpzoom-icon-popover">
+								<div className="wpzoom-icon-popover__head">
+									{ isBlank ? (
+										<span className="wpzoom-icon-badge is-large is-blank" aria-hidden="true">
+											<Icon icon={ link } size={ 20 } />
+										</span>
+									) : (
+										<span
+											className="wpzoom-icon-badge is-large"
+											style={ list.color ? { backgroundColor: list.color } : undefined }
+											aria-hidden="true"
+										>
+											{ renderUrlFieldGlyph( list.iconKit, list.icon, list.customSvg ) }
+										</span>
+									) }
+									<span className="wpzoom-icon-popover__name">
+										{ isBlank
+											? __( 'New icon', 'social-icons-widget-by-wpzoom' )
+											: list.label || __( 'Icon', 'social-icons-widget-by-wpzoom' ) }
 									</span>
+									<Button
+										variant="secondary"
+										className="wpzoom-icon-popover__change"
+										onClick={ ( e ) => popoverEditSettingsHandler( e, key ) }
+									>
+										{ __( 'Change icon', 'social-icons-widget-by-wpzoom' ) }
+									</Button>
 								</div>
 
-								{ singleIcon ? (
-									<Fragment>
-										{ /* One icon (Icon by WPZOOM): the icon first, the link optional. */ }
-										<div className={ classnames( 'popover-url-wrapper' ) }>
-											<div className="popover-section-title">
-												<Icon icon="star-empty" />
-												{ __( 'ICON', 'social-icons-widget-by-wpzoom' ) }
-											</div>
-											<div className="popover-alternate-options popover-alternate-options--icon">
-												<Button
-													isPrimary
-													onClick={ ( e ) =>
-														popoverEditSettingsHandler( e, key )
-													}
-													className="popover-edit-details-button"
-												>
-													<Icon icon="edit" />
-													{ __(
-														'Choose Icon & Edit Details',
-														'social-icons-widget-by-wpzoom'
-													) }
-												</Button>
-
-												<div className="popover-section-divider">
-													<span>
-														{ __( 'Or', 'social-icons-widget-by-wpzoom' ) }
-													</span>
-												</div>
-
-												<Button
-													className="popover-custom-svg-button"
-													onClick={ () => openCustomSvgModal( key ) }
-												>
-													<Icon icon="editor-code" />
-													{ __(
-														'Insert Custom SVG Icon',
-														'social-icons-widget-by-wpzoom'
-													) }
-												</Button>
-											</div>
-										</div>
-										<div className={ classnames( 'popover-url-wrapper' ) }>
-											<div className="popover-section-title">
-												<Icon icon="admin-links" />
-												{ __( 'LINK (OPTIONAL)', 'social-icons-widget-by-wpzoom' ) }
-											</div>
-											<div className="popover-description">
-												{ __(
-													'Add a URL to make the icon a link, or leave it empty for a plain icon.',
-													'social-icons-widget-by-wpzoom'
-												) }
-											</div>
-											<div className="popover-url-input-container">
-												<PopoverSearch
-													key={ key }
-													value={ list.url }
-													save={ ( url ) =>
-														popoverSearchHandler( key, url, false )
-													}
-													button={ __( 'Save Link', 'social-icons-widget-by-wpzoom' ) }
-													buttonIcon="admin-links"
-													color={ list.color }
-												/>
-											</div>
-										</div>
-									</Fragment>
-								) : (
-									<Fragment>
-										<div className={ classnames( 'popover-url-wrapper' ) }>
-											<div className="popover-section-title">
-												<Icon icon="admin-links" />
-												{ __( 'URL & ICON', 'social-icons-widget-by-wpzoom' ) }
-											</div>
-											<div className="popover-description">
-												{ __(
-													'Enter a website URL to automatically detect its icon, or leave it empty for an icon without a link.',
-													'social-icons-widget-by-wpzoom'
-												) }
-											</div>
-											<div className="popover-url-input-container">
-												<PopoverSearch
-													key={ key }
-													value={ list.url }
-													save={ ( url ) =>
-														popoverSearchHandler( key, url )
-													}
-													// The icon in the URL field: the one this URL is
-													// paired with, once there is a URL and the last
-													// Detect Icon did not fail. Globe otherwise. Drawn
-													// with the same classes as the canvas: the icon
-													// fonts only draw glyphs for `.social-icon.<kit>-<icon>`,
-													// so `social-icon` stays and its tile styling is
-													// reset in editor.scss.
-													icon={
-														list.url && list.iconDetected !== false
-															? renderUrlFieldGlyph( list.iconKit, list.icon, list.customSvg )
-															: null
-													}
-													// Live preview while typing: the icon Detect
-													// Icon would apply, before it is applied.
-													preview={ ( typed ) => {
-														const match = Helper.detectIcon( typed );
-														return match
-															? {
-																node: renderUrlFieldGlyph( match.iconKit, match.icon ),
-																color: match.color || list.color,
-															  }
-															: null;
-													} }
-													color={ list.color }
-												/>
-											</div>
-											{ list.justUpdated && (
-												<div
-													className={ `icon-status-message ${ list.iconDetected ? 'success' : 'notice' }` }
-												>
-													<Icon
-														icon={
-															list.iconDetected
-																? 'yes-alt'
-																: 'info-outline'
-														}
-													/>
-													{ list.iconDetected
-														? __(
-																'Icon detected and applied!',
-																'social-icons-widget-by-wpzoom'
-														  )
-														: __(
-																'No matching icon found. Choose manually below.',
-																'social-icons-widget-by-wpzoom'
-														  ) }
-												</div>
-											) }
-											<div className="popover-alternate-options">
-												<span>
-													{ __( 'Or', 'social-icons-widget-by-wpzoom' ) }
-												</span>
-												<Button
-													isPrimary
-													onClick={ ( e ) =>
-														popoverEditSettingsHandler( e, key )
-													}
-													className="popover-edit-details-button"
-												>
-													<Icon icon="edit" />
-													{ __(
-														'Choose Icon & Edit Details',
-														'social-icons-widget-by-wpzoom'
-													) }
-												</Button>
-
-												<div className="popover-section-divider">
-													<span>
-														{ __( 'Or', 'social-icons-widget-by-wpzoom' ) }
-													</span>
-												</div>
-
-												<Button
-													className="popover-custom-svg-button"
-													onClick={ () => openCustomSvgModal( key ) }
-												>
-													<Icon icon="editor-code" />
-													{ __(
-														'Insert Custom SVG Icon',
-														'social-icons-widget-by-wpzoom'
-													) }
-												</Button>
-											</div>
-										</div>
-									</Fragment>
-								) }
-
-								<div className="popover-colors-section">
-									<div className="popover-section-title">
-										<Icon icon="art" />
-										{ __( 'COLORS', 'social-icons-widget-by-wpzoom' ) }
-									</div>
-									<div className="color-pickers-container">
-										<div
-											className="color-picker-option"
-											data-tooltip={ __(
-												'Change color',
-												'social-icons-widget-by-wpzoom'
-											) }
-										>
-											<span className="color-label">
-												{ __(
-													'Normal:',
-													'social-icons-widget-by-wpzoom'
-												) }
-											</span>
-											<ModalColorPicker
-												title={ __(
-													'Icon Color',
-													'social-icons-widget-by-wpzoom'
-												) }
-												className={ classnames(
-													'popover-color-picker'
-												) }
-												save={ ( arg ) =>
-													// Copy, never mutate: attributes must be
-													// replaced for undo and change detection.
-													setAttributes( {
-														selectedIcons: attributes.selectedIcons.map(
-															( item, i ) =>
-																i === key
-																	? { ...item, color: arg.color }
-																	: item
-														),
-													} )
-												}
-												color={ list.color }
-											/>
-										</div>
-										<div
-											className="color-picker-option"
-											data-tooltip={ __(
-												'Change color',
-												'social-icons-widget-by-wpzoom'
-											) }
-										>
-											<span className="color-label">
-												{ __(
-													'Hover:',
-													'social-icons-widget-by-wpzoom'
-												) }
-											</span>
-											<ModalColorPicker
-												title={ __(
-													'Hover Color',
-													'social-icons-widget-by-wpzoom'
-												) }
-												className={ classnames(
-													'popover-color-picker'
-												) }
-												save={ ( arg ) =>
-													// Copy, never mutate: attributes must be
-													// replaced for undo and change detection.
-													setAttributes( {
-														selectedIcons: attributes.selectedIcons.map(
-															( item, i ) =>
-																i === key
-																	? { ...item, hoverColor: arg.color }
-																	: item
-														),
-													} )
-												}
-												color={ list.hoverColor }
-											/>
-										</div>
-									</div>
-								</div>
-
-								{ attributes.selectedIcons.length > 1 && (
-									<div className="popover-footer">
-										<Button
-											isDestructive
-											onClick={ ( e ) =>
-												popoverDeleteIconHandler( e, key )
+								<div className="wpzoom-icon-popover__section">
+									{ singleIcon ? (
+										// One icon (Icon by WPZOOM): it was chosen first, so the
+										// link is optional and doesn't change it.
+										<PopoverSearch
+											key={ key }
+											value={ list.url }
+											save={ ( url ) => popoverSearchHandler( key, url, false ) }
+											button={ __( 'Save link', 'social-icons-widget-by-wpzoom' ) }
+										/>
+									) : (
+										<PopoverSearch
+											key={ key }
+											value={ list.url }
+											save={ ( url ) => popoverSearchHandler( key, url ) }
+											button={ __( 'Apply link and detect icon', 'social-icons-widget-by-wpzoom' ) }
+											// The icon in the URL field: the one this URL is
+											// paired with, once there is a URL and the last
+											// detection did not fail. Globe otherwise.
+											icon={
+												list.url && list.iconDetected !== false && ! isBlank
+													? renderUrlFieldGlyph( list.iconKit, list.icon, list.customSvg )
+													: null
 											}
-											className="delete-icon-button"
+											// The icon switches while the link is typed.
+											onType={ ( typed ) => popoverTypeHandler( key, typed ) }
+											// Live preview in the field, until then.
+											preview={ ( typed ) => {
+												const match = Helper.detectIcon( typed );
+												return match
+													? {
+														node: renderUrlFieldGlyph( match.iconKit, match.icon ),
+														color: match.color || list.color,
+													  }
+													: null;
+											} }
+											color={ list.color }
+										/>
+									) }
+									{ ! singleIcon && list.justUpdated ? (
+										<p
+											className={ classnames( 'wpzoom-icon-popover__status', {
+												'is-success': list.iconDetected,
+											} ) }
 										>
-											<Icon icon="trash" />
-											{ __(
-												'Delete Icon',
-												'social-icons-widget-by-wpzoom'
-											) }
+											<Icon icon={ list.iconDetected ? check : info } size={ 16 } />
+											{ list.iconDetected
+												? __( 'Icon detected and applied.', 'social-icons-widget-by-wpzoom' )
+												: __( 'No matching icon. Use Change icon to pick one.', 'social-icons-widget-by-wpzoom' ) }
+										</p>
+									) : (
+										<p className="wpzoom-icon-popover__help">
+											{ singleIcon
+												? __( 'Optional. Add a link to make the icon clickable.', 'social-icons-widget-by-wpzoom' )
+												: isBlank
+													? __( 'Paste a link and its icon is picked for you, or use Change icon to pick one.', 'social-icons-widget-by-wpzoom' )
+													: __( 'Paste a link and the icon is picked for you. Leave it empty for an icon without a link.', 'social-icons-widget-by-wpzoom' ) }
+										</p>
+									) }
+								</div>
+
+								<div className="wpzoom-icon-popover__section wpzoom-icon-popover__colors">
+									<span className="wpzoom-icon-popover__label">
+										{ __( 'Color', 'social-icons-widget-by-wpzoom' ) }
+									</span>
+									<ModalColorPicker
+										title={ __( 'Icon Color', 'social-icons-widget-by-wpzoom' ) }
+										label={ __( 'Normal', 'social-icons-widget-by-wpzoom' ) }
+										save={ ( arg ) =>
+											// Copy, never mutate: attributes must be
+											// replaced for undo and change detection.
+											setAttributes( {
+												selectedIcons: attributes.selectedIcons.map( ( item, i ) =>
+													i === key ? { ...item, color: arg.color } : item
+												),
+											} )
+										}
+										color={ list.color }
+									/>
+									<ModalColorPicker
+										title={ __( 'Hover Color', 'social-icons-widget-by-wpzoom' ) }
+										label={ __( 'Hover', 'social-icons-widget-by-wpzoom' ) }
+										save={ ( arg ) =>
+											setAttributes( {
+												selectedIcons: attributes.selectedIcons.map( ( item, i ) =>
+													i === key ? { ...item, hoverColor: arg.color } : item
+												),
+											} )
+										}
+										color={ list.hoverColor }
+									/>
+								</div>
+
+								<div className="wpzoom-icon-popover__footer">
+									<Button
+										variant="tertiary"
+										icon={ code }
+										onClick={ () => openCustomSvgModal( key ) }
+									>
+										{ __( 'Custom SVG', 'social-icons-widget-by-wpzoom' ) }
+									</Button>
+									{ attributes.selectedIcons.length > 1 && (
+										<Button
+											variant="tertiary"
+											isDestructive
+											icon={ trash }
+											onClick={ ( e ) => popoverDeleteIconHandler( e, key ) }
+										>
+											{ __( 'Remove', 'social-icons-widget-by-wpzoom' ) }
 										</Button>
-									</div>
-								) }
+									) }
+								</div>
 							</div>
 						</Popover>
 					) }

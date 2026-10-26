@@ -23,7 +23,7 @@ class ModalColorPicker extends Component {
 	};
 
 	render() {
-		const { color, title, className } = this.props;
+		const { color, title, label, className } = this.props;
 
 		return (
 			<Dropdown
@@ -31,7 +31,7 @@ class ModalColorPicker extends Component {
 				popoverProps={ { position: 'middle right' } }
 				renderToggle={ ( { isOpen, onToggle } ) => (
 					<Button
-						className="wpzoom-color-indicator-button"
+						className={ classnames( 'wpzoom-color-indicator-button', { 'has-label': label } ) }
 						label={ title || __( 'Change color', 'social-icons-widget-by-wpzoom' ) }
 						showTooltip={ false }
 						aria-haspopup="true"
@@ -39,6 +39,7 @@ class ModalColorPicker extends Component {
 						onClick={ onToggle }
 					>
 						<ColorIndicator className={ classnames( className ) } colorValue={ color } />
+						{ label && <span className="wpzoom-color-indicator-button__label">{ label }</span> }
 					</Button>
 				) }
 				renderContent={ () => (

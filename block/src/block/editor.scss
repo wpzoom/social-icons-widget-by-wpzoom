@@ -67,357 +67,250 @@
 }
 
 .wpzoom-social-icons-popover {
-  min-width: 400px;
-  max-width: 480px;
   z-index: 100000;
 
   .components-popover__content {
+    width: 320px;
+    max-width: calc(100vw - 32px);
     padding: 0;
-    border-radius: 4px;
-    width: 100%;
+  }
+}
+
+// The popover of an icon on the canvas, in the block editor's own style
+// (like the link popover): compact sections, 13px text, quiet buttons.
+.wpzoom-icon-popover {
+  color: #1e1e1e;
+  font-size: 13px;
+
+  &__head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 12px 12px 16px;
+    border-bottom: 1px solid #e0e0e0;
   }
 
-  .popover-content {
+  &__name {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    font-weight: 500;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &__change.components-button {
+    flex: none;
+  }
+
+  &__section {
+    padding: 16px;
+
+    & + & {
+      border-top: 1px solid #e0e0e0;
+    }
+  }
+
+  &__help,
+  &__status {
+    margin: 8px 0 0;
+    color: #757575;
+    font-size: 12px;
+    line-height: 1.5;
+  }
+
+  &__status {
     display: flex;
-    flex-direction: column;
+    align-items: center;
+    gap: 4px;
 
-    .popover-header {
-      background-color: #f9f9f9;
-      padding: 12px 16px;
-      border-bottom: 1px solid #e2e4e7;
-
-      .popover-title {
-        font-size: 14px;
-        font-weight: 600;
-        color: #1e1e1e;
-      }
+    svg {
+      flex: none;
+      fill: currentColor;
     }
 
-    .popover-section-title {
-      display: flex;
-      align-items: center;
-      font-size: 11px;
-      font-weight: 600;
-      letter-spacing: 0.5px;
-      text-transform: uppercase;
-      color: #757575;
-      margin-bottom: 8px;
-
-      .dashicon {
-        margin-right: 5px;
-        font-size: 16px;
-        height: 16px;
-        width: 16px;
-      }
+    &.is-success {
+      color: #007017;
     }
+  }
 
-    .popover-description {
-      font-size: 13px;
-      color: #555;
-      margin-bottom: 12px;
+  &__colors {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding-top: 12px;
+    padding-bottom: 12px;
+  }
+
+  &__label {
+    flex: 1;
+    font-size: 11px;
+    font-weight: 500;
+    line-height: 1.4;
+    text-transform: uppercase;
+  }
+
+  &__colors .wpzoom-color-indicator-button.has-label {
+    gap: 6px;
+    height: 32px;
+    padding: 0 8px;
+
+    .component-color-indicator {
+      width: 20px;
+      height: 20px;
+      margin: 0;
+      border-radius: 50%;
+      box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.2);
     }
+  }
 
-    .popover-url-wrapper {
-      padding: 16px;
-      border-bottom: 1px solid #e2e4e7;
+  &__footer {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px;
+    border-top: 1px solid #e0e0e0;
+  }
+}
+
+// The URL field: the icon on the left, the input, the submit button inside.
+.wpzoom-url-field {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 40px;
+  padding: 0 4px 0 10px;
+  border: 1px solid #949494;
+  border-radius: 2px;
+  background: #fff;
+  box-sizing: border-box;
+
+  &:focus-within {
+    border-color: var(--wp-admin-theme-color, #3858e9);
+    box-shadow: 0 0 0 1px var(--wp-admin-theme-color, #3858e9);
+  }
+
+  &__globe {
+    flex: none;
+    fill: #757575;
+  }
+
+  input[type="text"].wpzoom-url-field__input {
+    flex: 1;
+    min-width: 0;
+    min-height: 0;
+    height: 30px;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    box-shadow: none;
+    color: #1e1e1e;
+    font-size: 13px;
+    outline: 0;
+  }
+
+  &__submit.components-button {
+    flex: none;
+  }
+}
+
+// A just-added icon with nothing chosen yet: an empty dashed tile.
+.wp-block-wpzoom-blocks-social-icons .social-icon-link.is-placeholder .social-icon-placeholder {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent !important;
+  outline: 1.5px dashed currentColor;
+  outline-offset: -1.5px;
+  color: #949494;
+
+  svg {
+    width: 1em;
+    height: 1em;
+    fill: currentColor;
+  }
+}
+
+.wp-block-wpzoom-blocks-social-icons .social-icon-link.is-placeholder .icon-label {
+  display: none;
+}
+
+.wpzoom-icon-badge.is-blank {
+  background-color: transparent;
+  outline: 1.5px dashed #949494;
+  outline-offset: -1.5px;
+  color: #757575;
+
+  svg {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+// An icon drawn like the block's own: white glyph on the brand color. In the
+// URL field and, larger, in the popover's head.
+.wpzoom-icon-badge {
+  --wpzoom-badge-glyph: 12px;
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background-color: #444140;
+  color: #fff;
+  line-height: 0;
+
+  &.is-large {
+    --wpzoom-badge-glyph: 16px;
+    width: 32px;
+    height: 32px;
+    border-radius: 4px;
+  }
+
+  // Carries `social-icon` (the fonts need it to draw the glyph), so undo
+  // that class's tile styling here — and the icon fonts' own inline-text
+  // tweaks (socicon nudges every glyph with `position: relative; top: 3px`,
+  // which sat it low in the badge). An exact square with a matching line
+  // box centers glyphs that fill the font's em box, as socicons do.
+  .url-input-icon-glyph,
+  .url-input-icon-glyph.social-icon {
+    display: block;
+    position: static;
+    top: auto;
+    flex: none;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+    width: var(--wpzoom-badge-glyph);
+    height: var(--wpzoom-badge-glyph);
+    margin: 0;
+    padding: 0;
+    font-size: var(--wpzoom-badge-glyph);
+    line-height: var(--wpzoom-badge-glyph);
+    text-align: center;
+    vertical-align: top;
+    color: inherit;
+    background: none;
+
+    &::before {
+      display: block;
+      position: static;
+      width: var(--wpzoom-badge-glyph);
+      height: var(--wpzoom-badge-glyph);
+      margin: 0;
+      padding: 0;
+      font-size: var(--wpzoom-badge-glyph);
+      line-height: var(--wpzoom-badge-glyph);
+      text-align: center;
     }
+  }
 
-    .popover-url-input-container {
-      margin-bottom: 10px;
-    }
-
-    .url-input-wrapper {
-      position: relative;
-      margin-bottom: 10px;
-
-      .url-input-icon {
-        position: absolute;
-        left: 10px;
-        top: 50%;
-        transform: translateY(-50%);
-        color: #757575;
-      }
-
-      // The matched icon, drawn like the block's own icons: white glyph on the
-      // brand color.
-      .url-input-icon--matched {
-        left: 8px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 22px;
-        height: 22px;
-        border-radius: 50%;
-        background-color: #444140;
-        color: #fff;
-        line-height: 0;
-
-        // Carries `social-icon` (the fonts need it to draw the glyph), so undo
-        // that class's tile styling here — and the icon fonts' own inline-text
-        // tweaks (socicon nudges every glyph with `position: relative; top: 3px`,
-        // which sat it low in the badge). An exact 12px square with a 12px line
-        // box centers glyphs that fill the font's em box, as socicons do.
-        .url-input-icon-glyph,
-        .url-input-icon-glyph.social-icon {
-          display: block;
-          position: static;
-          top: auto;
-          flex: none;
-          border: 0;
-          border-radius: 0;
-          box-shadow: none;
-          width: 12px;
-          height: 12px;
-          margin: 0;
-          padding: 0;
-          font-size: 12px;
-          line-height: 12px;
-          text-align: center;
-          vertical-align: top;
-          color: inherit;
-          background: none;
-
-          &::before {
-            display: block;
-            position: static;
-            width: 12px;
-            height: 12px;
-            margin: 0;
-            padding: 0;
-            font-size: 12px;
-            line-height: 12px;
-            text-align: center;
-          }
-        }
-
-        svg {
-          width: 12px;
-          height: 12px;
-          fill: currentColor;
-        }
-      }
-
-      .url-input {
-        margin-bottom: 0;
-
-        .components-text-control__input {
-          height: 40px;
-          padding-left: 36px;
-          border-radius: 4px;
-          border: 1px solid #ddd;
-
-          &:focus {
-            box-shadow: 0 0 0 1.5px #1e1e1e;
-            border-color: #1e1e1e;
-          }
-        }
-      }
-    }
-
-    .url-apply-button {
-      height: 36px;
-      justify-content: center;
-      width: 100%;
-      margin-top: 8px;
-
-      &.is-primary {
-        background-color: #1e1e1e;
-      }
-    }
-
-    .icon-status-message {
-      display: flex;
-      align-items: center;
-      margin: 10px 0;
-      padding: 10px 12px;
-      border-radius: 4px;
-      font-size: 13px;
-      animation: fadeIn 0.3s ease-in-out;
-
-      @keyframes fadeIn {
-        from { opacity: 0; transform: translateY(-5px); }
-        to { opacity: 1; transform: translateY(0); }
-      }
-
-      .dashicon {
-        margin-right: 8px;
-        font-size: 18px;
-      }
-
-      &.success {
-        background-color: #f0f9eb;
-        color: #67c23a;
-        border-left: 3px solid #67c23a;
-      }
-
-      &.notice {
-        background-color: #f4f4f5;
-        color: #909399;
-        border-left: 3px solid #909399;
-      }
-    }
-
-    .popover-alternate-options {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      margin-top: 12px;
-
-      > span {
-        font-size: 12px;
-        color: #666;
-        margin-bottom: 8px;
-        position: relative;
-        display: flex;
-        width: 100%;
-        justify-content: center;
-        align-items: center;
-
-        &:before, &:after {
-          content: "";
-          position: absolute;
-          height: 1px;
-          background-color: #e2e4e7;
-          width: calc(50% - 20px);
-        }
-
-        &:before {
-          left: 0;
-        }
-
-        &:after {
-          right: 0;
-        }
-      }
-
-      .popover-edit-details-button {
-        width: 100%;
-        justify-content: center;
-        height: 36px;
-
-        .dashicon {
-          margin-right: 6px;
-        }
-      }
-    }
-
-    .popover-colors-section {
-      padding: 16px;
-      border-bottom: 1px solid #e2e4e7;
-
-      .color-pickers-container {
-        display: flex;
-        justify-content: space-between;
-        margin-top: 10px;
-
-        .color-picker-option {
-          display: flex;
-          align-items: center;
-          position: relative;
-
-          &:hover::after {
-            content: attr(data-tooltip);
-            position: absolute;
-            bottom: 100%;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(0,0,0,0.8);
-            color: white;
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 12px;
-            white-space: nowrap;
-            margin-bottom: 5px;
-            z-index: 10;
-          }
-
-          .color-label {
-            font-size: 13px;
-            margin-right: 8px;
-            color: #555;
-          }
-
-          .popover-color-picker {
-            border-radius: 4px;
-            width: 32px;
-            height: 32px;
-            border: 1px solid #ddd;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            cursor: pointer;
-            transition: transform 0.2s;
-
-            &:hover {
-              transform: scale(1.1);
-            }
-          }
-        }
-      }
-    }
-
-    .popover-footer {
-      padding: 16px;
-      display: flex;
-      justify-content: center;
-
-      .delete-icon-button {
-        width: 100%;
-        justify-content: center;
-
-        .dashicon {
-          margin-right: 6px;
-        }
-      }
-    }
-
-    .popover-section-divider {
-      width: 100%;
-      margin: 12px 0 0;
-      position: relative;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      
-      span {
-        font-size: 12px;
-        color: #666;
-        padding: 0 10px;
-        background-color: #fff;
-        position: relative;
-        z-index: 2;
-      }
-      
-      &:before {
-        content: '';
-        position: absolute;
-        top: 50%;
-        left: 0;
-        width: 100%;
-        height: 1px;
-        background-color: #e2e4e7;
-        z-index: 1;
-      }
-    }
-    
-    .popover-custom-svg-button {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 100%;
-      height: 36px;
-      margin-top: 8px;
-      background-color: #f1f1f1;
-      color: #333;
-      border: 1px solid #ddd;
-      border-radius: 4px;
-      
-      &:hover {
-        background-color: #e8e8e8;
-      }
-      
-      .dashicon {
-        margin-right: 6px;
-      }
-    }
+  svg {
+    width: var(--wpzoom-badge-glyph);
+    height: var(--wpzoom-badge-glyph);
+    fill: currentColor;
   }
 }
 

@@ -184,6 +184,16 @@ class Helper {
 		return null;
 	}
 
+	/**
+	 * Whether an icon is still blank: just added, with no icon chosen yet.
+	 *
+	 * @param {Object} item Icon from selectedIcons.
+	 * @return {boolean} True when blank.
+	 */
+	static isBlankIcon( item ) {
+		return ! item.icon && ! ( item.iconKit === 'svg' && item.customSvg );
+	}
+
 	static filterUrlScheme( url ) {
 		const schemas = {
 			mailto: 'mail',

@@ -64,7 +64,8 @@ export function createSave( { linkless = true, pro = false } = {} ) {
 			center: 'center',
 		};
 
-		const IconsList = selectedIcons.map( ( list, key ) => {
+		// A just-added icon with nothing chosen yet stays in the editor only.
+		const IconsList = selectedIcons.filter( ( list ) => ! Helper.isBlankIcon( list ) ).map( ( list, key ) => {
 			const showIconsLabelEl = showIconsLabel ? (
 				<span className={ classnames( 'icon-label' ) }>{ list.label }</span>
 			) : '';

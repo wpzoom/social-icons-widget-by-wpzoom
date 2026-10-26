@@ -19,6 +19,7 @@ import Edit from './components/Edit';
 import Save, { createSave } from './components/Save';
 import iconVariation from './icon-variation';
 import proDeprecations from './pro-deprecations';
+import unsetLabelHover from './unset-label-hover';
 import TransformToBlock from './legacy-widget-transform/transform-to-block';
 import widgetAttributesTransform from './legacy-widget-transform/widget-attributes-transform';
 
@@ -292,6 +293,16 @@ const attributes = {
 };
 
 /**
+ * The deprecations, then each version again for markup saved without a label
+ * hover color (see unset-label-hover.js).
+ *
+ * @param {Object} current     The current version: { attributes, save }.
+ * @param {Array}  deprecations Older versions.
+ * @return {Array} Deprecations.
+ */
+const withUnsetLabelHover = ( current, deprecations ) => [ ...deprecations, ...unsetLabelHover( [ current, ...deprecations ] ) ];
+
+/**
  * Register: WPZOOM Social Icons Block.
  *
  * Registers a new block provided a unique name and an object defining its
@@ -421,7 +432,7 @@ registerBlockType( 'wpzoom-blocks/social-icons', {
 
 	variations: [ iconVariation ],
 
-	deprecated: [
+	deprecated: withUnsetLabelHover( { attributes, save: Save }, [
 		/**
 		 * Before icons could be left without a link: an icon with an empty URL
 		 * was saved as a link (`<a href="">`). Same attributes; re-saved as a
@@ -432,5 +443,5 @@ registerBlockType( 'wpzoom-blocks/social-icons', {
 			save: createSave( { linkless: false } ),
 		},
 		...proDeprecations( attributes ),
-	],
+	] ),
 } );

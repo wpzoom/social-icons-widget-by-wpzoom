@@ -22,7 +22,7 @@ class SocialIconsModal extends Component {
 		modalUrl: this.props.url,
 		modalLabel: this.props.label,
 		modalIcon: this.props.icon,
-		modalIconKit: this.props.iconKit,
+		modalIconKit: this.props.iconKit || 'socicon', // A blank new icon has no kit yet.
 		modalColor: this.props.color,
 		modalHoverColor: this.props.hoverColor,
 		modalSearch: '',
@@ -109,7 +109,7 @@ class SocialIconsModal extends Component {
 				modalUrl: props.url,
 				modalLabel: props.label,
 				modalIcon: props.icon,
-				modalIconKit: props.iconKit,
+				modalIconKit: props.iconKit || 'socicon',
 				modalColor: props.color,
 				modalHoverColor: props.hoverColor,
 				modalSearch: '',
