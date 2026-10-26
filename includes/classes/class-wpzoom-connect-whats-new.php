@@ -5,7 +5,7 @@
  *
  *   - a notice on the Dashboard and Plugins screens (through the WPZOOM Notice
  *     Center when it is loaded, plain markup otherwise);
- *   - an admin pointer on the "AI Chat & Icons" menu, on other admin screens;
+ *   - an admin pointer on the "Social Icons" menu, on other admin screens;
  *   - a "What's new" card at the top of the Overview, where the details are.
  *
  * Each admin dismisses them for themselves; all of it stops 30 days after the
@@ -213,8 +213,8 @@ class WPZOOM_Connect_Whats_New {
 
 	private static function summary() {
 		return self::is_pro()
-			? __( 'A new dashboard under AI Chat & Icons, 2,400+ icons, icons without links and the Google Preferred Sources button. Your icons, share buttons and settings are as you left them.', 'social-icons-widget-by-wpzoom' )
-			: __( 'A new dashboard under AI Chat & Icons, faster SVG icons, 2,400+ icons and the Google Preferred Sources button. Your icons, share buttons and settings are as you left them.', 'social-icons-widget-by-wpzoom' );
+			? __( 'A new dashboard under Social Icons, 2,400+ icons, icons without links and the Google Preferred Sources button. Your icons, share buttons and settings are as you left them.', 'social-icons-widget-by-wpzoom' )
+			: __( 'A new dashboard under Social Icons, faster SVG icons, 2,400+ icons and the Google Preferred Sources button. Your icons, share buttons and settings are as you left them.', 'social-icons-widget-by-wpzoom' );
 	}
 
 	private static function settings_url( $section ) {
@@ -232,7 +232,7 @@ class WPZOOM_Connect_Whats_New {
 			array(
 				'home',
 				__( 'One place for everything', 'social-icons-widget-by-wpzoom' ),
-				__( 'The menu is now AI Chat & Icons, opening on this Overview: icons, share buttons and chat, with what is set up on your site.', 'social-icons-widget-by-wpzoom' ),
+				__( 'The menu is now Social Icons, opening on this Overview: icons, share buttons and chat, with what is set up on your site.', 'social-icons-widget-by-wpzoom' ),
 				'',
 			),
 		);
@@ -364,7 +364,7 @@ class WPZOOM_Connect_Whats_New {
 	// Pointer
 	// -------------------------------------------------------------------------
 
-	/** The pointer on the "AI Chat & Icons" menu, on screens other than the plugin's own. */
+	/** The pointer on the "Social Icons" menu, on screens other than the plugin's own. */
 	public function enqueue_pointer() {
 		if ( ! self::active() || self::own_screen() || self::pointer_dismissed() ) {
 			return;

@@ -1,6 +1,6 @@
 <?php
 /**
- * WPZOOM Connect overview: the first screen under "AI Chat & Icons".
+ * WPZOOM Connect overview: the first screen under "Social Icons".
  *
  * The plugin is three modules, Social Icons, Share Buttons and Chat, the same
  * way wpzoom.com/plugins/social-share/ presents it. Layout: a header bar with
@@ -90,7 +90,7 @@ class WPZOOM_Connect_Overview {
 	}
 
 	/**
-	 * Overview first, so the "AI Chat & Icons" menu opens it, and no Settings
+	 * Overview first, so the "Social Icons" menu opens it, and no Settings
 	 * item: the Overview's sidebar opens each of its tabs. The page stays
 	 * registered, so links to it keep working.
 	 */

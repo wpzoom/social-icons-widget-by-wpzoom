@@ -48,7 +48,7 @@ require_once plugin_dir_path( __FILE__ ) . 'includes/classes/class-wpzoom-social
 
 require_once plugin_dir_path( __FILE__ ) . 'includes/classes/class-wpzoom-social-icons-settings.php';
 
-// Overview screen: the first item under "AI Chat & Icons". Shared with the PRO plugin.
+// Overview screen: the first item under "Social Icons". Shared with the PRO plugin.
 if ( ! class_exists( 'WPZOOM_Connect_Overview' ) ) {
 	require_once plugin_dir_path( __FILE__ ) . 'includes/classes/class-wpzoom-connect-overview.php';
 	require_once plugin_dir_path( __FILE__ ) . 'includes/classes/class-wpzoom-connect-whats-new.php';
