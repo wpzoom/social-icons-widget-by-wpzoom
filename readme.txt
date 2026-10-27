@@ -9,7 +9,7 @@ Stable tag: 5.0.0
 License: GNU General Public License v2.0 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Social media icons and share buttons for any site: 2,400+ icons, block, widget & Elementor. Plus a Click to Chat button for WhatsApp, Telegram & Messenger.
+Social media icons and share buttons: 2,400+ icons, block, widget & Elementor. Plus a Click to Chat button for WhatsApp, Telegram & Messenger.
 
 == Description ==
 
