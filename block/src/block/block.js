@@ -20,6 +20,7 @@ import Save, { createSave } from './components/Save';
 import iconVariation from './icon-variation';
 import proDeprecations from './pro-deprecations';
 import unsetLabelHover from './unset-label-hover';
+import savedMarkupDeprecation from './saved-markup-deprecation';
 import TransformToBlock from './legacy-widget-transform/transform-to-block';
 import widgetAttributesTransform from './legacy-widget-transform/widget-attributes-transform';
 
@@ -432,16 +433,20 @@ registerBlockType( 'wpzoom-blocks/social-icons', {
 
 	variations: [ iconVariation ],
 
-	deprecated: withUnsetLabelHover( { attributes, save: Save }, [
-		/**
-		 * Before icons could be left without a link: an icon with an empty URL
-		 * was saved as a link (`<a href="">`). Same attributes; re-saved as a
-		 * plain icon.
-		 */
-		{
-			attributes,
-			save: createSave( { linkless: false } ),
-		},
-		...proDeprecations( attributes ),
-	] ),
+	deprecated: [
+		...withUnsetLabelHover( { attributes, save: Save }, [
+			/**
+			 * Before icons could be left without a link: an icon with an empty URL
+			 * was saved as a link (`<a href="">`). Same attributes; re-saved as a
+			 * plain icon.
+			 */
+			{
+				attributes,
+				save: createSave( { linkless: false } ),
+			},
+			...proDeprecations( attributes ),
+		] ),
+		// Last: whatever markup is saved, as it is (saved-markup-deprecation.js).
+		savedMarkupDeprecation( attributes ),
+	],
 } );

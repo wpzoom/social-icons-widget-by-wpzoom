@@ -44,6 +44,9 @@ if ( ! class_exists( 'WPZOOM_Social_Icons_Sets' ) ) {
 if ( ! class_exists( 'WPZOOM_Preferred_Source' ) ) {
 	require_once plugin_dir_path( __FILE__ ) . 'includes/classes/class-wpzoom-preferred-source.php';
 }
+if ( ! class_exists( 'WPZOOM_Social_Profiles' ) ) {
+	require_once plugin_dir_path( __FILE__ ) . 'includes/classes/class-wpzoom-social-profiles.php';
+}
 require_once plugin_dir_path( __FILE__ ) . 'includes/classes/class-wpzoom-social-sharing-buttons.php';
 
 require_once plugin_dir_path( __FILE__ ) . 'includes/classes/class-wpzoom-social-icons-settings.php';

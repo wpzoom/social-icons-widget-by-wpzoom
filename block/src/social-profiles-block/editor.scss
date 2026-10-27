@@ -1,0 +1,239 @@
+/**
+ * Social Profiles block, editor only.
+ */
+
+.wp-block-wpzoom-blocks-social-profiles {
+	.wpz-sp__link {
+		cursor: pointer;
+	}
+
+	.wpz-sp__item.is-open > .wpz-sp__link {
+		outline: 2px solid var(--wp-admin-theme-color, #3858e9);
+		outline-offset: 2px;
+	}
+
+	// A profile with no link or icon yet.
+	.wpz-sp__item.is-blank .wpz-sp__icon {
+		background: transparent;
+		outline: 1.5px dashed #949494;
+		outline-offset: -1.5px;
+		color: #757575;
+
+		svg {
+			width: 20px;
+			height: 20px;
+		}
+	}
+
+	.wpz-sp__item.is-blank .wpz-sp__name {
+		color: #757575;
+		font-weight: 400;
+	}
+
+	.wpzoom-sp-add.components-button {
+		margin-top: 12px;
+	}
+}
+
+.wpzoom-sp-placeholder {
+	.components-placeholder__fieldset {
+		flex-direction: column;
+		align-items: stretch;
+	}
+
+}
+
+// Quick picks on an empty block.
+.wpzoom-sp-picker {
+	display: grid;
+	flex: none; // The placeholder would stretch it, and its rows with it.
+	grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+	align-content: start;
+	gap: 8px;
+	width: 100%;
+}
+
+.wpzoom-sp-picker__network.components-button {
+	justify-content: flex-start;
+	gap: 10px;
+	height: 44px;
+	padding: 0 12px 0 8px;
+	border: 1px solid #ddd;
+	border-radius: 8px;
+	background: #fff;
+	color: #1e1e1e;
+	font-weight: 500;
+
+	&:hover {
+		border-color: #949494;
+		color: #1e1e1e;
+	}
+
+	&.is-pressed,
+	&.is-pressed:hover {
+		border-color: var(--wpz-sp-brand);
+		background: #fff;
+		box-shadow: inset 0 0 0 1px var(--wpz-sp-brand);
+		color: #1e1e1e;
+	}
+}
+
+.wpzoom-sp-picker__icon {
+	display: flex;
+	flex: none;
+	align-items: center;
+	justify-content: center;
+	width: 28px;
+	height: 28px;
+	border-radius: 7px;
+	background: #f0f0f0;
+	color: #1e1e1e;
+	font-size: 15px;
+	line-height: 1;
+	transition: background-color 0.15s ease, color 0.15s ease;
+
+	.is-pressed & {
+		background: var(--wpz-sp-brand);
+		color: #fff;
+	}
+
+	// The icon fonts nudge glyphs down (socicon: position relative, top 3px).
+	.social-icon {
+		display: flex;
+		position: static;
+		top: auto;
+		align-items: center;
+		justify-content: center;
+		margin: 0;
+		padding: 0;
+		background: none;
+		color: inherit;
+		font-size: inherit;
+		line-height: 1;
+	}
+
+	svg {
+		display: block;
+		max-width: 1.2em;
+		vertical-align: top !important;
+		fill: currentColor;
+	}
+}
+
+.wp-block-wpzoom-blocks-social-profiles .wpz-sp__nolink {
+	color: var(--wp-admin-theme-color, #3858e9);
+	opacity: 1;
+}
+
+// On the brand-colored cards, the reminder takes the card's text color.
+.wp-block-wpzoom-blocks-social-profiles.is-layout-cards .wpz-sp__nolink {
+	color: inherit;
+	opacity: 0.85;
+	text-decoration: underline;
+}
+
+.wpzoom-sp-placeholder__actions {
+	display: flex;
+	gap: 8px;
+	margin-top: 12px;
+}
+
+.wpzoom-sp-popover__fields {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+}
+
+.wpzoom-sp-popover__row {
+	display: grid;
+	grid-template-columns: 1fr 1.4fr;
+	gap: 8px;
+}
+
+// The Layout picker in the sidebar: three small drawings.
+.wpzoom-sp-layouts {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	gap: 8px;
+	margin-bottom: 12px;
+}
+
+.wpzoom-sp-layouts__option.components-button {
+	flex-direction: column;
+	align-items: stretch;
+	gap: 6px;
+	height: auto;
+	padding: 8px;
+	border: 1px solid #ddd;
+	border-radius: 4px;
+
+	&.is-pressed {
+		border-color: var(--wp-admin-theme-color, #3858e9);
+		background: #fff;
+		box-shadow: inset 0 0 0 1px var(--wp-admin-theme-color, #3858e9);
+		color: #1e1e1e;
+	}
+
+	&:disabled {
+		opacity: 1;
+		color: #757575;
+	}
+}
+
+.wpzoom-sp-layouts__preview {
+	display: flex;
+	flex-direction: column;
+	gap: 3px;
+	height: 36px;
+
+	span {
+		flex: 1;
+		border-radius: 3px;
+		background: #e0e0e0;
+	}
+
+	.is-pressed & span {
+		background: color-mix(in srgb, var(--wp-admin-theme-color, #3858e9) 35%, #fff);
+	}
+
+	.is-cards & {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+	}
+
+	.is-buttons & {
+		flex-flow: row wrap;
+		align-content: center;
+
+		span {
+			flex: 0 0 auto;
+			width: 40%;
+			height: 10px;
+			border-radius: 10px;
+		}
+	}
+}
+
+.wpzoom-sp-layouts__label {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 4px;
+	font-size: 12px;
+}
+
+.wpzoom-sp-layouts__pro {
+	padding: 0 4px;
+	border-radius: 3px;
+	background: #1e1e1e;
+	color: #fff;
+	font-size: 9px;
+	font-weight: 700;
+	line-height: 1.6;
+	text-transform: uppercase;
+}
+
+.wpzoom-sp-layouts__upsell {
+	margin: 0 0 12px;
+	font-size: 12px;
+}

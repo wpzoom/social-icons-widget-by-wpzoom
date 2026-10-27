@@ -1,0 +1,207 @@
+/**
+ * Social Profiles block, on the page and in the editor. The markup comes
+ * from WPZOOM_Social_Profiles::render() in PHP and Profile.js in the editor.
+ */
+
+.wp-block-wpzoom-blocks-social-profiles {
+	box-sizing: border-box;
+
+	.wpz-sp__list {
+		display: flex;
+		flex-direction: column;
+		gap: var(--wpz-sp-gap, 10px);
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	.wpz-sp__item {
+		// --wpz-sp-brand is set per profile; --wpz-sp-tint is the color used.
+		--wpz-sp-tint: var(--wpz-sp-brand, #444140);
+		margin: 0;
+		padding: 0;
+		list-style: none; // Themes often give content list items a bullet.
+	}
+
+	&.is-color-mono .wpz-sp__item {
+		--wpz-sp-tint: var(--wpz-sp-color, currentColor);
+	}
+
+	.wpz-sp__link {
+		display: flex;
+		align-items: center;
+		gap: 14px;
+		box-sizing: border-box;
+		min-width: 0;
+		height: 100%;
+		padding: var(--wpz-sp-pad, 12px) calc(var(--wpz-sp-pad, 12px) + 6px) var(--wpz-sp-pad, 12px) var(--wpz-sp-pad, 12px);
+		border: var(--wpz-sp-border-width, 1px) solid var(--wpz-sp-border-color, rgba(127, 127, 127, 0.28));
+		border-radius: var(--wpz-sp-radius, 14px);
+		background: var(--wpz-sp-bg, transparent);
+		box-shadow: none;
+		color: var(--wpz-sp-text, inherit);
+		text-decoration: none;
+		transition: border-color 0.15s ease, background-color 0.15s ease, transform 0.15s ease, filter 0.15s ease;
+	}
+
+	a.wpz-sp__link:hover,
+	a.wpz-sp__link:focus-visible {
+		border-color: var(--wpz-sp-tint);
+		color: var(--wpz-sp-text, inherit);
+		text-decoration: none;
+	}
+
+	.wpz-sp__icon {
+		display: flex;
+		flex: none;
+		align-items: center;
+		justify-content: center;
+		width: var(--wpz-sp-icon-size, 40px);
+		height: var(--wpz-sp-icon-size, 40px);
+		border-radius: var(--wpz-sp-icon-radius, 10px);
+		background: var(--wpz-sp-tint);
+		color: #fff;
+		font-size: calc(var(--wpz-sp-icon-size, 40px) / 2);
+		line-height: 1;
+
+		svg {
+			display: block;
+			max-width: 1.4em;
+			vertical-align: top !important; // The SVG carries a font-like baseline shift.
+			fill: currentColor;
+		}
+
+		// In the editor the icon is drawn as in the Social Icons block: undo
+		// that block's tile styling, and the icon fonts' nudge down
+		// (socicon: position relative, top 3px).
+		.social-icon {
+			display: flex;
+			position: static;
+			top: auto;
+			align-items: center;
+			justify-content: center;
+			width: auto;
+			height: auto;
+			margin: 0;
+			padding: 0;
+			border: 0;
+			background: none;
+			color: inherit;
+			font-size: inherit;
+			line-height: 1;
+		}
+	}
+
+	.wpz-sp__text {
+		display: flex;
+		flex: 1;
+		flex-direction: column;
+		gap: 2px;
+		min-width: 0;
+	}
+
+	.wpz-sp__name {
+		overflow: hidden;
+		font-weight: 600;
+		line-height: 1.3;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+
+	.wpz-sp__meta {
+		font-size: 0.85em;
+		line-height: 1.3;
+		opacity: 0.7;
+
+		strong {
+			font-weight: 600;
+		}
+	}
+
+	.wpz-sp__cta {
+		display: inline-flex;
+		flex: none;
+		align-items: center;
+		gap: 6px;
+		font-size: 0.85em;
+		font-weight: 600;
+		opacity: 0.6;
+		transition: opacity 0.15s ease, color 0.15s ease;
+	}
+
+	a.wpz-sp__link:hover .wpz-sp__cta {
+		opacity: 1;
+	}
+
+	// Cards: brand-colored tiles with the count up front.
+	&.is-layout-cards {
+		.wpz-sp__list {
+			display: grid;
+			grid-template-columns: repeat(var(--wpz-sp-columns, 2), minmax(0, 1fr));
+			gap: var(--wpz-sp-gap, 12px);
+		}
+
+		&.has-1-columns { --wpz-sp-columns: 1; }
+		&.has-2-columns { --wpz-sp-columns: 2; }
+		&.has-3-columns { --wpz-sp-columns: 3; }
+		&.has-4-columns { --wpz-sp-columns: 4; }
+
+		.wpz-sp__link {
+			padding: calc(var(--wpz-sp-pad, 12px) + 2px);
+			border: var(--wpz-sp-border-width, 0) solid var(--wpz-sp-border-color, rgba(0, 0, 0, 0.15));
+			background: var(--wpz-sp-tint);
+			color: #fff;
+		}
+
+		a.wpz-sp__link:hover,
+		a.wpz-sp__link:focus-visible {
+			color: #fff;
+			filter: brightness(1.08);
+			transform: translateY(-1px);
+		}
+
+		.wpz-sp__icon {
+			background: rgba(0, 0, 0, 0.2);
+		}
+
+		.wpz-sp__meta {
+			opacity: 0.85;
+		}
+	}
+
+	// Buttons: brand-colored pills, side by side.
+	&.is-layout-buttons {
+		.wpz-sp__list {
+			flex-flow: row wrap;
+		}
+
+		.wpz-sp__link {
+			gap: 10px;
+			padding: calc(var(--wpz-sp-pad, 12px) - 2px) calc(var(--wpz-sp-pad, 12px) + 8px) calc(var(--wpz-sp-pad, 12px) - 2px) calc(var(--wpz-sp-pad, 12px) + 2px);
+			border: var(--wpz-sp-border-width, 0) solid var(--wpz-sp-border-color, rgba(0, 0, 0, 0.15));
+			border-radius: var(--wpz-sp-radius, 999px);
+			background: var(--wpz-sp-tint);
+			color: #fff;
+		}
+
+		a.wpz-sp__link:hover,
+		a.wpz-sp__link:focus-visible {
+			color: #fff;
+			filter: brightness(1.08);
+		}
+
+		.wpz-sp__icon {
+			width: auto;
+			height: auto;
+			border-radius: 0;
+			background: none;
+			font-size: 18px;
+		}
+	}
+}
+
+@media (max-width: 600px) {
+	.wp-block-wpzoom-blocks-social-profiles.is-layout-cards:is(.has-3-columns, .has-4-columns) {
+		--wpz-sp-columns: 2;
+	}
+}

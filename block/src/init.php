@@ -99,6 +99,9 @@ function wpzoom_social_icons_block_enqueue_assets() {
 			'isEditingSharingConfig'   => $is_editing_sharing_config,
 			'preferredSource'          => WPZOOM_Preferred_Source::editor_data(),
 			'svgIcons'                 => WPZOOM_Social_Icons_SVG::editor_data(),
+			// The Social Profiles block offers its PRO layouts on PRO only.
+			'isPro'                    => class_exists( 'WPZOOM_Connect_Overview' ) && WPZOOM_Connect_Overview::is_pro(),
+			'upgradeUrl'               => class_exists( 'WPZOOM_Connect_Overview' ) ? WPZOOM_Connect_Overview::upgrade_url( 'block-social-profiles' ) : '',
 		)
 	);
 
@@ -157,6 +160,35 @@ function wpzoom_social_icons_block_enqueue_assets() {
 					),
 				),
 				'render_callback' => 'wpzoom_social_sharing_block_render_callback',
+			)
+		);
+	}
+
+	/**
+	 * Register the Social Profiles block, drawn on the server
+	 * (WPZOOM_Social_Profiles::render()), so nothing but its attributes is
+	 * saved in the post.
+	 */
+	if ( class_exists( 'WPZOOM_Social_Profiles' ) && ! WP_Block_Type_Registry::get_instance()->is_registered( 'wpzoom-blocks/social-profiles' ) ) {
+		register_block_type(
+			'wpzoom-blocks/social-profiles',
+			array(
+				'style'           => 'wpzoom-social-icons-block-style',
+				'editor_script'   => 'wpzoom-social-icons-block-js',
+				'editor_style'    => 'wpzoom-social-icons-block-editor',
+				'attributes'      => WPZOOM_Social_Profiles::attributes(),
+				'supports'        => array(
+					'html'       => false,
+					'align'      => array( 'wide', 'full' ),
+					'spacing'    => array(
+						'margin' => true,
+					),
+					'typography' => array(
+						'fontSize'   => true,
+						'lineHeight' => true,
+					),
+				),
+				'render_callback' => array( 'WPZOOM_Social_Profiles', 'render' ),
 			)
 		);
 	}
