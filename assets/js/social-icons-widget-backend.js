@@ -17,6 +17,56 @@
 
 (function ($, _, widgetData) {
 
+    /**
+     * Whether a color is too light to see on the white widget form (white or
+     * near-white). The form's previews then give the icon a dark backdrop;
+     * the page shows the color as chosen.
+     */
+    var isLightColor = function (color) {
+        var value = String(color || '').trim().toLowerCase();
+        var rgb = null;
+        var hex = value.match(/^#([0-9a-f]{3}|[0-9a-f]{6})$/);
+        if (hex) {
+            var h = hex[1].length === 3 ? hex[1].replace(/./g, '$&$&') : hex[1];
+            rgb = [parseInt(h.substr(0, 2), 16), parseInt(h.substr(2, 2), 16), parseInt(h.substr(4, 2), 16)];
+        } else {
+            var m = value.match(/^rgba?\(\s*(\d+)[\s,]+(\d+)[\s,]+(\d+)/);
+            if (m) {
+                rgb = [+m[1], +m[2], +m[3]];
+            } else if (value === 'white') {
+                rgb = [255, 255, 255];
+            }
+        }
+        if (!rgb) {
+            return false;
+        }
+        return (0.2126 * rgb[0] + 0.7152 * rgb[1] + 0.0722 * rgb[2]) / 255 > 0.85;
+    };
+
+    /**
+     * Style for an icon preview in the form: the icon's color, as on the page,
+     * except that a color too light for the white form gets a dark backdrop
+     * (no background) or a dark glyph (with a background).
+     */
+    var previewStyle = function (iconStyle, color) {
+        var style = {};
+        var light = isLightColor(color);
+        if (iconStyle === 'without-canvas') {
+            style.color = color;
+            style.backgroundColor = light ? '#1e1e1e' : 'transparent';
+            if (light) {
+                style.borderRadius = '4px';
+            }
+        } else {
+            style.backgroundColor = color;
+            style.color = iconStyle === 'with-canvas' && light ? '#1e1e1e' : '#fff';
+            if (light) {
+                style.boxShadow = 'inset 0 0 0 1px rgba(0, 0, 0, .2)';
+            }
+        }
+        return style;
+    };
+
     var VueInstance = function (selector, data) {
         data.instance['icons'] = widgetData;
         var defaultField = data['default_field'];
@@ -254,20 +304,7 @@
                     return result;
                 },
                 normalizeStyle: function (key) {
-                    var returnObj = {};
-                    var $rule = this.icon_style == 'without-canvas' ? 'color' : 'backgroundColor';
-
-                    returnObj[$rule] = this.fields[key].color_picker;
-
-                    if (this.icon_style === 'without-canvas') {
-                        returnObj['backgroundColor'] = 'transparent';
-                    }
-
-                    if (this.icon_style === 'with-canvas') {
-                        returnObj['color'] = '#fff';
-                    }
-
-                    return returnObj;
+                    return previewStyle(this.icon_style, this.fields[key].color_picker);
                 }
             }
         });
@@ -349,19 +386,7 @@
                     $(this.$el).find('input:first').trigger('change');
                 },
                 normalizeStyle: function (icon, icon_kit) {
-                    var returnObj = {};
-                    var $rule = this.icon_style == 'without-canvas' ? 'color' : 'backgroundColor';
-
-                    returnObj[$rule] = this.modal_color_picker;
-
-                    if (this.icon_style === 'without-canvas') {
-                        returnObj['backgroundColor'] = 'transparent';
-                    }
-                    if (this.icon_style === 'with-canvas') {
-                        returnObj['color'] = '#fff';
-                    }
-
-                    return returnObj;
+                    return previewStyle(this.icon_style, this.modal_color_picker);
                 }
 
             },
