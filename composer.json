@@ -10,7 +10,7 @@
         "phpstan/phpstan": "^0.12.83",
         "szepeviktor/phpstan-wordpress": "^0.7.5"
     },
-    "license": "GNU General Public License v2.0 or later",
+    "license": "GPL-2.0-or-later",
     "authors": [
         {
             "name": "WPZOOM",
