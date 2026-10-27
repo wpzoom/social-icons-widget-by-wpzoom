@@ -21,6 +21,7 @@ Social media icons and share buttons for any site: 2,400+ icons, block, widget &
 * **Paste a link, get the icon.** The icon, its brand color and label are picked from the URL.
 * **Inline SVG, no icon fonts.** Pages load only the icons they show: no 130 KB of font CSS, no clash with your theme's Font Awesome.
 * **Icons with or without links.** Leave the link empty for a plain icon, or use the *Icon by WPZOOM* block for a single icon: a feature, a decoration, a phone number.
+* **Social Profiles block** — your profiles as a tidy list with handles (@yourname) and follower counts. Pick your networks, paste each link, and the icon, name and handle come from it.
 * **Share buttons** for Facebook, X, Threads, LinkedIn, Pinterest, Reddit, Telegram, WhatsApp, Bluesky, Email, Copy Link and Print, placed with a block or added to your posts automatically.
 * **Google Preferred Sources button** — readers who add your site see more of it in Google's Top Stories and AI results.
 * **Click to Chat** — one floating button that opens WhatsApp, Telegram, Messenger or Viber in a tap.
@@ -48,6 +49,7 @@ The Click to Chat button can also answer visitors itself. **AI Chat** reads your
 * **Icons as SVG** instead of icon fonts — faster pages, no font conflicts
 * **2,400+ icons** and an icon library to browse them; 41 new networks and 148 Font Awesome 7 brands
 * **Icons without links** and the new *Icon by WPZOOM* block
+* **Social Profiles block**: your profiles as a list with handles and follower counts
 * **Google Preferred Sources** button
 
 = What's new in 4.7 =
@@ -83,6 +85,15 @@ You can view the plugin live in all our themes at [WPZOOM](https://www.wpzoom.co
 * Icon library in Settings to browse every icon
 * Elementor Widget Integration
 
+**Social Profiles Block:**
+* Your social profiles as a list: each with its icon, its handle (@yourname) or short link, and an optional follower count
+* Start by picking from 10 popular networks, then paste each link; any other network works too
+* Handles come from the link: x.com/yourname shows @yourname, reddit.com/r/WordPress shows r/WordPress
+* Follower counts typed by you (12.4K), labelled per network: followers, subscribers, members
+* Brand colors or one color for all; corner radius, border, padding, spacing and icon size in the Styles tab
+* Drawn on the server, so it never shows "unexpected or invalid content"
+* Cards and Buttons layouts in PRO
+
 **Social Sharing Buttons Block:**
 * 12+ Sharing Platforms: Facebook, X, Threads, LinkedIn, Pinterest, Reddit, Telegram, WhatsApp, Bluesky, Email, Copy Link, and Print
 * Multiple Button Styles: Circle, Square, Rounded, Outlined, Minimal, One-tone
@@ -106,6 +117,7 @@ You can view the plugin live in all our themes at [WPZOOM](https://www.wpzoom.co
 Upgrade to [WPZOOM Connect Pro](https://www.wpzoom.com/plugins/social-share/) to unlock powerful features:
 
 * **Floating Buttons** - Display social sharing icons as a fixed floating bar on the side of your website (NEW!)
+* **Social Profiles: Cards and Buttons layouts** - Brand-colored cards with follower counts, or "Follow on Instagram" buttons (NEW!)
 * **Share Analytics Dashboard** - Track how visitors share your content with detailed analytics
 * **Like Button** - Add a like button to let visitors engage with your posts
 * **AI Share Buttons** - Share to ChatGPT, Claude, and Perplexity AI platforms
@@ -278,28 +290,21 @@ Floating Buttons is a PRO feature that displays your social sharing icons as a f
 == Changelog ==
 
 = 5.0.0 =
-* MAJOR: Social Icons Widget is now WPZOOM Connect 5.0: a new dashboard under “Social Icons”, icons drawn as SVG instead of icon fonts, 2,400+ icons with an icon library to browse, icons without links and an “Icon by WPZOOM” block, and the Google Preferred Sources button. Sites that update get a short “What’s new” tour on the Overview
+* MAJOR: Social Icons Widget is now WPZOOM Connect 5.0: a new dashboard under “Social Icons”, icons drawn as SVG instead of icon fonts, 2,400+ icons with an icon library to browse, icons without links and an “Icon by WPZOOM” block, a Social Profiles block, and the Google Preferred Sources button. Sites that update get a short “What’s new” tour on the Overview
+* NEW: Social Profiles block — your profiles as a list with each network's icon, a handle taken from the link (@yourname, r/WordPress) or the short link, and optional follower counts you type in (labelled followers, subscribers or members per network). Start by picking from 10 popular networks; style the rows, border, corners and icons in the Styles tab. Drawn on the server, so it can't show "unexpected or invalid content". Cards and Buttons layouts in PRO
 * IMPROVED: Social Icons block — Detect Icon now looks in Socicons first and falls back to the other enabled icon kits (it used to take the last kit with a match, often Font Awesome)
 * NEW: the icon's URL field shows the matching icon as you type
 * NEW: visual style picker for the Social Icons block — each style shows your own icons, so you see the result before choosing. Style names are shorter and easier to tell apart
 * NEW: "Add to Preferred Sources" button for Google — readers who add your site see more of it in Top Stories and AI results. Show it on all posts, pages or other post types from Settings → Google Preferred Sources, or place it with the new Google Preferred Source block or the [wpzoom_preferred_source] shortcode. Light, dark and auto themes; no Google script is loaded
 * IMPROVED: redesigned Settings page — on/off switches, sample icons and icon counts for each icon set, clearer descriptions, and the "Misc." tab is now "Modules"
-* New, clearer icon for the Social Icons block in the block inserter
 * NEW: search in the "Select Icon" dialog covers every enabled icon kit, grouped by kit
 * IMPROVED: "Select Icon" dialog — the URL is no longer rewritten while you type, typing a URL picks its icon from any kit, a custom label or color is kept when you pick another icon, the list no longer jumps while you type, and Search, Delete and Save stay visible on shorter screens
-* Fixed color swatches showing an outdated color after Detect Icon, and the color picker staying open when clicking elsewhere
-* Fixed the icon settings popover opening partly off-screen next to the edge of the editor
-* Icons in the picker and the color swatches can now be used with the keyboard
-* WordPress links get the Socicons WordPress icon in WordPress blue, and twitter.com links get the X icon
 * Updated the Reddit icon to Reddit's current logo and brand color (#FF4500)
-* Fixed the Socicons font being downloaded twice when font preloading is on
 * Sharing Buttons no longer load the icon font stylesheets, which they never used (their icons are SVG)
-* Fixed the Cubebrush icon, and removed duplicate Publons and PubMed entries from Academicons
 * The older Font Awesome set is now correctly labelled Font Awesome 4 in Settings
 * Updated brand colors for GitHub, Instagram and Nextdoor
 * IMPROVED: the Social Icons block and widget now draw their icons as inline SVG on your site instead of loading icon fonts. Pages no longer download up to 130 KB of icon CSS and 330 KB of font files, and icons appear instantly. Icons look exactly as before, and saved content is unchanged (developers can switch back with the `wpzoom_social_icons_use_svg` filter)
 * Fixed 15 Font Awesome 5 icons (LinkedIn, Vimeo, Facebook F, Calendar and others) showing a different icon on the site when the Font Awesome 4 set was also enabled
-* Fixed a theme's own Font Awesome drawing a second icon next to a social icon
 * The block editor draws icons as SVG too, so the editor and the Settings page no longer load icon fonts
 * Icons of networks that have shut down (Google+, Skype, Vine, StumbleUpon, Periscope, Pocket and others) are no longer offered in the icon pickers. Icons already on your site keep working, and pasting such a link no longer picks them
 * Settings: the Optimization tab is gone (icons are SVG, so there are no fonts to preload; it comes back if a site turns SVG off). New Custom Icons and Pinterest tabs show what PRO adds: your own SVG icons, and a Pinterest Save button on images
@@ -307,14 +312,6 @@ Floating Buttons is a PRO feature that displays your social sharing icons as a f
 * NEW: 148 brand icons from Font Awesome 7 in the Font Awesome Brands set, including X, Threads, Bluesky, TikTok, Signal, Linktree and Substack
 * NEW: Overview screen, the first item under Social Icons: one card each for Social Icons, Share Buttons and Chat, showing what is set up and where to change it
 * The Blocks and Social Icons widget switches are gone. Icons are SVG and load only where they are used, so turning them off saved nothing, and turning blocks off broke the automatic share buttons and the Preferred Sources button. A widget switched off before stays off
-* IMPROVED: Settings grouped by module: a Social Icons tab (icon sets, custom icons) and a Share Buttons tab (Google Preferred Sources, Pinterest). Old links to a tab still open the right section
-* IMPROVED: Settings → Icon Sets is simpler. WPZOOM Icons is always on, Font Awesome is one switch (version 5 in the block, 4 in the widget), and Dashicons and Genericons sit under "Older icon sets". The switches only choose what the icon picker offers: pages include only the icons they show either way, and icons already in use keep showing
-* The Pro upgrade is now called WPZOOM Connect Pro
-* Admin menu renamed to “Social Icons” (it was “AI Chat”), with Overview, AI Chat, Icon Sets and Share Buttons as its submenus, so the icon and sharing settings are easy to find again
-* The Socicons set is now called WPZOOM Icons: the same icons, maintained by WPZOOM. Licenses for all bundled icon sets are listed in the readme and in includes/icon-library/LICENSES.md
-* Added Mixcloud and six general icons (home, mobile, heart, plane, recipes, user) to the Social Icons block
-* SECURITY: the AI Chat identity signature printed for logged-in users is now domain-separated from the signature that authenticates customer-data lookups. Before, an account registered with a crafted email address could reuse its own signature to read another customer's orders and licenses through the lookup endpoint. Reported by Wordfence.
-* IMPROVED: AI Chat customer data now lists up to 25 licenses (active ones first) and 15 orders and subscriptions, and reports the total count when there are more
 
 = 4.7.3 =
 * Minor fixes

@@ -213,8 +213,8 @@ class WPZOOM_Connect_Whats_New {
 
 	private static function summary() {
 		return self::is_pro()
-			? __( 'A new dashboard under Social Icons, 2,400+ icons, icons without links and the Google Preferred Sources button. Your icons, share buttons and settings are as you left them.', 'social-icons-widget-by-wpzoom' )
-			: __( 'A new dashboard under Social Icons, faster SVG icons, 2,400+ icons and the Google Preferred Sources button. Your icons, share buttons and settings are as you left them.', 'social-icons-widget-by-wpzoom' );
+			? __( 'A new dashboard under Social Icons, 2,400+ icons, icons without links, a Social Profiles block and the Google Preferred Sources button. Your icons, share buttons and settings are as you left them.', 'social-icons-widget-by-wpzoom' )
+			: __( 'A new dashboard under Social Icons, faster SVG icons, 2,400+ icons, a Social Profiles block and the Google Preferred Sources button. Your icons, share buttons and settings are as you left them.', 'social-icons-widget-by-wpzoom' );
 	}
 
 	private static function settings_url( $section ) {
@@ -254,6 +254,14 @@ class WPZOOM_Connect_Whats_New {
 			'layers',
 			__( 'Icons without links', 'social-icons-widget-by-wpzoom' ),
 			__( 'Leave an icon’s link empty for a plain icon, or add the new “Icon by WPZOOM” block for a single one: a phone, a feature, a decoration.', 'social-icons-widget-by-wpzoom' ),
+			'',
+		);
+		$items[] = array(
+			'profiles',
+			__( 'Social Profiles block', 'social-icons-widget-by-wpzoom' ),
+			$pro
+				? __( 'Your profiles as a list, cards or buttons, with handles (@yourname) and follower counts. Pick your networks and paste each link.', 'social-icons-widget-by-wpzoom' )
+				: __( 'Your profiles as a list with handles (@yourname) and follower counts. Pick your networks and paste each link.', 'social-icons-widget-by-wpzoom' ),
 			'',
 		);
 		$items[] = array(

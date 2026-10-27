@@ -378,6 +378,7 @@ class WPZOOM_Connect_Overview {
 			'message'       => '<path d="M4 5.5h16a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1h-9l-5 3.5v-3.5H4a1 1 0 0 1-1-1v-10a1 1 0 0 1 1-1z"/>',
 			'sidebar'       => '<rect x="3" y="3.5" width="18" height="17" rx="2.5"/><path d="M16.5 7.5v9"/>',
 			'pin'           => '<path d="M12 21v-5"/><path d="M8.5 3.5h7l-1 6 3 3v1.5h-11V12.5l3-3-1-6z"/>',
+			'profiles'      => '<rect x="3" y="3.5" width="18" height="5" rx="1.5"/><rect x="3" y="9.5" width="18" height="5" rx="1.5"/><rect x="3" y="15.5" width="18" height="5" rx="1.5"/><path d="M6 6h.01M6 12h.01M6 18h.01"/>',
 			'pinterest'     => '<circle cx="12" cy="12" r="9"/><path d="m10.6 20.8 1.6-7.4"/><path d="M8.9 12.9a3.7 3.7 0 0 1-.6-2.1c0-2.4 1.8-4.4 4.6-4.4 2.4 0 4 1.6 4 3.8 0 2.5-1.3 4.3-3.2 4.3-1 0-1.6-.6-1.5-1.5"/>',
 			'chart'         => '<path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/>',
 			'book'          => '<path d="M4 4.5A1.5 1.5 0 0 1 5.5 3H20v15H5.5A1.5 1.5 0 0 0 4 19.5v-15z"/><path d="M4 19.5A1.5 1.5 0 0 0 5.5 21H20v-3"/>',
