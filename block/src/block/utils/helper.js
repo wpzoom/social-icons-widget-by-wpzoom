@@ -26,6 +26,36 @@ const iconName = ( item ) => ( isObject( item ) ? item.icon : item ); // Items a
 
 import TokenList from '@wordpress/token-list';
 
+// Names whose spelling capitals alone get wrong (humanizeIconLabel).
+const BRAND_NAMES = {
+	x: 'X',
+	youtube: 'YouTube',
+	'youtube-music': 'YouTube Music',
+	tiktok: 'TikTok',
+	linkedin: 'LinkedIn',
+	github: 'GitHub',
+	gitlab: 'GitLab',
+	whatsapp: 'WhatsApp',
+	soundcloud: 'SoundCloud',
+	wordpress: 'WordPress',
+	deviantart: 'DeviantArt',
+	paypal: 'PayPal',
+	pocketcasts: 'Pocket Casts',
+	stackoverflow: 'Stack Overflow',
+	'ko-fi': 'Ko-fi',
+	'buy-me-a-coffee': 'Buy Me a Coffee',
+	imdb: 'IMDb',
+	vkontakte: 'VKontakte',
+	bandcamp: 'Bandcamp',
+	opentable: 'OpenTable',
+	tripadvisor: 'Tripadvisor',
+	'apple-podcasts': 'Apple Podcasts',
+	producthunt: 'Product Hunt',
+	'product-hunt': 'Product Hunt',
+	mail: 'Email',
+	rss: 'RSS',
+};
+
 class Helper {
 	static filterIcons( searchIcon ) {
 		const collector = {};
@@ -319,8 +349,25 @@ class Helper {
 		return s.charAt( 0 ).toUpperCase() + s.slice( 1 );
 	}
 
+	/**
+	 * A readable name for an icon: "tiktok" → "TikTok", "apple-music" → "Apple Music".
+	 * Brands with their own spelling come from the list; the rest get a capital
+	 * letter on each word.
+	 *
+	 * @param {string} s Icon name.
+	 * @return {string} Name.
+	 */
 	static humanizeIconLabel( s ) {
-		return this.hyphensToSpaces( this.capitalize( s ) );
+		if ( typeof s !== 'string' || ! s ) {
+			return '';
+		}
+		if ( BRAND_NAMES[ s ] ) {
+			return BRAND_NAMES[ s ];
+		}
+		return s
+			.split( '-' )
+			.map( ( word ) => this.capitalize( word ) )
+			.join( ' ' );
 	}
 
 	static getBlockStyle( className ) {

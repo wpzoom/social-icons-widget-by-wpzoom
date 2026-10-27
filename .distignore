@@ -39,6 +39,9 @@ README.md
 tests
 webpack.config.js
 .wordpress-org
+# Local Claude Code settings (preview servers etc.), not part of the plugin
+.claude
+CLAUDE.md
 wp-cli.local.yml
 vendor
 yarn.lock
