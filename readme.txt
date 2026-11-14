@@ -5,7 +5,7 @@ Tags: social icons, social media icons, share buttons, click to chat, whatsapp
 Requires at least: 6.5
 Requires PHP: 7.4
 Tested up to: 7.1
-Stable tag: 5.0.0
+Stable tag: 5.0.1
 License: GNU General Public License v2.0 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -290,6 +290,9 @@ Floating Buttons is a PRO feature that displays your social sharing icons as a f
 12. Icon library: browse and search 2,400+ icons
 
 == Changelog ==
+
+= 5.0.1 =
+* NEW: "Manage with AI" in the Social Icons menu: one click installs and activates the free WPZOOM AI Connect plugin, so Claude or ChatGPT can edit your site for you. It is also offered on the Overview, and once in a dismissible notice on the Dashboard and Plugins screens. Shown on WordPress 6.9 and newer, until AI Connect is active
 
 = 5.0.0 =
 * MAJOR: Social Icons Widget is now WPZOOM Connect 5.0: a new dashboard under “Social Icons”, icons drawn as SVG instead of icon fonts, 2,400+ icons with an icon library to browse, icons without links and an “Icon by WPZOOM” block, a Social Profiles block, and the Google Preferred Sources button. Sites that update get a short “What’s new” tour on the Overview

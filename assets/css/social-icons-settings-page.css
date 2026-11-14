@@ -1132,6 +1132,83 @@
 	color: var(--wpzc-brand);
 }
 
+/* Manage with AI (WPZOOM AI Connect) */
+.wpzc-ai {
+	max-width: 760px;
+}
+
+.wpzc-ai__mark {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 48px;
+	height: 48px;
+	margin-bottom: 14px;
+	border-radius: 12px;
+	background: #e8f2ff;
+	color: #3496fe;
+}
+
+.wpzc-ai-card .wpzc-ai__mark {
+	width: 40px;
+	height: 40px;
+	margin-bottom: 12px;
+	border-radius: 10px;
+}
+
+.wpzc-ai h2 {
+	margin-bottom: 8px;
+	font-size: 22px;
+	font-weight: 600;
+	line-height: 1.3;
+}
+
+.wpzc-ai__lead {
+	max-width: 620px;
+	color: var(--wpzc-text);
+	font-size: 14px;
+	line-height: 1.6;
+}
+
+.wpzc-ai__label {
+	margin: 18px 0 8px !important;
+	font-weight: 600;
+}
+
+.wpzc-ai__prompts {
+	display: grid;
+	gap: 8px;
+	margin: 0 0 22px;
+}
+
+.wpzc-ai__prompts li {
+	margin: 0;
+	padding: 10px 14px;
+	border: 1px solid var(--wpzc-border, #e2e4e7);
+	border-radius: 8px;
+	background: #f8fafc;
+}
+
+.wpzc-ai .wpzc-button.is-busy {
+	opacity: .7;
+	pointer-events: none;
+}
+
+.wpzc-ai__status {
+	min-height: 20px;
+	margin: 12px 0 0 !important;
+}
+
+.wpzc-ai__status.is-error {
+	color: #b32d2e;
+}
+
+.wpzc-ai__note {
+	margin-top: 16px !important;
+	color: var(--wpzc-muted, #646970);
+	font-size: 12px;
+}
+
 @media screen and (max-width: 1280px) {
 	.wpzc-split {
 		grid-template-columns: minmax(0, 1fr);

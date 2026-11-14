@@ -391,6 +391,7 @@ class WPZOOM_Connect_Overview {
 			'help'          => '<circle cx="12" cy="12" r="9"/><path d="M9.6 9.3a2.5 2.5 0 0 1 4.8.9c0 1.7-2.4 2.2-2.4 3.6M12 17h.01"/>',
 			'key'           => '<circle cx="8" cy="15" r="4.5"/><path d="m11.2 11.8 8.3-8.3M16.5 6.5l2.5 2.5M14 9l2 2"/>',
 			'home'          => '<path d="m3.5 11 8.5-7 8.5 7"/><path d="M5.5 9.5V20h13V9.5"/><path d="M10 20v-5.5h4V20"/>',
+			'sparkles'      => '<path d="M10 4.5l1.6 4.2a4 4 0 0 0 2.2 2.2L18 12.5l-4.2 1.6a4 4 0 0 0-2.2 2.2L10 20.5l-1.6-4.2a4 4 0 0 0-2.2-2.2L2 12.5l4.2-1.6a4 4 0 0 0 2.2-2.2L10 4.5z"/><path d="M18.5 2.5v4M16.5 4.5h4M19 17v3M17.5 18.5h3"/>',
 			'sliders'       => '<path d="M4 7h9M17 7h3M4 17h3M11 17h9"/><circle cx="15" cy="7" r="2"/><circle cx="9" cy="17" r="2"/>',
 		);
 		if ( 'yamidoo' === $name ) {
@@ -619,6 +620,12 @@ class WPZOOM_Connect_Overview {
 		if ( ! $pro && class_exists( 'WPZOOM_Social_Icons_SVG' ) && ! WPZOOM_Social_Icons_SVG::use_svg() ) {
 			// Only on sites that turned SVG icons off and load icon fonts again.
 			$nav[] = array( 'sliders', __( 'Optimization', 'social-icons-widget-by-wpzoom' ), $settings ? '#font-preload' : self::settings_url( 'font-preload' ), false, 'font-preload', '', false );
+		}
+		if ( class_exists( 'WPZOOM_Connect_AI_Connect' ) ) {
+			$ai_item = WPZOOM_Connect_AI_Connect::nav_item( $current );
+			if ( $ai_item ) {
+				$nav[] = $ai_item;
+			}
 		}
 		if ( $pro ) {
 			$nav[] = array( 'chart', __( 'Share Analytics', 'social-icons-widget-by-wpzoom' ), admin_url( self::PARENT . '&page=wpzoom-share-analytics' ), false, '', '', false );
@@ -1136,6 +1143,11 @@ class WPZOOM_Connect_Overview {
 									<a class="wpzc-button is-block" href="<?php echo esc_url( self::chat_url( 'ai' ) ); ?>"><?php esc_html_e( 'Set up AI Chat', 'social-icons-widget-by-wpzoom' ); ?></a>
 								</section>
 								<?php endif; ?>
+								<?php
+								if ( class_exists( 'WPZOOM_Connect_AI_Connect' ) ) {
+									WPZOOM_Connect_AI_Connect::render_card();
+								}
+								?>
 							</div>
 						</div>
 

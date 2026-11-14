@@ -135,7 +135,7 @@ class WPZOOM_Connect_Whats_New {
 	}
 
 	/** Whether the 30 days are running for this release. */
-	private static function running() {
+	public static function running() {
 		$state = get_option( self::prefix() . '_whats_new', array() );
 		return is_array( $state ) && isset( $state['release'], $state['since'] )
 			&& self::release() === $state['release']
