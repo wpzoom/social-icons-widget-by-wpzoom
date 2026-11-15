@@ -87,6 +87,16 @@ if ( is_admin() && ! class_exists( 'WPZOOM_Notice_Center' ) && file_exists( $wpz
 	) );
 }
 
+add_filter( 'wpzoom_notice_center_strings', 'wpzoom_social_icons_notice_center_strings' );
+function wpzoom_social_icons_notice_center_strings( $strings ) {
+	return array_merge( (array) $strings, array(
+		'title'          => __( 'WPZOOM Notice Center', 'social-icons-widget-by-wpzoom' ),
+		'subtitle'       => __( 'Stay updated with the latest from WPZOOM products and services!', 'social-icons-widget-by-wpzoom' ),
+		'dismiss'        => __( 'Dismiss this notice', 'social-icons-widget-by-wpzoom' ),
+		'dismiss_screen' => __( 'Dismiss this notice.', 'social-icons-widget-by-wpzoom' ),
+	) );
+}
+
 require_once plugin_dir_path( __FILE__ ) . 'includes/classes/class-wpzoom-social-icons-upsell.php';
 
 /**
