@@ -1,6 +1,6 @@
 <?php
 /**
- * WPZOOM Connect overview: the first screen under "Social Icons".
+ * WPZOOM Social Icons overview: the first screen under "Social Icons".
  *
  * The plugin is three modules, Social Icons, Share Buttons and Chat, the same
  * way wpzoom.com/plugins/social-share/ presents it. Layout: a header bar with
@@ -53,7 +53,7 @@ class WPZOOM_Connect_Overview {
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue' ) );
 	}
 
-	/** Whether WPZOOM Connect Pro is running (it replaces the free plugin). */
+	/** Whether WPZOOM Social Icons Pro is running (it replaces the free plugin). */
 	public static function is_pro() {
 		return function_exists( 'wpzoom_social_icons_pro' );
 	}
@@ -84,7 +84,7 @@ class WPZOOM_Connect_Overview {
 	public function add_menu_item() {
 		add_submenu_page(
 			self::PARENT,
-			__( 'WPZOOM Connect', 'social-icons-widget-by-wpzoom' ),
+			__( 'WPZOOM Social Icons', 'social-icons-widget-by-wpzoom' ),
 			__( 'Overview', 'social-icons-widget-by-wpzoom' ),
 			'manage_options',
 			self::PAGE_SLUG,
@@ -146,7 +146,7 @@ class WPZOOM_Connect_Overview {
 	/** WordPress takes the browser title from the menu item, which is gone. */
 	public function settings_title() {
 		global $title;
-		$title = __( 'WPZOOM Connect Settings', 'social-icons-widget-by-wpzoom' ); // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited -- the admin page title.
+		$title = __( 'WPZOOM Social Icons Settings', 'social-icons-widget-by-wpzoom' ); // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited -- the admin page title.
 	}
 
 	/**
@@ -642,7 +642,7 @@ class WPZOOM_Connect_Overview {
 			<div class="wpzc-brand">
 				<?php echo self::logo( 36 ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static SVG. ?>
 				<div>
-					<p class="wpzc-brand__name"><?php echo esc_html( $pro ? __( 'WPZOOM Connect Pro', 'social-icons-widget-by-wpzoom' ) : __( 'WPZOOM Connect', 'social-icons-widget-by-wpzoom' ) ); ?></p>
+					<p class="wpzc-brand__name"><?php echo esc_html( $pro ? __( 'WPZOOM Social Icons Pro', 'social-icons-widget-by-wpzoom' ) : __( 'WPZOOM Social Icons', 'social-icons-widget-by-wpzoom' ) ); ?></p>
 					<?php if ( $version ) : ?>
 						<p class="wpzc-brand__version"><?php echo esc_html( $version ); ?></p>
 					<?php endif; ?>
@@ -650,7 +650,7 @@ class WPZOOM_Connect_Overview {
 			</div>
 
 			<p class="wpzc-sidebar__label"><?php esc_html_e( 'Dashboard', 'social-icons-widget-by-wpzoom' ); ?></p>
-			<nav class="wpzc-menu" aria-label="<?php esc_attr_e( 'WPZOOM Connect', 'social-icons-widget-by-wpzoom' ); ?>">
+			<nav class="wpzc-menu" aria-label="<?php esc_attr_e( 'WPZOOM Social Icons', 'social-icons-widget-by-wpzoom' ); ?>">
 				<?php foreach ( $nav as $item ) : ?>
 					<a href="<?php echo esc_url( $item[2] ); ?>"<?php echo $item[3] ? ' class="is-current" aria-current="page"' : ''; ?><?php echo $item[4] ? ' data-wpzc-tab="' . esc_attr( $item[4] ) . '"' : ''; ?><?php echo $item[5] ? ' data-wpzc-section="' . esc_attr( $item[5] ) . '"' : ''; ?>>
 						<?php echo self::icon( $item[0], 18 ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static SVG. ?>
@@ -687,7 +687,7 @@ class WPZOOM_Connect_Overview {
 
 			<?php if ( ! $pro ) : ?>
 				<a class="wpzc-sidebar__pro" href="<?php echo esc_url( self::upgrade_url( 'sidebar-' . $current ) ); ?>" target="_blank" rel="noopener">
-					<span><?php esc_html_e( 'Get WPZOOM Connect Pro', 'social-icons-widget-by-wpzoom' ); ?></span>
+					<span><?php esc_html_e( 'Get WPZOOM Social Icons Pro', 'social-icons-widget-by-wpzoom' ); ?></span>
 					<?php echo self::icon( 'arrow', 16 ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static SVG. ?>
 				</a>
 			<?php endif; ?>
@@ -1047,7 +1047,7 @@ class WPZOOM_Connect_Overview {
 		?>
 		<div class="wrap wpzc">
 			<?php // WordPress moves admin notices to just after the first heading, above the layout. ?>
-			<h1 class="screen-reader-text"><?php esc_html_e( 'WPZOOM Connect', 'social-icons-widget-by-wpzoom' ); ?></h1>
+			<h1 class="screen-reader-text"><?php esc_html_e( 'WPZOOM Social Icons', 'social-icons-widget-by-wpzoom' ); ?></h1>
 
 			<div class="wpzc-layout">
 				<?php self::render_sidebar( 'overview' ); ?>
@@ -1058,7 +1058,7 @@ class WPZOOM_Connect_Overview {
 							<div class="wpzc-welcome__text">
 								<?php /* translators: %s: first name */ ?>
 								<p class="wpzc-welcome__hello"><?php echo esc_html( sprintf( __( 'Hello %s', 'social-icons-widget-by-wpzoom' ), $name ) ); ?></p>
-								<h2><?php esc_html_e( 'Welcome to WPZOOM Connect', 'social-icons-widget-by-wpzoom' ); ?></h2>
+								<h2><?php esc_html_e( 'Welcome to WPZOOM Social Icons', 'social-icons-widget-by-wpzoom' ); ?></h2>
 								<p><?php esc_html_e( 'Social icons, share buttons and a chat that answers your visitors, in one plugin. Here is what is set up on your site.', 'social-icons-widget-by-wpzoom' ); ?></p>
 								<p class="wpzc-actions">
 									<?php if ( $s['ai_connected'] ) : ?>

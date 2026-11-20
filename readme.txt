@@ -1,4 +1,4 @@
-=== WPZOOM Connect: Social Icons Widget & Block, Share Buttons & Click to Chat ===
+=== WPZOOM Social Icons: Widget & Block, Share Buttons & Click to Chat ===
 Contributors: WPZOOM, ciorici
 Donate link: https://www.wpzoom.com/
 Tags: social icons, social media icons, share buttons, click to chat, whatsapp
@@ -15,7 +15,7 @@ Social media icons and share buttons: 2,400+ icons, block, widget & Elementor. P
 
 = Social icons, share buttons and a chat button, in one plugin =
 
-**WPZOOM Connect** (formerly *Social Icons Widget & Block*) adds **social media icons** linking to your profiles, **share buttons** for your content, and a floating **Click to Chat** button for WhatsApp, Telegram, Messenger and Viber. Everything works as a Gutenberg block, a classic widget, a shortcode or an Elementor widget, so it fits block themes and classic themes alike.
+**WPZOOM Social Icons** (formerly *Social Icons Widget & Block*) adds **social media icons** linking to your profiles, **share buttons** for your content, and a floating **Click to Chat** button for WhatsApp, Telegram, Messenger and Viber. Everything works as a Gutenberg block, a classic widget, a shortcode or an Elementor widget, so it fits block themes and classic themes alike.
 
 * **2,400+ icons** from WPZOOM Icons, Font Awesome, Academicons, Dashicons and Genericons — every network, plus general icons for phone, email, location and more. Browse them all in Settings → Icon library.
 * **Paste a link, get the icon.** The icon, its brand color and label are picked from the URL.
@@ -114,7 +114,7 @@ You can view the plugin live in all our themes at [WPZOOM](https://www.wpzoom.co
 
 = PRO Features =
 
-Upgrade to [WPZOOM Connect Pro](https://www.wpzoom.com/plugins/social-share/) to unlock powerful features:
+Upgrade to [WPZOOM Social Icons Pro](https://www.wpzoom.com/plugins/social-share/) to unlock powerful features:
 
 * **Floating Buttons** - Display social sharing icons as a fixed floating bar on the side of your website (NEW!)
 * **Social Profiles: Cards and Buttons layouts** - Brand-colored cards with follower counts, or "Follow on Instagram" buttons (NEW!)
@@ -259,7 +259,7 @@ Yes! Social Icons & Sharing Buttons does not collect any information from your v
 
 = What features are available in the PRO version? =
 
-[WPZOOM Connect Pro](https://www.wpzoom.com/plugins/social-share/) includes these additional features:
+[WPZOOM Social Icons Pro](https://www.wpzoom.com/plugins/social-share/) includes these additional features:
 
 * **Floating Buttons** - Display sharing icons as a fixed floating bar on the side of your website
 * **Share Analytics** - Track shares across all platforms with a beautiful analytics dashboard
@@ -281,7 +281,7 @@ Floating Buttons is a PRO feature that displays your social sharing icons as a f
 3. Social Sharing Block
 4. Sharing Buttons in Posts & Pages
 5. Customizing Sharing Buttons
-6. The WPZOOM Connect dashboard: social icons, share buttons and chat at a glance
+6. The WPZOOM Social Icons dashboard: social icons, share buttons and chat at a glance
 7. One floating button for every channel: AI Chat, WhatsApp, Telegram, Messenger and Viber
 8. AI Chat answers visitors from your own pages and links the page the answer came from
 9. Click to Chat settings: channels, launcher style, position, size, colors and icons

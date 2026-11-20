@@ -9,7 +9,7 @@ import { useBlockProps } from '@wordpress/block-editor';
  * @param {boolean} options.linkless Save an icon with no URL without a link.
  *                                   deprecated.js passes false: blocks saved
  *                                   before that wrapped every icon in a link.
- * @param {boolean} options.pro      Save as WPZOOM Connect Pro does, so blocks
+ * @param {boolean} options.pro      Save as WPZOOM Social Icons Pro does, so blocks
  *                                   saved by PRO are recognised here (see
  *                                   pro-deprecations.js): every icon span is
  *                                   `social-icon socicon socicon-<name>` with

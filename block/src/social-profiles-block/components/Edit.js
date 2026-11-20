@@ -286,7 +286,7 @@ export default function Edit( { attributes, setAttributes, isSelected } ) {
 				{ ! IS_PRO && config.upgradeUrl && (
 					<p className="wpzoom-sp-layouts__upsell">
 						<ExternalLink href={ config.upgradeUrl }>
-							{ __( 'Cards and Buttons layouts come with WPZOOM Connect Pro', 'social-icons-widget-by-wpzoom' ) }
+							{ __( 'Cards and Buttons layouts come with WPZOOM Social Icons Pro', 'social-icons-widget-by-wpzoom' ) }
 						</ExternalLink>
 					</p>
 				) }

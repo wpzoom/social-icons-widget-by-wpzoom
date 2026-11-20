@@ -1,6 +1,6 @@
 <?php
 /**
- * AI Chat — Yamidoo inside WPZOOM Connect.
+ * AI Chat — Yamidoo inside WPZOOM Social Icons.
  *
  * The fifth Click to Chat channel: instead of sending the visitor to WhatsApp,
  * the floating button answers them itself, from the site's own pages, and
@@ -30,7 +30,7 @@ class WPZOOM_AI_Chat {
 	const NOTICE_DISMISSED = 'wpzoom_ai_chat_notice_dismissed';
 	const HANDLE           = 'yamidoo-widget';
 	const PAGE_SLUG        = 'wpzoom-click-to-chat';
-	/** wp-cron event that tells Yamidoo about a WPZOOM Connect Pro license. */
+	/** wp-cron event that tells Yamidoo about a WPZOOM Social Icons Pro license. */
 	/** Set for a day after each sync, so it runs at most daily. */
 
 	private static $instance = null;
@@ -845,7 +845,7 @@ class WPZOOM_AI_Chat {
 			),
 			'capability'     => 'manage_options',
 			'screens'        => array( 'dashboard', 'plugins', 'edit-wpzoom-shortcode' ),
-			'source'         => 'WPZOOM Connect',
+			'source'         => 'WPZOOM Social Icons',
 			'priority'       => 5,
 		);
 		return $notices;

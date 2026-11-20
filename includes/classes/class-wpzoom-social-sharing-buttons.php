@@ -87,7 +87,7 @@ class WPZOOM_Social_Sharing_Buttons {
 				'edit_item'     => __( 'Edit Sharing Configuration', 'social-icons-widget-by-wpzoom' ),
 				'view_item'     => __( 'View Sharing Configuration', 'social-icons-widget-by-wpzoom' ),
 				// The block editor's back button: the post list redirects to the Overview.
-				'view_items'    => __( 'Back to WPZOOM Connect', 'social-icons-widget-by-wpzoom' ),
+				'view_items'    => __( 'Back to WPZOOM Social Icons', 'social-icons-widget-by-wpzoom' ),
 			),
 			'supports'            => array( 'title', 'editor', 'custom-fields' ),
 			'public'              => false,

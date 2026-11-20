@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name:         WPZOOM Connect: Social Icons Widget & Block, Share Buttons & Click to Chat
+ * Plugin Name:         WPZOOM Social Icons: Widget & Block, Share Buttons & Click to Chat
  * Plugin URI:          https://www.wpzoom.com/plugins/social-share/
  * Description:         One floating button for every way visitors reach you: an AI chat that answers from your own pages (powered by Yamidoo), Click to Chat for WhatsApp, Telegram, Messenger and Viber, plus social icons and share buttons. 1000+ icons, Gutenberg block, widget and Elementor.
  * Version:             5.0.1
@@ -406,7 +406,7 @@ if ( ! function_exists( 'wpzoom_social_icons_upgrade_pro_notice' ) ) {
 			</a>
 			<div class="wpz-social-icons-notice-wrap-content">
 				<div class="wpz-social-icons-notice-aside">
-					<img src="<?php echo esc_url( WPZOOM_SOCIAL_ICONS_PLUGIN_URL . '/assets/images/social-icons-pro-avatar.png' ); ?>" width="100" height="100" alt="WPZOOM Connect Pro"/>
+					<img src="<?php echo esc_url( WPZOOM_SOCIAL_ICONS_PLUGIN_URL . '/assets/images/social-icons-pro-avatar.png' ); ?>" width="100" height="100" alt="WPZOOM Social Icons Pro"/>
 				</div>
 				<div class="wpz-social-icons-notice-content">
 					<?php
@@ -420,7 +420,7 @@ if ( ! function_exists( 'wpzoom_social_icons_upgrade_pro_notice' ) ) {
 					?>
 					</p>
 					<p class="wpz-social-icons-notice-actions">
-						<a class="button-primary" href="<?php echo esc_url( WPZOOM_Connect_Overview::upgrade_url( 'admin-notice' ) ); ?>" target="_blank"><strong><?php esc_html_e( 'Get WPZOOM Connect Pro &rarr;', 'social-icons-widget-by-wpzoom' ); ?></strong></a>
+						<a class="button-primary" href="<?php echo esc_url( WPZOOM_Connect_Overview::upgrade_url( 'admin-notice' ) ); ?>" target="_blank"><strong><?php esc_html_e( 'Get WPZOOM Social Icons Pro &rarr;', 'social-icons-widget-by-wpzoom' ); ?></strong></a>
 						<?php
 						// phpcs:disable
 						/*

@@ -4,7 +4,7 @@
 import { createSave } from './components/Save';
 
 /**
- * Blocks saved by WPZOOM Connect Pro, for sites that go back to the free
+ * Blocks saved by WPZOOM Social Icons Pro, for sites that go back to the free
  * plugin. PRO writes every icon's SVG into the post; free saves empty icon
  * spans and draws them on the page. Without these, those blocks show
  * "unexpected or invalid content".

@@ -1,9 +1,9 @@
 <?php
 /**
- * "Manage with AI": WPZOOM AI Connect, offered from inside WPZOOM Connect.
+ * "Manage with AI": WPZOOM AI Connect, offered from inside WPZOOM Social Icons.
  *
  * WPZOOM AI Connect (a separate, free plugin on wordpress.org) lets Claude, ChatGPT and other AI assistants work on
- * the site. Until it is active, WPZOOM Connect offers it in its own screens:
+ * the site. Until it is active, WPZOOM Social Icons offers it in its own screens:
  *
  *   - a "Manage with AI" item in the plugin's own menu (under Social Icons) and in the Overview's navigation, opening a
  *     page with one button that installs and activates AI Connect, then takes the user to its screen;
@@ -312,7 +312,7 @@ class WPZOOM_Connect_AI_Connect {
 			),
 			'capability'       => 'activate_plugins',
 			'screens'          => array( 'dashboard', 'plugins' ),
-			'source'           => 'WPZOOM Connect',
+			'source'           => 'WPZOOM Social Icons',
 			'priority'         => 20,
 		);
 		return $notices;

@@ -284,7 +284,7 @@ class WPZOOM_Social_Icons_SVG {
 	}
 
 	/**
-	 * Blocks saved by WPZOOM Connect Pro, on a site back on the free plugin:
+	 * Blocks saved by WPZOOM Social Icons Pro, on a site back on the free plugin:
 	 * PRO writes each icon as `social-icon socicon socicon-<name>` (whatever
 	 * its kit) with its own SVG inside, which free's styles don't size. Each
 	 * such span is turned back into the empty span free saves, with the kit

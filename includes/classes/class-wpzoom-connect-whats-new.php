@@ -53,7 +53,7 @@ class WPZOOM_Connect_Whats_New {
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_pointer' ) );
 	}
 
-	/** Whether this is WPZOOM Connect Pro. */
+	/** Whether this is WPZOOM Social Icons Pro. */
 	private static function is_pro() {
 		return class_exists( 'WPZOOM_Connect_Overview' ) ? WPZOOM_Connect_Overview::is_pro() : function_exists( 'wpzoom_social_icons_pro' );
 	}
@@ -206,9 +206,9 @@ class WPZOOM_Connect_Whats_New {
 	private static function heading() {
 		return self::is_pro()
 			/* translators: %s: version number */
-			? sprintf( __( 'WPZOOM Connect Pro %s is here', 'social-icons-widget-by-wpzoom' ), self::release() )
+			? sprintf( __( 'WPZOOM Social Icons Pro %s is here', 'social-icons-widget-by-wpzoom' ), self::release() )
 			/* translators: %s: version number */
-			: sprintf( __( 'Social Icons Widget is now WPZOOM Connect %s', 'social-icons-widget-by-wpzoom' ), self::release() );
+			: sprintf( __( 'Social Icons Widget is now WPZOOM Social Icons %s', 'social-icons-widget-by-wpzoom' ), self::release() );
 	}
 
 	private static function summary() {
@@ -335,7 +335,7 @@ class WPZOOM_Connect_Whats_New {
 			),
 			'capability'     => 'manage_options',
 			'screens'        => array( 'dashboard', 'plugins' ),
-			'source'         => 'WPZOOM Connect',
+			'source'         => 'WPZOOM Social Icons',
 			'priority'       => 1,
 		);
 		return $notices;

@@ -147,7 +147,7 @@ class WPZOOM_Social_Icons_Settings {
 		// This page will be under "Settings".
 		add_submenu_page(
 			'edit.php?post_type=wpzoom-shortcode',
-			esc_html__( 'WPZOOM Connect Settings', 'social-icons-widget-by-wpzoom' ),
+			esc_html__( 'WPZOOM Social Icons Settings', 'social-icons-widget-by-wpzoom' ),
 			esc_html__( 'Settings', 'social-icons-widget-by-wpzoom' ),
 			'manage_options',
 			self::$menu_slug,
@@ -185,7 +185,7 @@ class WPZOOM_Social_Icons_Settings {
 
 		?>
 <div class="wrap zoom-social-icons-settings wpzc wpzc-settings">
-	<h1 class="screen-reader-text"><?php esc_html_e( 'WPZOOM Connect Settings', 'social-icons-widget-by-wpzoom' ); ?></h1>
+	<h1 class="screen-reader-text"><?php esc_html_e( 'WPZOOM Social Icons Settings', 'social-icons-widget-by-wpzoom' ); ?></h1>
 
 	<div class="wpzc-layout">
 	<?php WPZOOM_Connect_Overview::render_sidebar( 'settings' ); ?>
