@@ -687,7 +687,7 @@ class WPZOOM_Connect_Overview {
 
 			<?php if ( ! $pro ) : ?>
 				<a class="wpzc-sidebar__pro" href="<?php echo esc_url( self::upgrade_url( 'sidebar-' . $current ) ); ?>" target="_blank" rel="noopener">
-					<span><?php esc_html_e( 'Get WPZOOM Social Icons Pro', 'social-icons-widget-by-wpzoom' ); ?></span>
+					<span><?php esc_html_e( 'Get Social Icons Pro', 'social-icons-widget-by-wpzoom' ); ?></span>
 					<?php echo self::icon( 'arrow', 16 ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static SVG. ?>
 				</a>
 			<?php endif; ?>
