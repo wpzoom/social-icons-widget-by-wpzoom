@@ -295,7 +295,7 @@ Floating Buttons is a PRO feature that displays your social sharing icons as a f
 * NEW: "Manage with AI" in the Social Icons menu: one click installs and activates the free WPZOOM AI Connect plugin, so Claude or ChatGPT can edit your site for you. It is also offered on the Overview, and once in a dismissible notice on the Dashboard and Plugins screens. Shown on WordPress 6.9 and newer, until AI Connect is active
 
 = 5.0.0 =
-* MAJOR: Social Icons Widget is now WPZOOM Connect 5.0: a new dashboard under “Social Icons”, icons drawn as SVG instead of icon fonts, 2,400+ icons with an icon library to browse, icons without links and an “Icon by WPZOOM” block, a Social Profiles block, and the Google Preferred Sources button. Sites that update get a short “What’s new” tour on the Overview
+* MAJOR: Social Icons Widget is now WPZOOM Social Icons 5.0: a new dashboard under “Social Icons”, icons drawn as SVG instead of icon fonts, 2,400+ icons with an icon library to browse, icons without links and an “Icon by WPZOOM” block, a Social Profiles block, and the Google Preferred Sources button. Sites that update get a short “What’s new” tour on the Overview
 * NEW: Social Profiles block — your profiles as a list with each network's icon, a handle taken from the link (@yourname, r/WordPress) or the short link, and optional follower counts you type in (labelled followers, subscribers or members per network). Start by picking from 10 popular networks; style the rows, border, corners and icons in the Styles tab. Drawn on the server, so it can't show "unexpected or invalid content". Cards and Buttons layouts in PRO
 * IMPROVED: Social Icons block — Detect Icon now looks in Socicons first and falls back to the other enabled icon kits (it used to take the last kit with a match, often Font Awesome)
 * NEW: the icon's URL field shows the matching icon as you type
@@ -434,4 +434,4 @@ Floating Buttons is a PRO feature that displays your social sharing icons as a f
 == Upgrade Notice ==
 
 = 5.0.0 =
-Big update: the plugin is now WPZOOM Connect, with a new dashboard under “Social Icons”. Icons are drawn as SVG instead of icon fonts; if you styled icons with custom CSS that targets the icon font, check them after updating.
+Big update: the plugin is now WPZOOM Social Icons, with a new dashboard under “Social Icons”. Icons are drawn as SVG instead of icon fonts; if you styled icons with custom CSS that targets the icon font, check them after updating.
