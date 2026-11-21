@@ -3,23 +3,20 @@
  * Handle the plugin marketing stuff.
  *
  * @since   3.4.0
- * @package WPZOOM_Recipe_Card_Blocks
+ * @package WPZOOM_Social_Icons
  */
 if ( ! class_exists( 'WPZOOM_BF_Banner' ) ) {
 	class WPZOOM_BF_Banner {
 		const BTN_UPGRADE_NOW_LINK = 'https://www.wpzoom.com/black-friday/?utm_source=wpadmin&utm_medium=bf-social-banner-btn&utm_campaign=bf-social';
-		const BF_START_DATE = '2025-11-26 00:00:00';
-		const BF_END_DATE = '2025-12-03 23:59:59';
+		const BF_START_DATE = '2025-11-25 00:00:00';
+		const BF_END_DATE = '2026-12-02 23:59:59';
 
 		public static function init() {
 
 			global $pagenow;
 
 			// add notices only on specific pages
-			if ( ( is_admin() && $pagenow === 'index.php' ) || $pagenow === 'plugins.php' ||
-				 ( $pagenow === 'edit.php' && $_SERVER['QUERY_STRING'] === 'post_type=wpzoom_rcb') ||
-				 ( $pagenow === 'admin.php' && $_SERVER['QUERY_STRING'] === 'page=wpzoom-recipe-card-settings') ) {
-
+			if ( ( is_admin() && $pagenow === 'index.php' ) || $pagenow === 'plugins.php' ) {
 				add_action( 'admin_notices', [ __CLASS__, 'show_black_friday_banner' ] );
 			}
 
@@ -27,6 +24,30 @@ if ( ! class_exists( 'WPZOOM_BF_Banner' ) ) {
 				__CLASS__,
 				'dismiss_black_friday_banner'
 			] );
+		}
+
+		/**
+		 * Sale start and end as Unix timestamps. The dates are read in the site's timezone.
+		 *
+		 * @return array{start:int,end:int}
+		 */
+		private static function get_period() {
+			$dates = apply_filters(
+				'wpzoom_social_icons_bf_dates',
+				[
+					'start' => self::BF_START_DATE,
+					'end'   => self::BF_END_DATE,
+				]
+			);
+
+			try {
+				$start = ( new DateTimeImmutable( $dates['start'], wp_timezone() ) )->getTimestamp();
+				$end   = ( new DateTimeImmutable( $dates['end'], wp_timezone() ) )->getTimestamp();
+			} catch ( Exception $e ) {
+				return [ 'start' => 0, 'end' => 0 ];
+			}
+
+			return [ 'start' => $start, 'end' => $end ];
 		}
 
 		/**
@@ -41,12 +62,24 @@ if ( ! class_exists( 'WPZOOM_BF_Banner' ) ) {
 		/**
 		 * Check if the Black Friday period is ongoing.
 		 *
+		 * @param int|null $now Unix timestamp to check, defaults to now.
 		 * @return bool
 		 */
-		private static function is_black_friday_period() {
-			$today = current_time( 'Y-m-d H:i:s' );
+		private static function is_black_friday_period( $now = null ) {
+			$period = self::get_period();
+			$now    = null === $now ? time() : (int) $now;
 
-			return $today >= self::BF_START_DATE && $today <= self::BF_END_DATE;
+			return $period['start'] > 0 && $now >= $period['start'] && $now <= $period['end'];
+		}
+
+		/**
+		 * User meta key for the dismissal. It carries the sale's year, so closing
+		 * last year's banner does not hide this year's.
+		 *
+		 * @return string
+		 */
+		private static function dismiss_meta_key() {
+			return 'wpzoom_wpz_dismiss_black_friday_banner_' . wp_date( 'Y', self::get_period()['start'] );
 		}
 
 		/**
@@ -55,15 +88,15 @@ if ( ! class_exists( 'WPZOOM_BF_Banner' ) ) {
 		 * @return bool
 		 */
 		private static function has_dismissed_banner() {
-			return (bool) get_user_meta( get_current_user_id(), 'wpzoom_wpz_dismiss_black_friday_banner', true );
+			return (bool) get_user_meta( get_current_user_id(), self::dismiss_meta_key(), true );
 		}
 
 		/**
 		 * Handle the AJAX request to dismiss the Banner.
 		 */
 		public static function dismiss_black_friday_banner() {
-//			check_ajax_referer('my_nonce_action', 'security');
-			update_user_meta( get_current_user_id(), 'wpzoom_wpz_dismiss_black_friday_banner', true );
+			check_ajax_referer( 'wpz_dismiss_bf_banner', 'security' );
+			update_user_meta( get_current_user_id(), self::dismiss_meta_key(), true );
 			wp_send_json_success();
 		}
 
@@ -77,27 +110,36 @@ if ( ! class_exists( 'WPZOOM_BF_Banner' ) ) {
 				<div id="wpzoom-banner-container" class="wpzoom-banner-container notice is-dismissible">
 					<a href="https://www.wpzoom.com/black-friday/?utm_source=wpadmin&utm_medium=social-banner-image&utm_campaign=bf-social"><img src="<?php echo untrailingslashit( WPZOOM_SOCIAL_ICONS_PLUGIN_URL ) . '/assets/images/bf.png'; ?>" class="bf-wpzoom-banner-image" alt="WPZOOM Black Friday Deals" ></a>
 					<div class="wpz-banner-text-container">
-						<h2>WPZOOM's Black Friday Sale is Here - Up to 50% OFF!</h2>
-						<span class="banner-text">Unlock the full potential of your WordPress site and do more with WPZOOM's Premium Themes & Plugins! Get advanced features like:</span>
+						<h2><?php
+							/* translators: %s: price of the yearly All Access plan, e.g. $99 */
+							printf( esc_html__( "WPZOOM's Black Friday Sale: All Access for %s", 'social-icons-widget-by-wpzoom' ), '$99' );
+						?></h2>
+						<span class="banner-text"><?php esc_html_e( 'Every premium theme and plugin in one plan, or 40% off any single theme or plugin. Prices apply to new licenses, first year.', 'social-icons-widget-by-wpzoom' ); ?></span>
 						<div class="wpz-banner-promo-btns">
-							<div class="banner-btn"><a href="https://www.wpzoom.com/themes/" target="_blank">35 Premium Themes</a></div>
-							<div class="banner-btn"><a href="https://www.wpzoom.com/plugins/" target="_blank">4 Premium Plugins</a></div>
-							<div class="banner-btn">Unique Demos</div>
-                            <div class="banner-btn">Elementor & Block Demos</div>
-							<div class="banner-btn">+ many more</div>
+							<div class="banner-btn"><a href="<?php echo esc_url( self::BTN_UPGRADE_NOW_LINK ); ?>" target="_blank"><?php
+								/* translators: %s: price, e.g. $99 */
+								printf( esc_html__( 'All Access %s', 'social-icons-widget-by-wpzoom' ), '$99' );
+							?></a></div>
+							<div class="banner-btn"><a href="<?php echo esc_url( self::BTN_UPGRADE_NOW_LINK ); ?>" target="_blank"><?php
+								/* translators: %s: price, e.g. $49 */
+								printf( esc_html__( 'Inspiro Premium %s', 'social-icons-widget-by-wpzoom' ), '$49' );
+							?></a></div>
+							<div class="banner-btn"><?php esc_html_e( '40% off everything else', 'social-icons-widget-by-wpzoom' ); ?></div>
+							<div class="banner-btn"><a href="https://www.wpzoom.com/themes/?utm_source=wpadmin&utm_medium=bf-social-banner-themes&utm_campaign=bf-social" target="_blank"><?php esc_html_e( '30 Premium Themes', 'social-icons-widget-by-wpzoom' ); ?></a></div>
+							<div class="banner-btn"><a href="https://www.wpzoom.com/plugins/?utm_source=wpadmin&utm_medium=bf-social-banner-plugins&utm_campaign=bf-social" target="_blank"><?php esc_html_e( 'Premium Plugins', 'social-icons-widget-by-wpzoom' ); ?></a></div>
 						</div>
 					</div>
 					<div class="wpz-upgrade-banner">
 						<div class="banner-clock">
-							<span class="hurry-up">Hurry Up! Offer ends soon!</span>
+							<span class="hurry-up"><?php esc_html_e( 'Hurry Up! Offer ends soon!', 'social-icons-widget-by-wpzoom' ); ?></span>
 							<div class="clock-digits">
-								<span><i id="wpz-bf-days"></i>d</span>
-								<span><i id="wpz-bf-hours"></i>h</span>
-								<span><i id="wpz-bf-minutes"></i>m</span>
-								<span><i id="wpz-bf-seconds"></i>s</span>
+								<span><i id="wpz-bf-days"></i><?php echo esc_html_x( 'd', 'days abbreviation in the sale countdown', 'social-icons-widget-by-wpzoom' ); ?></span>
+								<span><i id="wpz-bf-hours"></i><?php echo esc_html_x( 'h', 'hours abbreviation in the sale countdown', 'social-icons-widget-by-wpzoom' ); ?></span>
+								<span><i id="wpz-bf-minutes"></i><?php echo esc_html_x( 'm', 'minutes abbreviation in the sale countdown', 'social-icons-widget-by-wpzoom' ); ?></span>
+								<span><i id="wpz-bf-seconds"></i><?php echo esc_html_x( 's', 'seconds abbreviation in the sale countdown', 'social-icons-widget-by-wpzoom' ); ?></span>
 							</div>
 						</div>
-						<a href="<?php echo self::BTN_UPGRADE_NOW_LINK ?>" target="_blank" class="btn-upgrade-now">View All Deals &rarr;</a>
+						<a href="<?php echo esc_url( self::BTN_UPGRADE_NOW_LINK ); ?>" target="_blank" class="btn-upgrade-now"><?php esc_html_e( 'View All Deals', 'social-icons-widget-by-wpzoom' ); ?> &rarr;</a>
 					</div>
 				</div>
 			</div>
@@ -315,6 +357,7 @@ if ( ! class_exists( 'WPZOOM_BF_Banner' ) ) {
 							type: 'GET',
 							data: {
 								action: 'wpz_dismiss_bf_banner',
+								security: '<?php echo esc_js( wp_create_nonce( 'wpz_dismiss_bf_banner' ) ); ?>',
 							},
 						});
 					});
@@ -323,7 +366,8 @@ if ( ! class_exists( 'WPZOOM_BF_Banner' ) ) {
 				// Set the date we're counting down to
 				(function () {
 					// Constants
-					const COUNTDOWN_END_DATE = new Date("<?php echo self::BF_END_DATE; ?>").getTime();
+					// Unix time in ms from PHP, in the site's timezone (parsing a date string fails in Safari).
+					const COUNTDOWN_END_DATE = <?php echo (int) self::get_period()['end'] * 1000; ?>;
 
 					// Element references
 					const daysContainer = document.getElementById("wpz-bf-days");

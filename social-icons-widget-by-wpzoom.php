@@ -3,7 +3,7 @@
  * Plugin Name:         WPZOOM Social Icons: Widget & Block, Share Buttons & Click to Chat
  * Plugin URI:          https://www.wpzoom.com/plugins/social-share/
  * Description:         One floating button for every way visitors reach you: an AI chat that answers from your own pages (powered by Yamidoo), Click to Chat for WhatsApp, Telegram, Messenger and Viber, plus social icons and share buttons. 1000+ icons, Gutenberg block, widget and Elementor.
- * Version:             5.0.1
+ * Version:             5.0.2
  * Author:              WPZOOM
  * Author URI:          https://www.wpzoom.com/
  * Text Domain:         social-icons-widget-by-wpzoom
@@ -344,8 +344,9 @@ if ( ! function_exists( 'wpzoom_social_icons_plugin_action_links' ) ) {
 			// Add Go Pro link if the Pro plugin is not active.
 			if ( ! function_exists( 'wpzoom_social_icons_pro' ) ) {
 				$links['go_pro'] = sprintf(
-					'<a href="%1$s" target="_blank" class="wpzoom-social-icons-gopro" style="color:var(--wp-admin-theme-color, #2271b1);font-weight:bold;">UPGRADE &rarr; <span class="wpzoom-premium-badge" style="background-color: #2271b1; color: #fff; margin-left: 5px; font-size: 11px; min-height: 16px; border-radius: 8px; display: inline-block; font-weight: 600; line-height: 1.6; padding: 0 8px;">%2$s</span></a>',
+					'<a href="%1$s" target="_blank" class="wpzoom-social-icons-gopro" style="color:var(--wp-admin-theme-color, #2271b1);font-weight:bold;text-transform:uppercase;">%2$s &rarr; <span class="wpzoom-premium-badge" style="background-color: #2271b1; color: #fff; margin-left: 5px; font-size: 11px; min-height: 16px; border-radius: 8px; display: inline-block; font-weight: 600; line-height: 1.6; padding: 0 8px;">%3$s</span></a>',
 					WPZOOM_Connect_Overview::upgrade_url( 'plugins-page' ),
+					esc_html__( 'Upgrade', 'social-icons-widget-by-wpzoom' ),
 					esc_html__( 'PRO', 'social-icons-widget-by-wpzoom' )
 				);
 			}
