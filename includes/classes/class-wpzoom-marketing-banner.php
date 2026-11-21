@@ -8,7 +8,7 @@
 if ( ! class_exists( 'WPZOOM_BF_Banner' ) ) {
 	class WPZOOM_BF_Banner {
 		const BTN_UPGRADE_NOW_LINK = 'https://www.wpzoom.com/black-friday/?utm_source=wpadmin&utm_medium=bf-social-banner-btn&utm_campaign=bf-social';
-		const BF_START_DATE = '2025-11-25 00:00:00';
+		const BF_START_DATE = '2026-11-25 00:00:00';
 		const BF_END_DATE = '2026-12-02 23:59:59';
 
 		public static function init() {

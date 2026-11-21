@@ -292,6 +292,7 @@ Floating Buttons is a PRO feature that displays your social sharing icons as a f
 == Changelog ==
 
 = 5.0.2 =
+* Black Friday 2026 notice (Nov 25 – Dec 2) with a countdown that works in every browser
 * Notice and plugin action links are now translatable
 * Fixes & improvements
 
