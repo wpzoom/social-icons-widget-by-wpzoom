@@ -323,7 +323,7 @@ class WPZOOM_Click_To_Chat {
 
 	public function add_menu_item() {
 		// "New" badge in the menu until AI Chat is connected — same treatment as the Pro badge.
-		$badge = apply_filters( 'wpzoom_ai_chat_is_connected', false ) ? '' : ' <span class="wpzoom-pro-badge wpzoom-new-badge">New</span>';
+		$badge = apply_filters( 'wpzoom_ai_chat_is_connected', false ) ? '' : ' <span class="wpzoom-pro-badge wpzoom-new-badge">' . esc_html_x( 'New', 'admin menu badge', 'social-icons-widget-by-wpzoom' ) . '</span>';
 		add_submenu_page(
 			'edit.php?post_type=wpzoom-shortcode',
 			__( 'AI Chat', 'social-icons-widget-by-wpzoom' ),
