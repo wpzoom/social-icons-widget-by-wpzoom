@@ -54,6 +54,13 @@ if ( ! class_exists( 'WPZOOM_BF_Banner' ) ) {
 		 * Display the Black Friday banner if the conditions are met.
 		 */
 		public static function show_black_friday_banner() {
+			// Inspiro (free) shows its own Black Friday banner: never stack ours on top of it.
+			// Checked here, not at load time, because the theme is loaded after plugins, and by
+			// function name because the theme folder is not always called "inspiro".
+			if ( function_exists( 'inspiro_show_black_friday_banner' ) ) {
+				return;
+			}
+
 			if ( self::is_black_friday_period() && ! self::has_dismissed_banner() ) {
 				self::social_widget_display_black_friday_banner();
 			}
