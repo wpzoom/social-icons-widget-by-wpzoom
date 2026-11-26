@@ -5,7 +5,7 @@ Tags: social icons, social media icons, share buttons, click to chat, whatsapp
 Requires at least: 6.5
 Requires PHP: 7.4
 Tested up to: 7.1
-Stable tag: 5.0.2
+Stable tag: 5.0.3
 License: GNU General Public License v2.0 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -290,6 +290,9 @@ Floating Buttons is a PRO feature that displays your social sharing icons as a f
 12. Icon library: browse and search 2,400+ icons
 
 == Changelog ==
+
+= 5.0.3 =
+* Minor bug fix
 
 = 5.0.2 =
 * Black Friday 2026 notice (Nov 25 – Dec 2) with a countdown that works in every browser

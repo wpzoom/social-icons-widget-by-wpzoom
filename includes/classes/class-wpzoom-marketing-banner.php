@@ -176,6 +176,17 @@ if ( ! class_exists( 'WPZOOM_BF_Banner' ) ) {
 					border-radius: 3px;
 				}
 
+				/* close (X) button: WP core colors it dark gray, invisible on the dark banner */
+				.wpzoom-banner-container .notice-dismiss:before {
+					color: rgba(255, 255, 255, .75);
+				}
+
+				.wpzoom-banner-container .notice-dismiss:hover:before,
+				.wpzoom-banner-container .notice-dismiss:active:before,
+				.wpzoom-banner-container .notice-dismiss:focus:before {
+					color: #fff;
+				}
+
 				/* start banner content */
 				.bf-wpzoom-banner-image {
                     margin: 10px 30px;
